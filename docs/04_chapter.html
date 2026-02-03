@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>4&nbsp; Things to take into account when conducting an a priori power analysis – Doing a power analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./05_chapter.html" rel="next">
+<link href="./03_chapter.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-626149efe8f5d16e1d391ba177679bf0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04_chapter.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Things to take into account when conducting an a priori power analysis</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Doing a power analysis</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_chapter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">First things first</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_chapter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Things to consider to increase power</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_chapter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Effect size justification</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_chapter.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Things to take into account when conducting an a priori power analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_chapter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Simple study-desgins</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_chapter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Factorial designs</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_chapter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Equivalence tests and minimum-effect tests</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_chapter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Factorial designs</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12_chapter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Transparency and computational reproducibility</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li>
+<a href="#adjusting-for-uncertainty-and-bias" id="toc-adjusting-for-uncertainty-and-bias" class="nav-link active" data-scroll-target="#adjusting-for-uncertainty-and-bias"><span class="header-section-number">4.1</span> Adjusting for uncertainty and bias</a>
+  <ul class="collapse">
+<li><a href="#safeguard-power-analysis" id="toc-safeguard-power-analysis" class="nav-link" data-scroll-target="#safeguard-power-analysis"><span class="header-section-number">4.1.1</span> Safeguard power analysis</a></li>
+  <li><a href="#bias-adjusted-effect-size-estimate" id="toc-bias-adjusted-effect-size-estimate" class="nav-link" data-scroll-target="#bias-adjusted-effect-size-estimate"><span class="header-section-number">4.1.2</span> Bias-adjusted effect size estimate</a></li>
+  </ul>
+</li>
+  <li><a href="#study-context" id="toc-study-context" class="nav-link" data-scroll-target="#study-context"><span class="header-section-number">4.2</span> Study context</a></li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">
+<span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Things to take into account when conducting an a priori power analysis</span>
+</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span>               <span class="co"># combine ggplots</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.metafor-project.org">metafor</a></span><span class="op">)</span>                 <span class="co"># calculate effect sizes</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>                 <span class="co"># figures</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>                   <span class="co"># data wrangling</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://haozhu233.github.io/kableExtra/">kableExtra</a></span><span class="op">)</span>              <span class="co"># create tables</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/heliosdrm/pwr">pwr</a></span><span class="op">)</span>                     <span class="co"># conduct power analyses</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www3.nd.edu/~kkelley/site/MBESS.html">MBESS</a></span><span class="op">)</span>                   <span class="co"># calculate effect sizes</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">BUCSS</span><span class="op">)</span>                   <span class="co"># adjust ES for uncertainity and bias</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="adjusting-for-uncertainty-and-bias" class="level2" data-number="4.1"><h2 data-number="4.1" class="anchored" data-anchor-id="adjusting-for-uncertainty-and-bias">
+<span class="header-section-number">4.1</span> Adjusting for uncertainty and bias</h2>
+<p>As previously discussed, researchers often use an effect size from a previous study as an estimate of the true effect size when conducting an a priori power analysis. However, caution is warranted for two main reasons: (1) due to random variation, the observed effect size in a study may differ from the true population effect size, specially in studies with small samples, and (2) selection bias can inflate reported effect sizes. Therefore, when selecting an effect size from a previous study, researchers should consider using a more conservative estimate that accounts for uncertainty and bias.</p>
+<section id="safeguard-power-analysis" class="level3" data-number="4.1.1"><h3 data-number="4.1.1" class="anchored" data-anchor-id="safeguard-power-analysis">
+<span class="header-section-number">4.1.1</span> Safeguard power analysis</h3>
+<p>One method is what Perugini et al. <span class="citation" data-cites="perugini2014">(<a href="references.html#ref-perugini2014" role="doc-biblioref">2014</a>)</span> refer to as a <em>safeguard power analysis</em> which uses a more conservative effect size estimate to conduct the a priori power analysis. For example, researchers may select the lower bound of a two-sided 60% CI, which is equivalent to a one-sided 80% CI. Suppose that a researchers selects an effect size <em>d</em> = 0.5 reported in a previous study with an N of 100 (50 per group) and she suspects that the true effect size is smaller. The package <em><code>MBESS</code></em> can be used to estimate the lower bound of the 60% CI for the reported effect size.</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cons_smd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MBESS/man/ci.smd.html">ci.smd</a></span><span class="op">(</span></span>
+<span>  smd <span class="op">=</span> <span class="va">smd</span>, </span>
+<span>  n.1 <span class="op">=</span> <span class="va">N</span><span class="op">/</span><span class="fl">2</span>, </span>
+<span>  n.2 <span class="op">=</span> <span class="va">N</span><span class="op">/</span><span class="fl">2</span>, </span>
+<span>  conf.level <span class="op">=</span> <span class="fl">.60</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The lower bound of the 60% CI corresponds to an effect size <em>d</em> of 0.33 which could then be used in an a priori power analysis.</p>
+</section><section id="bias-adjusted-effect-size-estimate" class="level3" data-number="4.1.2"><h3 data-number="4.1.2" class="anchored" data-anchor-id="bias-adjusted-effect-size-estimate">
+<span class="header-section-number">4.1.2</span> Bias-adjusted effect size estimate</h3>
+<p>Another method to account for uncertainty and potential inflation of effect size estimates reported in the literature is to adjust the effect size using the package <em><code>BUCSS</code></em> <span class="citation" data-cites="bucss_software">(<a href="references.html#ref-bucss_software" role="doc-biblioref">Anderson and Kelley 2016</a>)</span>. This approach allows researchers to correct for uncertainty and bias when planning their sample size. For a detailed discussion on how to adjust inflated effect size estimates using the package <code>BUCSS</code>, readers are referred to Anderson &amp; Maxwell <span class="citation" data-cites="anderson_sample_planning">(<a href="references.html#ref-anderson_sample_planning" role="doc-biblioref">2017</a>)</span> and the <a href="https://cran.r-project.org/web/packages/BUCSS/BUCSS.pdf">package documentation</a>. Below we demonstrate how to use the BUCSS package to account for publication bias and uncertainty in the context of an unpaired <em>t</em>-tests and a two-way mixed ANOVA with one between-subject and one within-subject factor. For additional supported tests, consult <a href="https://cran.r-project.org/web/packages/BUCSS/BUCSS.pdf">package documentation</a>.</p>
+<p>Any function requires the reported test statistic and sample size from a previous study, along with several key arguments:</p>
+<ul>
+<li><p>alpha.priori: the assumed statistical significance necessary for publishing in the field. To assume no publication bias and correct only for uncertainty, a value of 1 can be entered</p></li>
+<li><p>alpha.planned: <span class="math inline">\(\alpha\)</span> of the planned study</p></li>
+<li><p>assurance: the long run proportion of times that the planned study power will reach or surpass desired level of power</p></li>
+<li><p>power: desired level of power for the planned study.</p></li>
+</ul>
+<p>Suppose a researcher plans to use an effect size reported in a previous study to conduct an a priori power analysis for their study. However, she suspects that the effect size is much smaller and that this research line suffers from publication bias and studies with under-powered designs, which result in inflated effect sizes in the published literature. To address this, she can use <code>BUCSS</code> to estimate the necessary sample size to achieve the desired level of power while correcting for bias and uncertainty.</p>
+<p>Example 1: unpaired <em>t</em>-test</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/BUCSS/man/ss.power.it.html">ss.power.it</a></span><span class="op">(</span></span>
+<span>  t.observed <span class="op">=</span> <span class="fl">3</span>, </span>
+<span>  N <span class="op">=</span> <span class="fl">30</span>, </span>
+<span>  alpha.prior <span class="op">=</span> <span class="fl">0.05</span>, </span>
+<span>  alpha.planned <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  assurance <span class="op">=</span> <span class="fl">0.8</span>, </span>
+<span>  power <span class="op">=</span> <span class="fl">0.8</span>, </span>
+<span>  step <span class="op">=</span> <span class="fl">0.001</span></span>
+<span>  <span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="co"># only returns sample size</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 131</code></pre>
+</div>
+</div>
+<p>Example 2: a two-way mixed ANOVA with one between-subject and one within-subject factor</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/BUCSS/man/ss.power.spa.html">ss.power.spa</a></span><span class="op">(</span></span>
+<span>  F.observed <span class="op">=</span> <span class="fl">8</span>, </span>
+<span>  N <span class="op">=</span> <span class="fl">40</span>, </span>
+<span>  levels.between <span class="op">=</span> <span class="fl">2</span>, </span>
+<span>  levels.within <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  effect <span class="op">=</span> <span class="st">"interaction"</span>, </span>
+<span>  alpha.prior <span class="op">=</span> <span class="fl">0.05</span>, </span>
+<span>  alpha.planned <span class="op">=</span> <span class="fl">0.05</span>, </span>
+<span>  assurance <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  power <span class="op">=</span> <span class="fl">0.8</span>, </span>
+<span>  step<span class="op">=</span> <span class="fl">0.001</span></span>
+<span>  <span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="co"># only returns sample size</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 467</code></pre>
+</div>
+</div>
+<div class="callout-message">
+<p><strong>Note</strong></p>
+<p>Often the corrected noncentrality parameter for a given level of assurance will be estimated to be zero. This is an indication that, at the desired level of assurance, the previous study’s effect cannot be accurately estimated due to high levels of uncertainty and bias. When this occurs, it is not possible to calculate a sample size under the current specifications. In such situations, researchers may need to adjust the assurance level and/or reconsider the assumed publication bias.</p>
+</div>
+</section></section><section id="study-context" class="level2" data-number="4.2"><h2 data-number="4.2" class="anchored" data-anchor-id="study-context">
+<span class="header-section-number">4.2</span> Study context</h2>
+<p>When selecting an effect size from a previous study to inform an a priori power analysis, researchers should ensure that both studies are comparable in terms of context <span class="citation" data-cites="lakenssamplejustification">(<a href="references.html#ref-lakenssamplejustification" role="doc-biblioref">Lakens 2022</a>)</span>. This involves evaluating key elements PICOS—Population, Intervention, Comparator, Outcome and Study design—. For instance, populations with higher variability (i.e., larger SD) for a given outcome can yield smaller effect sizes, even when the mean difference is the same. Similarly, an intervention may produce different effect sizes across populations if it has a greater impact on the primary outcome in one population than in the other. Furthermore, the intervention itself must be comparable in terms of intensity and implementation. A stronger manipulation may produce larger effects. Similarly, the comparator—the group or condition against which the intervention is compared, which might be a placebo, a standard procedure or no intervention—can also influence the effect size estimate. If the primary outcome differs in operationalization or measurement, the effect sizes might not directly be comparable.</p>
+<p>A final aspect to consider is the study design. To be able to select an effect size from a previous study, both study designs need to be similar. Researchers often conduct studies to test whether an effect is moderated by a second factor that suppresses, exacerbates or reverses the effect caused by a first factor– what is known as an interaction effect–. In our experience, many researchers assume it is reasonable to select an effect size from a previous study that employed a simple design (i.e., a paired-sample design or an unpaired-sample design)—note this also applies to factorial design with one of the factors with two levels (df1 = 1)—to conduct an a priori power analysis for an interaction effect. However, whether the selected effect size is a good estimate of the interaction effect depends on the type of interaction or pattern of means that researchers expect to observe­. Broadly speaking, there are three types of interactions: ordinal, disordinal or attenuated interaction (<span class="quarto-unresolved-ref">?fig-figure8</span>). Readers are referred to Sommet et al. <span class="citation" data-cites="sommet2023">(<a href="references.html#ref-sommet2023" role="doc-biblioref">2023</a>)</span> for a discussion about how different types of interactions affect power. To understand how the patterns of means affect the interaction effect size, it helps to conceive interactions as a “difference of differences” <span class="citation" data-cites="sommet2023 langenberg_tutorial">(<a href="references.html#ref-sommet2023" role="doc-biblioref">Sommet et al. 2023</a>; <a href="references.html#ref-langenberg_tutorial" role="doc-biblioref">Langenberg et al. 2023</a>)</span>. Under this approach, the calculation of a two-way interaction corresponds to the difference between a) the difference between the two levels of a factor at one level of the second factor and b) the difference between the two levels of a factor at the second level of the second factor. The advantage of this approach is that researchers can conduct an a priori power analysis for an interaction effect using a <em>t-</em>test and solely requires the specification of an expected effect size in terms of Cohen’s <em>d.</em> For a 2 x 2 between-subject design, the interaction effect can be calculated as follows <span class="citation" data-cites="sommet2023">(<a href="references.html#ref-sommet2023" role="doc-biblioref">Sommet et al. 2023</a>)</span>:</p>
+<p><span class="math display">\[
+d_{\text{int}} = \frac{(E_1 - C_1)}{\text{SD}_{\text{pooled}}} - \frac{(E_2 - C_2)}{\text{SD}_{\text{pooled}}}= \frac{(E_1 - C_1) - (E_2 - C_2)}{2 \times \text{SD}_{\text{pooled}}}
+\]</span></p>
+<p>Where E and C refer to the experimental and control group respectively, and the subscripted numbers refer to the levels of the second factor. Thus, <em>d<sub>int</sub></em> boils down to computing the difference between two standardised mean differences (<em>d<sub>s</sub></em>) from the two main effects for which an a priori power analysis can be conducted in the framework of an unpaired <em>t</em>-test. To see how the pattern of means affects the interaction effect size, imagine we wish to test whether the effect of a supplement is moderated by the intake time (i.e., morning vs.&nbsp;afternoon) using a 2 x 2 between-subject design. Specifically, we expect that taking the supplement in the evening will knock out the effect of taking the supplement in the morning—what is known as an ordinal interaction (<span class="quarto-unresolved-ref">?fig-figure8</span> b)—. To conduct the a priori power analysis for this interaction effect, we rely on a previous study based on a between-subject design with two groups that found that the supplement of interest improved cycling time to exhaustion in comparison to a placebo. Assuming an equal SD of 2, the improvement in time to exhaustion would correspond to a Cohen’s <em>d<sub>s</sub></em>= 0.5 (1 – 0 / 2 = 0.5; Figure 8a).</p>
+<p>Now imagine that a researcher uses this Cohen’s <em>d<sub>s</sub></em> as an estimate of the hypothesized ordinal interaction to conduct the a priori power analysis. Plugging an effect size of <em>d<sub>s</sub></em> = 0.5, <span class="math inline">\(\alpha\)</span> = 0.05, and a desired power of 0.8 into G*Power yields an N of 128 for a two-sided unpaired <em>t</em>-test, or 32 participants for each of the four groups in our 2 x 2 factorial design. However, this a priori power analysis would be invalid because the chosen effect size does not correspond to the hypothesized ordinal interaction. For the hypothesized ordinal interaction (<span class="quarto-unresolved-ref">?fig-figure8</span> b), the pattern of means would correspond to a <em>d<sub>int</sub></em> = 0.25 ((1 – 0) – (0 – 0) / (2 x 2) = 0.25). Plugging an effect size of <em>d<sub>int</sub></em> = 0.25, <span class="math inline">\(\alpha\)</span> = 0.05, and a desired level of statistical power to 0.8 into G*Power yields an N of 506 for a two-sided unpaired <em>t</em>-test, or about 127 participants per group. For a reverse interaction (<span class="quarto-unresolved-ref">?fig-figure8</span> c), the pattern of means would correspond to a <em>d<sub>int</sub></em> = 0.5 ((1 – 0) – (0 – 1) / (2 x 2) = 0.5). Thus, the selected effect size (<em>d<sub>s</sub></em> = 0.5) used in our a priori power analysis would be clearly invalid and only appropriate in the case that we were expecting a reverse interaction. Lastly, for an attenuated interaction (<span class="quarto-unresolved-ref">?fig-figure8</span> d), the pattern of means would correspond to a <em>d<sub>int</sub></em> = 0.1 ((1 – 0) – (0.6 – 0) / (2 x 2) = 0.1). Plugging an effect size of <em>d<sub>int</sub></em> = 0.1, <span class="math inline">\(\alpha\)</span> = 0.05, and power to 0.8 into G*Power for a two-sided unpaired <em>t</em>-test yields an N of 3142, or 786 participants per group. Using the wrong estimate of the interaction effect has dire consequences for the sample size required to find the interaction.</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#| fig-label: fig-figure8</span></span>
+<span><span class="co">#| fig-cap: "Illustration of different types of interactions in two-factor design. (a) = simple effect. (b) ordinal or fully attenuated interaction. (c) reverse interaction. (d) attenuated interaction."</span></span>
+<span><span class="co">#| echo: false</span></span>
+<span><span class="co">#| fig.width: 16</span></span>
+<span><span class="co">#| fig.height: 4</span></span>
+<span></span>
+<span><span class="co"># Simple effect</span></span>
+<span><span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>  treatment <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"supplement"</span>,<span class="st">"placebo"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  effect <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">simple_effect</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df1</span>, </span>
+<span>                        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">treatment</span>, </span>
+<span>                            y <span class="op">=</span> <span class="va">effect</span>, </span>
+<span>                            group <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">4</span>, fill <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_shape_manual</a></span><span class="op">(</span>values <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span> <span class="op">(</span><span class="fl">22</span>,<span class="fl">21</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>panel.grid.major <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>        panel.grid.minor <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>        panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<span>        axis.line <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_line</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># disordinal interaction</span></span>
+<span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>treatment <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"supplement"</span>,</span>
+<span>                                       <span class="st">"supplement"</span>,</span>
+<span>                                       <span class="st">"placebo"</span>,</span>
+<span>                                       <span class="st">"placebo"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                 time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"morning"</span>,</span>
+<span>                                 <span class="st">"evening"</span>,</span>
+<span>                                 <span class="st">"morning"</span>,</span>
+<span>                                 <span class="st">"evening"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                 effect <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.0</span>, <span class="fl">0.0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">disordinal</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df2</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">treatment</span>, </span>
+<span>                                     y <span class="op">=</span> <span class="va">effect</span>, </span>
+<span>                                     group <span class="op">=</span> <span class="va">time</span>, </span>
+<span>                                     shape <span class="op">=</span> <span class="va">time</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">4</span>, fill <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_shape_manual</a></span><span class="op">(</span>values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">22</span>,<span class="fl">21</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span>, </span>
+<span>        panel.grid.major <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<span>        panel.grid.minor <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>        panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<span>        axis.line <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_line</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># grand mean = (1 + 0 + 0 + 1) / 4 = 0.5</span></span>
+<span><span class="co"># Marginal mean for supplement:morning = 1 - (0.5 + (0.5 - 0.5) + (0.5 - 0.5)) = 0.5</span></span>
+<span><span class="co"># Marginal mean for supplement:evening = 0 - (0.5 + (0.5 - 0.5) + (0.5 - 0.5)) = -0.5</span></span>
+<span><span class="co"># Marginal mean for placebo:morning = 0 - (0.5 + (0.5 - 0.5) + (0.5 - 0.5)) = -0.5</span></span>
+<span><span class="co"># Marginal mean for placebo:evening = 1 - (0.5 + (0.5 - 0.5) + (0.5 - 0.5)) = 0.5</span></span>
+<span></span>
+<span><span class="co"># Cohen's f:</span></span>
+<span><span class="co"># sqrt(((0.5)^2 +(-0.5)^2 + (-0.5)^2 + (0.5)^2)/4)/2 </span></span>
+<span><span class="co"># Cohen's f = 0.25 or Cohen's d of 0.25*2 = 0.5</span></span>
+<span></span>
+<span><span class="co"># ordinal interaction</span></span>
+<span><span class="va">df3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>  treatment <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"supplement"</span>,</span>
+<span>                       <span class="st">"supplement"</span>,</span>
+<span>                       <span class="st">"placebo"</span>,</span>
+<span>                       <span class="st">"placebo"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"morning"</span>,</span>
+<span>                  <span class="st">"evening"</span>,</span>
+<span>                  <span class="st">"morning"</span>,</span>
+<span>                  <span class="st">"evening"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  effect <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.0</span>, <span class="fl">0.0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ordinal</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df3</span>, </span>
+<span>                  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">treatment</span>, </span>
+<span>                      y <span class="op">=</span> <span class="va">effect</span>, </span>
+<span>                      group <span class="op">=</span> <span class="va">time</span>, </span>
+<span>                      shape <span class="op">=</span> <span class="va">time</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">4</span>, fill <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_shape_manual</a></span><span class="op">(</span>values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">22</span>,<span class="fl">21</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span>, </span>
+<span>        panel.grid.major <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<span>        panel.grid.minor <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>        panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<span>        axis.line <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_line</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># grand mean = (1 + 0 + 0 + 0) / 4 = 0.25</span></span>
+<span><span class="co"># Marginal mean for supplement:morning = 1 - (0.25 + (0.5 - 0.25) + (0.5 - 0.25)) = 0.25</span></span>
+<span><span class="co"># Marginal mean for supplement:evening = 0 - (0.25 + (0.5 - 0.25) + (0 - 0.25)) = -0.25</span></span>
+<span><span class="co"># Marginal mean for placebo:morning = 0 - (0.25 + (0 - 0.25) + (0.5 - 0.25)) = -0.25</span></span>
+<span><span class="co"># Marginal mean for placebo:evening = 0 - (0.25 + (0. - 0.25) + (0 - 0.25)) = 0.25</span></span>
+<span></span>
+<span><span class="co"># Cohen's f: </span></span>
+<span><span class="co"># sqrt(((0.25)^2 +(-0.25)^2 + (-0.25)^2 + (0.25)^2)/4)/2 </span></span>
+<span><span class="co"># Cohen's f = 0.125 or Cohen's d of 0.125*2 = 0.25</span></span>
+<span></span>
+<span><span class="co"># attenuated interaction</span></span>
+<span><span class="va">df4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>  treatment <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"supplement"</span>,</span>
+<span>                       <span class="st">"supplement"</span>,</span>
+<span>                       <span class="st">"placebo"</span>,</span>
+<span>                       <span class="st">"placebo"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"morning"</span>,</span>
+<span>                  <span class="st">"evening"</span>,</span>
+<span>                  <span class="st">"morning"</span>,</span>
+<span>                  <span class="st">"evening"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  effect <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.6</span>, <span class="fl">0.0</span>, <span class="fl">0.0</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">attenuated</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df4</span>, </span>
+<span>                     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">treatment</span>, </span>
+<span>                         y <span class="op">=</span> <span class="va">effect</span>, </span>
+<span>                         group <span class="op">=</span> <span class="va">time</span>, </span>
+<span>                         shape <span class="op">=</span> <span class="va">time</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">4</span>, fill <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_shape_manual</a></span><span class="op">(</span>values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">22</span>,<span class="fl">21</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>panel.grid.major <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<span>        panel.grid.minor <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>        panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<span>        axis.line <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_line</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># grand mean = (1 + 0.6 + 0 + 0) / 4 = 0.4</span></span>
+<span><span class="co"># Marginal mean for supplement:morning = 1 - (0.4 + (0.8 - 0.4) + (0.5 - 0.4)) = 0.1</span></span>
+<span><span class="co"># Marginal mean for supplement:evening = 0.6 - (0.4 + (0.8 - 0.4) + (0.3 - 0.4)) = -0.1</span></span>
+<span><span class="co"># Marginal mean for placebo:morning = 0 - (0.4 + (0 - 0.4) + (0.5 - 0.4)) = -0.1</span></span>
+<span><span class="co"># Marginal mean for placebo:evening = 0 - (0.4 + (0. - 0.4) + (0.3 - 0.4)) = 0.1</span></span>
+<span></span>
+<span><span class="co"># Cohen's f = </span></span>
+<span><span class="co"># sqrt(((0.1)^2 +(-0.1)^2 + (-0.1)^2 + (0.1)^2)/4)/2</span></span>
+<span><span class="co"># Cohen's f = 0.05 or Cohen's d of 0.05*2 = 0.1</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Cohen's f = sqrt(((0.25)^2 +(-0.25)^2 + (-0.25)^2 + (0.25)^2)/4)/2 = 0.125</span></span>
+<span><span class="co"># Use patchwork to combine and plot only 1 legend without title.</span></span>
+<span><span class="va">combined_figures</span> <span class="op">&lt;-</span> <span class="va">simple_effect</span> <span class="op">|</span> <span class="va">ordinal</span> <span class="op">|</span> <span class="va">disordinal</span> <span class="op">|</span> <span class="va">attenuated</span> <span class="op">&amp;</span> </span>
+<span>                    <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html">plot_layout</a></span><span class="op">(</span>axes <span class="op">=</span> <span class="st">"collect"</span>, </span>
+<span>                                guides <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">combined_figures</span> <span class="op">+</span> <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_annotation.html">plot_annotation</a></span><span class="op">(</span></span>
+<span>  tag_levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'a'</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="04_chapter_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The same approach applies to within-subject factorial designs. The key difference is that researchers need to know the correlation between measurements/conditions to estimate the covariance matrix required to compute the effect size. For a detailed tutorial, see <span class="citation" data-cites="langenberg_tutorial">Langenberg et al. (<a href="references.html#ref-langenberg_tutorial" role="doc-biblioref">2023</a>)</span>.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-bucss_software" class="csl-entry" role="listitem">
+Anderson, Samantha F., and Ken Kelley. 2016. <em>BUCSS: Bias and Uncertainty Corrected Sample Size</em>. Comprehensive. <a href="https://CRAN.R-project.org/package=BUCSS">https://CRAN.R-project.org/package=BUCSS</a>.
+</div>
+<div id="ref-anderson_sample_planning" class="csl-entry" role="listitem">
+Anderson, Samantha F., Ken Kelley, and Scott E. Maxwell. 2017. <span>“Sample-Size Planning for More Accurate Statistical Power: A Method Adjusting Sample Effect Sizes for Publication Bias and Uncertainty.”</span> <em>Psychological Science</em> 28 (11): 1547–62. <a href="https://doi.org/10.1177/0956797617723724">https://doi.org/10.1177/0956797617723724</a>.
+</div>
+<div id="ref-lakenssamplejustification" class="csl-entry" role="listitem">
+Lakens, Daniël. 2022. <span>“Sample Size Justification.”</span> <em>Collabra: Psychology</em> 8 (1): 33267. <a href="https://doi.org/10.1525/collabra.33267">https://doi.org/10.1525/collabra.33267</a>.
+</div>
+<div id="ref-langenberg_tutorial" class="csl-entry" role="listitem">
+Langenberg, Benedikt, Markus Janczyk, Valentin Koob, Reinhold Kliegl, and Axel Mayer. 2023. <span>“A Tutorial on Using the Paired t Test for Power Calculations in Repeated Measures ANOVA with Interactions.”</span> <em>Behavior Research Methods</em> 55 (5): 2467–84. <a href="https://doi.org/10.3758/s13428-022-01902-8">https://doi.org/10.3758/s13428-022-01902-8</a>.
+</div>
+<div id="ref-perugini2014" class="csl-entry" role="listitem">
+Perugini, Marco, Marcello Gallucci, and Giulio Costantini. 2014. <span>“Safeguard Power as a Protection Against Imprecise Power Estimates.”</span> <em>Perspectives on Psychological Science</em> 9 (3): 319–32. <a href="https://doi.org/10.1177/1745691614528519">https://doi.org/10.1177/1745691614528519</a>.
+</div>
+<div id="ref-sommet2023" class="csl-entry" role="listitem">
+Sommet, Nicolas, David L. Weissman, Nicolas Cheutin, and Andrew J. Elliot. 2023. <span>“How Many Participants Do I Need to Test an Interaction? Conducting an Appropriate Power Analysis and Achieving Sufficient Power to Detect an Interaction.”</span> <em>Advances in Methods and Practices in Psychological Science</em> 6 (3): 25152459231178728. <a href="https://doi.org/10.1177/25152459231178728">https://doi.org/10.1177/25152459231178728</a>.
+</div>
+</div>
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./03_chapter.html" class="pagination-link" aria-label="Effect size justification">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Effect size justification</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./05_chapter.html" class="pagination-link" aria-label="Simple study-desgins">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Simple study-desgins</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

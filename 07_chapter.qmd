@@ -1,0 +1,228 @@
+---
+title: "Equivalence tests and minimum-effect tests"
+---
+
+```{r}
+#| warning: false
+#| message: false
+
+library(knitr)                
+library(dplyr)                # data wrangling
+library(ggplot2)              # create figures
+library(kableExtra)           # create tables
+library(purrr)                # perform iterative tasks
+library(faux)                 # simulate factorial data
+library(emmeans)              # pairwise comparisons
+library(TOSTER)               # equivalence tests
+library(Superpower)           # power analysis for factorial designs
+```
+
+## Equivalence tests
+
+So far, our goal has been to establish that groups or conditions were statistically significantly different. However, researchers might also be interested in demonstrating that two groups or conditions do not differ by a meaningful amount-that is, any difference is negligible or practically equivalent to zero. To assess this, researchers can use equivalence tests, which are designed to establish whether the observed difference fall within a predefined range of practical equivalence.
+
+Importantly, to establish equivalence, researchers must first define the equivalence bounds based on the smallest effect size of interest (SESOI). The SESOI represents the smallest effect size considered meaningful for practical or theoretical reasons, and it should be specified in advance—ideally as part of the preregistration document. Briefly, an equivalence test consists of two one-sided tests, where the goal is to reject the presence of effects outside of the equivalence bounds. If both one-sided tests yield a significant *p*-value, researchers can claim that both groups or conditions are equivalent. Alternatively, if the 90% CI of the observed effect falls entirely within the equivalence bounds, equivalence can also be claimed.
+
+For a detailed discussion on equivalence testing, readers are referred to Lakens [-@lakens_equivalence_2017] and Lakens [-@lakens2018]. For a discussion on SESOI, readers are referred to Lakens [-@lakenssamplejustification]. For a practical, simulation-based approach to equivalence testing, readers are referred to Riesthuis [@riesthuis2024].
+
+Suppose a researcher hypothesizes that the difference in heart rate between intervention A and B will not exceed 5 bpm, corresponding to a Cohen's *d~s~* of 0.2 (5/25 = 0.2). In this line of research, the SESOI has been set to ± 10, corresponding to a Cohen's *d~s~* of 0.2 (10/25 = 0.4). This means that any observed difference between the two interventions smaller than 0.3 (in either direction) is considered practically equivalent—that is, not large enough to be meaningful in practice. As illustrated below, if the 90% CI entirely within the lower and upper bounds of the SESOI.
+
+```{r, echo=FALSE, fig-figure9, fig.cap = "The grey vertical lines represent the lower and upper bound of the SESOI corresponding to the region of equivalence. The horizontal black line represents the 90% CI of the observed effect."}
+
+# Parameters
+ci_low <- 0.01
+ci_high <- 0.25
+vline1 <- -0.4
+vline2 <- 0.4
+y_pos <- 0.5  
+
+# CI data
+ci_df <- data.frame(
+  xmin = ci_low,
+  xmax = ci_high,
+  y = y_pos
+)
+
+# Plot
+ggplot() +
+  # Vertical dashed threshold lines
+  geom_vline(xintercept = vline1, linetype = "dashed", color = "grey", size = 1) +
+  geom_vline(xintercept = vline2, linetype = "dashed", color = "grey", size = 1) +
+  
+  # Confidence interval as a small horizontal line
+  geom_segment(
+    aes(x = ci_low, xend = ci_high, y = y_pos, yend = y_pos),
+    linewidth = 1.2,
+    color = "black"
+  ) +
+  xlab("Standardized Mean Difference (Cohen's d)") +
+  ylab(NULL) +
+  scale_x_continuous(breaks = seq(-0.8, 0.8, 0.2), limits = c(-0.8, 0.8)) +
+  theme_classic(base_size = 14) +
+  theme(
+    axis.title.y = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    panel.grid.major.y = element_blank()
+  )
+```
+
+Let's conduct an a priori power analysis for an equivalence test with the following parameters:
+
+```{r chunk_65}
+res_t_TOST <- power_t_TOST(alpha = 0.05,
+                           delta = 5,           # true difference in means
+                           sd = 25,             # standard deviation of the difference
+                           power = 0.8,
+                           eqb = 10,            # set upper and lower bounds
+                           type = "unpaired")
+res_t_TOST
+```
+
+Approximately `r ceiling(res_t_TOST$n)` participants per group would be required to reject the existence of effect sizes larger than ±0.2.
+
+You can also use `emmeans` within `Superpower` to perform power analysis for equivalence tests in pairwise comparisons. This approach can be useful when researchers plan to use a factorial design and want to test both:
+
+-   A hypothesis of no difference (equivalence) between interventions or conditions, and
+
+-   A hypothesis of difference between other interventions or conditions
+
+For example, suppose a researcher expects that the time of day of exposure to Intervention A does not affect its efficacy in reducing heart rate (i.e., morning vs evening are equivalent), but also expects that Intervention A and B differ their effects both in the morning and in the evening.
+
+```{r chunk_66}
+design_result <- ANOVA_design(
+  design = "2b*2b",  # study design (i.e., two-factor between-subject design)
+  n = 50,
+  mu = c(60, 62, 67, 67),
+  sd = 10,
+  labelnames = c("intervention", "A", "B", 
+                 "time", "morning", "evening"),
+  plot = TRUE
+  )
+```
+
+Let's simulate a single data set:
+
+```{r chunk_67}
+result <- ANOVA_exact(
+  design_result,
+  alpha_level = 0.05,
+  verbose = FALSE,
+  emm = TRUE,
+  contrast_type = "pairwise"
+  )
+```
+
+Unlike `ANOVA_power()`, which performs multiple simulations to estimate power, `ANOVA_exact()` generates a single data set that exactly matches the properties specified in `ANOVA_design()`.
+
+```{r chunk_68}
+result$emm_results[c(1,6),] |> 
+  kable(digits = 1) |> 
+  kable_styling()
+```
+
+This study design would have adequate power (\>80%) to reject both null hypothesis of no difference between intervention A and B when compared at the same time of exposure.
+
+Now let's conduct the power analysis for the hypothesis of equivalence, specifically testing whether the efficacy of Intervention A is equivalent across different times of exposure.
+
+```{r chunk_69}
+simple_condition_effects <- emmeans(
+  result$emmeans$emmeans,
+  specs = ~ time|intervention
+)
+
+equivalence_power <- emmeans_power(
+  pairs(simple_condition_effects, 
+        side = "equivalence", 
+        delta = 5)[1] # select comparison of interest (Intervention A: morning vs. evening)
+)
+
+equivalence_power |> 
+  kable(digits = 1) |> 
+  kable_styling()
+```
+
+With this study design, the equivalence test would have a power of `r round(equivalence_power[3], 1)` to establish equivalence, assuming 2 bpm difference in heart rate for Intervention A between morning and evening.
+
+Because power is calculated from the squared *t*-value, power is only calculated correctly if the alternative hypothesis is true in the simulated data set. That is, the difference between the condition means is consistent with the tested directional hypothesis (smaller than `delta`).
+
+```{r chunk_70, include=FALSE}
+power_t_TOST(alpha = 0.05,
+             delta = 2,           # true difference in means
+             sd = 10,             # standard deviation of the difference
+             n = 50,              #
+             eqb = 5,             # set upper and lower bounds
+             type = "two.sample")
+```
+
+::: callout-message
+The required sample size per group increases as the difference between the expected effect size and the SESOI decreases. This is because it becomes harder to statistically rule out effects that approach the boundaries of practical relevance. For example, if a researcher expects the true difference to be *d* = 0.2, but the SESOI is set at ±0.3, the test must reliably detect that the effect is *not as large as* ±0.3 — requiring a sufficiently precise estimate (i.e., a narrower confidence interval that exclude 0.3), which in turn requires a larger sample. This mirrors the logic of NHST: a study requires a larger sample size to detect *d* = 0.2 than to detect *d* = 0.4.
+:::
+
+## Minimum-effect tests
+
+When using an equivalence test, the goal is to reject effect sizes larger than the SESOI to demonstrate equivalence between two interventions. In contrast, there are situations where researchers aim to do the opposite: to reject the presence of negligible effects and show that an observed effect is meaningfully large. This is the purpose of a minimum-effect test—to test whether the observed difference exceeds a predefined SESOI or the smallest effect size considered meaningful. In essence, an effect is considered meaningfully large when the entire confidence interval of the observed effect lies beyond the SESOI bounds—either above the upper bound or below the lower bound, depending on the hypothesis.
+
+Readers are referred to Murphy and Brett [-@murphy1999] for an introduction to minimum-effect tests and to and Riesthuis [-@riesthuis2024] for a hands-on guide to using simulation-based approaches for implementing minimum-effect tests
+
+Suppose a researcher hypothesizes that the difference between Intervention A and Intervention B will exceed a standardized mean difference of 0.4. In this line of research, the SESOI is set to ±0.2, meaning that any observed difference greater than 0.2 (in either direction) is considered practically meaningful. Therefore, the researcher uses a minimum-effect test to evaluate whether the observed effect exceeds this SESOI threshold, providing evidence that the effect is not only statistically significant but also of meaningful size.
+
+Let's define the parameters:
+
+```{r chunk_71}
+# Set parameters
+nsims <- 1000                                     # number of simulations
+sample_size <- c(50, 100, 150, 200, 250, 300)     # sample size per group
+mu1 <- 4                                          # expected intervention A mean
+mu2 <- 0                                          # expected intervention B mean
+sd <- 10                                          # common SD 
+lower_bound <- -0.2                               # lower bound of SESOI
+upper_bound <- 0.2                                # upper bound of SESOI
+alpha_level <- 0.05
+```
+
+Let's perform the simulations:
+
+```{r chunk_72}
+# For reproducibility
+set.seed(050990)
+
+# Power simulation function
+simulate_power <- function(n) {
+  es_values <- replicate(nsims, {
+    # Simulate raw data
+    group_A <- rnorm(n, mean = mu1, sd = sd)
+    group_B <- rnorm(n, mean = mu2, sd = sd)
+    
+    # Run minimum-effect test
+    result <- tsum_TOST(
+      m1 = mean(group_A),
+      m2 = mean(group_B),
+      sd1 = sd(group_A),
+      sd2 = sd(group_B),
+      n1 = n,
+      n2 = n,
+      low_eqbound = lower_bound,
+      high_eqbound = upper_bound,
+      alpha = alpha_level,
+      hypothesis = "MET"                           # MET = minimum-effect test
+    )
+    
+    # check if CI excludes the upper or lower bound of the SESOI
+    result$effsize$lower.ci[2] > upper_bound | result$effsize$upper.ci[2] < lower_bound
+  })
+  
+  mean(es_values) 
+}
+
+# Run function for all sample sizes
+power_results <- tibble(
+  n_per_group = sample_size,
+  power = map_dbl(sample_size, simulate_power)
+)
+
+# Return results
+power_results |> 
+  kable() |> 
+  kable_styling()
+```

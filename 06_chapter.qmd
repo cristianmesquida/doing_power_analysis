@@ -1,0 +1,600 @@
+---
+title: "Factorial designs"
+---
+
+```{r}
+#| warning: false
+#| message: false
+
+library(knitr)                
+library(tidyr)                # tidy data
+library(dplyr)                # data wrangling
+library(kableExtra)           # tables
+library(purrr)                # perform iterative tasks
+library(faux)                 # simulate factorial data
+library(broom)                # tidy statistical results
+library(emmeans)              # pairwise comparisons
+library(Superpower)           # power analysis for factorial designs
+```
+
+## Designs with more than two levels
+
+A design with more than two levels means that the independent variable (factor) has three or more conditions or groups, rather than just two as is typical in a simple *t*-test. Research designs can also include two or more factors, in which case they are called factorial designs. Each factor can have two or more levels (conditions or groups). A common way to analyse designs with more than two levels is the Analysis of Variance (ANOVA).
+
+When an *F*-test (i.e., ANOVA) yields a significant *p*-value, it indicates that there is a statistically significant difference among the condition/group means, but it does not reveal which specific conditions/groups differ from one other. When the null hypothesis is rejected in an *F*-test, researchers typically perform planned or post hoc pairwise comparisons based on *t*-tests to identify the specific measurements/groups differences. If the researchers have specific hypotheses about certain group differences, these comparisons should be planned in advance. For instance, a researcher may predict that intervention A is superior to B and C. In such cases, the a priori power analysis should be based on those planned comparisons, rather than the overall ANOVA result. In contrast, when researchers do not have a specific hypotheses, they may just perform post hoc comparisons to explore potential differences after finding a significant overall effect. These are more exploratory in nature and typically require correction for multiple comparisons.
+
+To perform power analysis for research designs with more than two levels, we will (when possible) rely on two approaches. First, we will use the `faux` package to simulate factorial data and analyze it with base R's `aov()` and `emmeans()` for planned comparisons. For the second approach, we will be using `Superpower` to both simulate data and perform the analysis. `Superpower` relies on `emmeans` for planned comparisons.
+
+## One-factor repeated-measures design
+
+In a repeated-measure factorial designs researchers collect data from the same participants at more than two different time points or conditions. Typically researchers will use a one-way within-subject ANOVA to analyse this study design.
+
+Suppose a researcher hypothesizes that intervention A is more effective than interventions B and C in reducing heart rate. To test this hypothesis, the researcher plans to use a within-subjects (repeated measures) design with three levels, collecting heart rate data from the same participants under each intervention condition.
+
+::: callout-message
+This hypothesis specifies a directional expectation—that intervention A will lead to lower heart rates compared to interventions B and C—rather than merely predicting that differences exist between conditions. Therefore, the researcher should use planned contrasts or directional (one-tailed) tests that align with the hypothesis, rather than relying solely on the omnibus *F*-test, which only assesses whether any difference exists among the conditions.
+:::
+
+Let's define the parameters for the simulation:
+
+```{r chunk_36}
+nsims <- 1000                         # number of simulations
+sample_size <- c(25, 50, 75, 100)     # total sample size
+mu <- c(60, 62, 65)                   # expected group means per for A, B, C
+sd <- 10                              # common SD
+rho <- 0.6                            # correlation between measurements
+alpha_level <- 0.05
+```
+
+### Simulation using `aov()`
+
+Before running the simulation, always make sure that the pattern of means matches the expected pattern of means:
+
+```{r chunk_37, results='hide'}
+sim_design(
+      within = list(condition = c("A", "B", "C")),
+      n = 25,
+      mu = mu,
+      sd = sd,
+      r = rho,
+      plot = TRUE, 
+    ) 
+```
+
+Let's perform the simulations:
+
+```{r chunk_38}
+
+# For reproducibility
+set.seed(050990)
+
+# Perform simulations
+simulate_power <- function(n) {
+  p_values <- replicate(nsims, {
+    df <- sim_design(
+      within = list(condition = c("A", "B", "C")),
+      n = n,
+      mu = mu,
+      sd = sd,
+      r = rho,
+      long = TRUE,
+      plot = FALSE, 
+    ) 
+      
+    aov(y ~ condition + Error(id), df) |> 
+      tidy() |> 
+      filter(term == "condition") |> 
+      pull(p.value)
+  })
+  
+  mean(p_values < alpha_level)
+}
+
+# Run for all sample sizes
+power_results <- tibble(
+  N = sample_size,
+  power = map_dbl(sample_size, simulate_power)
+)
+
+# Return proportion of significant 
+power_results |> 
+  kable(digits = 2) |> 
+  kable_styling(full_width = FALSE)
+```
+
+The above simulation provides power estimates only for the overall *F*-test, which tests the null hypothesis that the three conditions are equal. However, in our example the researcher had a specific expected pattern of means (A \< B and A \< C). Since the hypothesis of interest concerns a specific set of pairwise comparisons, the researcher should ensure that both comparisons are adequately powered. Pairwise comparisons can be tested using `Superpower.`
+
+### Simulation using `Superpower`
+
+Let's define the study design:
+
+```{r chunk_39}
+
+design_result <- ANOVA_design(
+  design = "3w",  # study design (i.e., three within-subject measurements)
+  n = 50,
+  mu = mu,
+  sd = sd,
+  r = rho,
+  labelnames = c("group", "A", "B", "C"),
+  plot = TRUE
+  )
+```
+
+Setting `ANOVA_design(plot = TRUE)` returns a plot of the condition means, which is useful for verifying that the intended pattern of means has been specified correctly.
+
+Now let's run the simulations:
+
+```{r chunk_40}
+# Run simulation
+simulation_result <- ANOVA_power(
+  design_result, 
+  alpha_level = alpha_level, 
+  nsims = nsims, 
+  verbose = FALSE,
+  seed = 050990) # for reproducibility
+```
+
+The power calculation of the omnibus *F*-test:
+
+```{r chunk_41}
+simulation_result$main_results |> 
+  kable(digits = 2) |> 
+  kable_styling(full_width = FALSE)
+```
+
+Note that the achieved power is almost identical to the power achieved using `aov()`.
+
+The power calculation of the pairwise comparisons:
+
+```{r chunk_42}
+simulation_result$pc_results |> 
+  kable(digits = 2) |> 
+  kable_styling(full_width = FALSE)
+```
+
+Although the *F*-test has adequate power to reject the null hypothesis of no difference across conditions (i.e., power = `r simulation_result$power`), only the pairwise comparison between interventions A and C has adequate power (i.e., power = `r simulation_result$pc_results[2,1]`. Because the difference in heart rate between A and C is larger than that between A and B, the pairwise comparison test for A vs C achieves higher power for any given sample size. Therefore, a larger sample size would be needed to attain comparable power for the A vs B comparison.
+
+## One-factor between-subject design
+
+In a between-subject factorial design researchers collect data from participants that were assigned to more than two different groups. Typically researchers will analyse this study design with a one-way between-subject subject ANOVA.
+
+Suppose a researcher aims to compare the effectiveness of two doses against a placebo by randomly assigning participants to one of three intervention groups. The intervention will be considered effective if **any** of the two doses result in a significantly reduced heart rate compared to the placebo. Because this involves two multiple comparisons, appropriate adjustments for multiple testing are required in the analysis (i.e., 0.05/2), and these adjustments must be incorporated into the power analysis.
+
+Let's define the parameters of the simulation:
+
+```{r chunk_43, results='hide'}
+
+# Set parameters 
+nsims <- 1000                    # number of simulations
+sample_size <- c(50, 100, 150)   # sample size per group
+mu <- c(60, 62, 64)              # expected group means 
+sd <- 10                         # common SD
+```
+
+### Simulation using `lm()`
+
+Let's define the study design:
+
+```{r chunk_44, results='hide'}
+
+sim_design(
+    between = list(dose = c("high", 
+                            "medium", 
+                            "placebo")),
+    n = 50,
+    mu = mu,
+    sd = sd,
+    plot = TRUE,
+  )
+```
+
+Let's perform the simulations with this expected pattern of means:
+
+```{r chunk_45}
+
+# Perform simulations
+simulate_power <- function(n) {
+  p_values <- replicate(nsims, {
+    df <- sim_design(
+      between = list(dose = c("high", "medium", "placebo")),
+      n = n,
+      mu = mu,
+      sd = sd,
+      plot = FALSE
+    )
+     
+    # Fit the between-subject ANOVA with lm()
+    model <- lm(y ~ dose, df)
+    
+    # P-value from overall model
+    overall_p <- anova(model)$`Pr(>F)`[1]
+    
+    # Pairwise comparisons using emmeans
+    emm <- emmeans(model, ~ dose)
+    contrasts <- as.data.frame(contrast(emm, method = "pairwise"))
+    
+    # Extract p-values for planned comparisons
+    c(
+      overall = overall_p,
+      "high - placebo" = contrasts$p.value[contrasts$contrast == "high - placebo"],
+      "medium - placebo" = contrasts$p.value[contrasts$contrast == "medium - placebo"]
+    )
+  })
+  
+  # p_values is 3 x nsims matrix, calculate proportion significant
+  tibble(
+    comparison = c("overall F-test", "high - placebo", "medium - placebo"),
+    power = c(
+      mean(p_values[1, ] < 0.05),
+      mean(p_values[2, ] < 0.05/2),
+      mean(p_values[3, ] < 0.05/2)
+    ),
+    N = n
+  )
+}
+
+power_results <- map_dfr(sample_size, simulate_power)
+```
+
+```{r chunk_46}
+power_results %>%
+  filter(comparison == "overall F-test") %>%
+  select(N, power) %>%
+  kable(digits = 2, caption = "Power for F-test {#tab:power_ftest}") %>%
+  kable_styling(full_width = FALSE)
+```
+
+```{r chunk_47}
+power_results %>%
+  filter(comparison == "high - placebo") %>%
+  select(N, power) %>%
+  kable(digits = 2, 
+        caption = "Power for high dose vs. placebo {#tab:power_highvsplacebo}") %>%
+  kable_styling(full_width = FALSE)
+```
+
+```{r chunk_48}
+# Table for A vs C
+power_results %>%
+  filter(comparison == "medium - placebo") %>%
+  select(N, power) %>%
+  kable(digits = 2, caption = "Power for medium dose vs. placebo {#tab:power_mediumvsplacebo}") %>%
+  kable_styling(full_width = FALSE)
+```
+
+### Simulation using `Superpower`
+
+Let's define the study design:
+
+```{r chunk_49}
+
+design_result <- ANOVA_design(
+  design = "3b",         # study design (i.e., three between-subject measurements
+  n = 50,                # sample size per group
+  mu = mu,
+  sd = sd,
+  labelnames = c("dose", "high", "medium", "placebo"),
+  plot = TRUE
+  )
+```
+
+Now let's perform the simulations:
+
+```{r chunk_50}
+
+simulation_result <- ANOVA_power(
+  design_result, 
+  alpha_level = 0.05, 
+  nsims = nsims, 
+  verbose = FALSE,
+  contrast_type = "pairwise",
+  emm_p_adjust = 0.05/2,
+  seed = 050990
+)
+```
+
+The power calculation of the omnibus *F*-test:
+
+```{r chunk_51}
+simulation_result$main_results |> 
+  kable(digits = 2) |> 
+  kable_styling(full_width = FALSE)
+```
+
+Note that the achieved power is almost identical to the power achieved using `aov()`.
+
+The power calculation of the pairwise comparisons:
+
+```{r chunk_52}
+simulation_result$pc_results |> 
+  kable(digits = 2) |> 
+  kable_styling(full_width = FALSE)
+```
+
+Now suppose a researcher hypothesizes that intervention A is more effective than Intervention B, and intervention B is more effective than intervention C in reducing heart rate. This directional hypothesis can be tested by specifying a set of custom contrasts—that is, testing linear combinations of group means that reflect the predicted order (A \> B \> C).
+
+To evaluate this hypothesis, the researcher plans to use a between-subjects design, randomly assigning participants to three independent groups, each receiving one of the three interventions. Planned contrasts will then be used to test the specific pattern of differences.
+
+Let's define the parameters of the simulation and plot the expected pattern of means:
+
+```{r chunk_53}
+
+# Set parameters
+nsims <- 1000                       # number of simulations
+n <-  50                            # sample size per group
+mu <- c(66, 68, 70)                 # expected group means 
+sd <- 10                            # common SD
+alpha_level <- 0.05
+
+# Show pattern of means
+  dat <- sim_design(
+    between = list(intervention = c("A", "B", "C")),
+    n = n,
+    mu = mu,
+    sd = sd,
+    plot = TRUE
+  )
+```
+
+To reflect the directional hypothesis that intervention A \< Intervention B \< Intervention C in terms of effectiveness (e.g., reducing heart rate), the contrast weights can be specified as –1, 0, and +1, respectively. This linear contrast tests whether there is a monotonic increase in the outcome across the three groups in the hypothesized order.
+
+Result of power calculation for the linear contrast:
+
+```{r chunk_54}
+# For reproducibility
+set.seed(050990) 
+
+# Perform simulations
+simulate_power <- function(n) {
+  # Run nsims simulations
+  p_values <- replicate(nsims, {
+    
+    # Simulate between-subjects data
+    df <- sim_design(
+      between = list(intervention = c("A", "B", "C")),
+      n = n,
+      mu = mu,
+      sd = sd,
+      plot = FALSE,
+      long = TRUE
+    )
+    
+    # Fit linear model
+    model <- lm(y ~ intervention, data = df)
+    
+    # Estimate marginal means
+    emms <- emmeans(model, ~ intervention)
+    
+    # Define linear contrast: A = -1, B = 0, C = +1
+    contrast_list <- list(linear_trend = c(-1, 0, 1))
+    
+    # Perform contrast test and return p-value
+    contrast_res <- contrast(emms, contrast_list)
+    summary(contrast_res)$p.value
+  })
+  
+  # Return proportion of significant p-values
+  mean(p_values < alpha_level)
+}
+
+# Run for all sample sizes
+power_results <- tibble(
+  N = sample_size,
+  power = map_dbl(sample_size, simulate_power)
+)
+
+# Print formatted table
+power_results |> 
+  kable(digits = 2, caption = "Power for Linear Contrast (A < B < C) {#tab:power_linear}") |> 
+  kable_styling(full_width = FALSE)
+```
+
+## Two-factor repeated-measures design
+
+In a two-way repeated-measures factorial design, researchers collect data from the same participants under all combinations of two within-subject factors. This means each participant is exposed to every level of both factors, allowing researchers to examine main effects and interactions.
+
+Suppose a researcher hypothesizes that intervention A is more effective than intervention B in reducing heart rate, but that the effectiveness of intervention A will be increased in the morning compared to the evening. The researchers is specifically interested in:
+
+-   Comparing whether intervention A is superior to be B both in the morning and evening; and
+
+-   Comparing whether the effect of the intervention A is superior in the morning vs. evening
+
+Let's define the parameters of the simulation and plot the expected pattern of means:
+
+```{r chunk_55}
+
+# Set parameters
+nsims <- 1000               # number of simulations
+mu <- c(61, 63, 68, 68)     # means
+n <- 105                    # sample size
+sd <- 10                    # SD
+r <- 0.5                    # correlation between measurements
+string = "2w*2w"            # study design (i.e., two within-subject factors)
+alpha_level <- 0.05 
+
+design_result <- ANOVA_design( 
+  design = string, 
+  n = n, 
+  mu = mu, 
+  sd = sd, 
+  r = r,
+  plot = TRUE,
+  labelnames = c("intervention", "A", "B", "time", "morning", "evening"))
+```
+
+Let's perform the simulations with this expected pattern of means:
+
+```{r chunk_56}
+
+simulation_result <- ANOVA_power(
+  design_result, 
+  alpha_level = alpha_level, 
+  nsims = nsims, 
+  verbose = FALSE,
+  seed = 050990)
+```
+
+Result of power calculation for the interaction effect:
+
+```{r chunk_57}
+simulation_result$main_results |> 
+  kable() |> 
+  kable_styling(full_width = FALSE)
+```
+
+The current design provides adequate statistical power **(**\> 80%) to detect the main effect of the intervention.
+
+Result of power calculation for the planned pairwise comparisons:
+
+```{r chunk_58}
+ pwc <- simulation_result$pc_results[c(1, 2 , 5),1:2]
+ pwc |> 
+   kable() |> 
+   kable_styling(full_width = FALSE)
+```
+
+The study design would achieve a power of `r pwc[1, 2]` to test the comparison of intervention A between morning and evening, a power of `r pwc[2, 2]` to test for the comparison between interventions A and B in the morning and a power of `r pwc[3, 2]` to test for the comparison between interventions A and B in the evening. To ensure adequate power (80%) for the second pairwise comparison, the researcher should consider increasing the sample size.
+
+## Two-factor mixed design
+
+In a two-factor mixed design (i.e., one between- and one-within-subject design), researchers collect data from participants who were assigned to independent groups (a between-subject factor) and also measured on multiple occasions or conditions (a within-subject factor). This design combines both within- and between-subject factors. When the within-subject factor involves measurements before and after an intervention, the design is specifically referred to as a split-plot design.
+
+In interventions following a split-plot design, it is crucial to account for baseline differences between groups. The most effective way to do this is by including baseline covariates, such as pre-intervention scores, in the analysis model. This approach adjusts the post-intervention outcome for initial differences, thereby yielding a more accurate estimate of the intervention effect and increasing power. While several models have been proposed for analyzing split-plot designs—such as comparing difference scores between groups or testing interaction effects—there is broad consensus that including the the pre-intervention scores as a covariate is the most appropriate method. Including baseline scores as a covariate improves the precision of group comparisons by reducing the error variance associated with the covariate and thus increasing power.
+
+Suppose a researcher hypothesizes that intervention A is more effective than intervention B in reducing heart rate. To test this hypothesis, participants are assigned to either intervention A or intervention B (between-subjects factor: intervention type). Heart rate is measured both before and after the intervention (within-subjects factor: time), allowing the researcher to assess intervention effects over time. The primary test of interest is the interaction effect between intervention type and time, which indicates whether the change in heart rate differs between the two interventions.
+
+Let's define the parameters:
+
+```{r chunk_59}
+nsims <- 1000                            # number of simulations
+sample_size <- c(25, 50, 100, 150)       # sample size per group
+mu <- c(64, 60, 64, 64)                  # means for A_pre, A_post, B_pre, B_post
+sd <- 10                                 # common SD
+rho <- 0.7                               # correlation between measurements
+alpha_level <- 0.05                      # alpha level
+```
+
+Let's visualize the pattern of means:
+
+```{r chunk_60,  results='hide'}
+sim_design(
+      within = list(time = c("pre", "post")),
+      between = list(intervention = c("A", "B")),
+      n = 50,
+      mu = mu,
+      sd = sd,
+      r = rho,
+      plot = TRUE)
+```
+
+### Simulation using `lm()` including time as a covariate
+
+```{r chunk_61}
+# Ensure reproducibility
+set.seed(050990) 
+
+# Power simulation function
+simulate_power <- function(n) {
+  p_values <- replicate(nsims, {
+    df <- sim_design(
+      within = list(time = c("pre", "post")),
+      between = list(intervention = c("A", "B")),
+      n = n,
+      mu = mu,
+      sd = sd,
+      r = rho,
+      plot = FALSE) |> 
+      mutate(intervention = factor(intervention, levels = c("B", "A")))
+    
+   lm(post ~ intervention + pre, data = df) |> 
+      tidy() |> 
+      filter(term == "interventionA") |> 
+      pull(p.value)
+  })
+  
+  mean(p_values < alpha_level)
+}
+
+# Run function for all sample sizes
+power_results <- tibble(
+  n = sample_size,
+  power = map_dbl(sample_size, simulate_power)
+)
+
+# Return proportion of significant p-values
+power_results |> 
+  kable(digits = 2) |> 
+  kable_styling(full_width = FALSE)
+```
+
+## One-factor between-subject design with a continuous predictor
+
+This design is similar to the one-way ANOVA but it incorporate a covariate, what is known as an analysis of covariance (ANCOVA). It is used to compare the means of an outcome across two or more groups while controlling for the influence of other variables, called covariates. In other words, ANCOVA allows researchers to compare adjusted group means, accounting for the variability associated with the covariate. Including a covariate improves the precision of group comparisons by reducing the error variance associated with the covariate and thus increasing power.
+
+Suppose a researcher hypothesizes that heart rate differs between individuals who did and did not consume alcohol the previous night. To control for the potential influence of physical fitness, the researcher includes "physical fitness" as a covariate. In this case: 1) heart rate is the primary outcome, 2) alcohol intake (yes or no) is the independent grouping variable, and 3) physical fitness (hours of physical activity per week) is the covariate. By including physical fitness as a covariate, the researcher can control for its influence and better isolate the effect of alcohol consumption on heart rate.
+
+Let's define the parameters of the simulation and plot the pattern of means:
+
+```{r chunk_62}
+# Set parameters
+nsims <- 1000                              # number of simulations
+sample_size <- c(50, 100, 150, 200, 250)   # sample size
+mu1 <- 64                                  # mean heart rate for alcohol group
+mu2 <- 60                                  # mean heart rate for non-alcohol group
+sd <- 10                                   # SD for both groups
+mu3 <- 5                                   # means hours of exercise (covariate)
+sd3 <- 3                                   # SD of the covariate
+rho <- 0.8                                 # correlation between heart rate and exercise
+alpha_level <- 0.05
+
+df <- sim_design(
+      between = list(group = c("alcohol", "noalcohol")), 
+      mu = list(alcohol = mu1, noalcohol = mu2), 
+      sd = sd, 
+      n = n,
+      plot = TRUE
+    ) |> 
+      mutate(exercise = rnorm_pre(y, mu3, sd3, rho))
+```
+
+Let's run the simulations:
+
+```{r chunk_63}
+# Ensure reproducibility
+set.seed(050990) 
+
+# Power simulation function
+simulate_power <- function(n) {
+  p_values <- replicate(nsims, {
+    df <- sim_design(
+      between = list(group = c("alcohol", "noalcohol")), 
+      mu = list(alcohol = mu1, noalcohol = mu2), 
+      sd = sd, 
+      n = n,
+      plot = FALSE
+    ) |> 
+      mutate(exercise = rnorm_pre(y, mu3, sd3, rho))
+
+    # Ensure group is treated as a factor
+    df$group <- factor(df$group, levels = c("noalcohol", "alcohol"))
+    
+    lm(y ~ group + exercise, data = df) |> 
+      broom::tidy() |> 
+      filter(term == "groupalcohol") |> 
+      pull(p.value)
+  })
+  mean(p_values < alpha_level)
+}
+
+# Run function for all sample sizes
+power_results <- tibble(
+  n = sample_size,
+  power = map_dbl(sample_size, simulate_power)
+)
+
+# Return proportion of significant p-values
+power_results |> 
+  kable(digits = 2) |> 
+  kable_styling(full_width = FALSE)
+```

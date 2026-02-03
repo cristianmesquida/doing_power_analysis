@@ -1,0 +1,5 @@
+---
+title: "Part 1"
+---
+
+In the first part of the book we cover aspects such as what statistical power is, why it matters when designing studies and things researchers should consider when conducting an a priori power analysis

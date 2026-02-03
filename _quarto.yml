@@ -1,0 +1,38 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "Doing a power analysis"
+  author: "Cristian Mesquida"
+  date: "2/3/2026"
+  chapters:
+    - index.qmd
+    - 01_chapter.qmd
+    - 02_chapter.qmd
+    - 03_chapter.qmd
+    - 04_chapter.qmd
+    - 05_chapter.qmd
+    - 06_chapter.qmd
+    - 07_chapter.qmd
+    - 06_chapter.qmd
+    - 12_chapter.qmd
+    - references.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+    toc: true
+    toc-location: right
+    number-sections: true
+    code-link: true
+    single-file: true
+execute:
+  freeze: auto
+
+editor: visual
+

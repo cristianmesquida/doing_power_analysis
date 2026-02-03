@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>6&nbsp; Factorial designs – Doing a power analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./07_chapter.html" rel="next">
+<link href="./05_chapter.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-626149efe8f5d16e1d391ba177679bf0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><script src="site_libs/kePrint-0.0.1/kePrint.js"></script><link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./06_chapter.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Factorial designs</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Doing a power analysis</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_chapter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">First things first</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_chapter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Things to consider to increase power</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_chapter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Effect size justification</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_chapter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Things to take into account when conducting an a priori power analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_chapter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Simple study-desgins</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_chapter.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Factorial designs</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_chapter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Equivalence tests and minimum-effect tests</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_chapter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Factorial designs</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12_chapter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Transparency and computational reproducibility</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#designs-with-more-than-two-levels" id="toc-designs-with-more-than-two-levels" class="nav-link active" data-scroll-target="#designs-with-more-than-two-levels"><span class="header-section-number">6.1</span> Designs with more than two levels</a></li>
+  <li>
+<a href="#one-factor-repeated-measures-design" id="toc-one-factor-repeated-measures-design" class="nav-link" data-scroll-target="#one-factor-repeated-measures-design"><span class="header-section-number">6.2</span> One-factor repeated-measures design</a>
+  <ul class="collapse">
+<li><a href="#simulation-using-aov" id="toc-simulation-using-aov" class="nav-link" data-scroll-target="#simulation-using-aov"><span class="header-section-number">6.2.1</span> Simulation using <code>aov()</code></a></li>
+  <li><a href="#simulation-using-superpower" id="toc-simulation-using-superpower" class="nav-link" data-scroll-target="#simulation-using-superpower"><span class="header-section-number">6.2.2</span> Simulation using <code>Superpower</code></a></li>
+  </ul>
+</li>
+  <li>
+<a href="#one-factor-between-subject-design" id="toc-one-factor-between-subject-design" class="nav-link" data-scroll-target="#one-factor-between-subject-design"><span class="header-section-number">6.3</span> One-factor between-subject design</a>
+  <ul class="collapse">
+<li><a href="#simulation-using-lm" id="toc-simulation-using-lm" class="nav-link" data-scroll-target="#simulation-using-lm"><span class="header-section-number">6.3.1</span> Simulation using <code>lm()</code></a></li>
+  <li><a href="#simulation-using-superpower-1" id="toc-simulation-using-superpower-1" class="nav-link" data-scroll-target="#simulation-using-superpower-1"><span class="header-section-number">6.3.2</span> Simulation using <code>Superpower</code></a></li>
+  </ul>
+</li>
+  <li><a href="#two-factor-repeated-measures-design" id="toc-two-factor-repeated-measures-design" class="nav-link" data-scroll-target="#two-factor-repeated-measures-design"><span class="header-section-number">6.4</span> Two-factor repeated-measures design</a></li>
+  <li>
+<a href="#two-factor-mixed-design" id="toc-two-factor-mixed-design" class="nav-link" data-scroll-target="#two-factor-mixed-design"><span class="header-section-number">6.5</span> Two-factor mixed design</a>
+  <ul class="collapse">
+<li><a href="#simulation-using-lm-including-time-as-a-covariate" id="toc-simulation-using-lm-including-time-as-a-covariate" class="nav-link" data-scroll-target="#simulation-using-lm-including-time-as-a-covariate"><span class="header-section-number">6.5.1</span> Simulation using <code>lm()</code> including time as a covariate</a></li>
+  </ul>
+</li>
+  <li><a href="#one-factor-between-subject-design-with-a-continuous-predictor" id="toc-one-factor-between-subject-design-with-a-continuous-predictor" class="nav-link" data-scroll-target="#one-factor-between-subject-design-with-a-continuous-predictor"><span class="header-section-number">6.6</span> One-factor between-subject design with a continuous predictor</a></li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">
+<span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Factorial designs</span>
+</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://yihui.org/knitr/">knitr</a></span><span class="op">)</span>                </span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span>                <span class="co"># tidy data</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>                <span class="co"># data wrangling</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://haozhu233.github.io/kableExtra/">kableExtra</a></span><span class="op">)</span>           <span class="co"># tables</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://purrr.tidyverse.org/">purrr</a></span><span class="op">)</span>                <span class="co"># perform iterative tasks</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/debruine/faux">faux</a></span><span class="op">)</span>                 <span class="co"># simulate factorial data</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://broom.tidymodels.org/">broom</a></span><span class="op">)</span>                <span class="co"># tidy statistical results</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rvlenth.github.io/emmeans/">emmeans</a></span><span class="op">)</span>              <span class="co"># pairwise comparisons</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://aaroncaldwell.us/SuperpowerBook/">Superpower</a></span><span class="op">)</span>           <span class="co"># power analysis for factorial designs</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="designs-with-more-than-two-levels" class="level2" data-number="6.1"><h2 data-number="6.1" class="anchored" data-anchor-id="designs-with-more-than-two-levels">
+<span class="header-section-number">6.1</span> Designs with more than two levels</h2>
+<p>A design with more than two levels means that the independent variable (factor) has three or more conditions or groups, rather than just two as is typical in a simple <em>t</em>-test. Research designs can also include two or more factors, in which case they are called factorial designs. Each factor can have two or more levels (conditions or groups). A common way to analyse designs with more than two levels is the Analysis of Variance (ANOVA).</p>
+<p>When an <em>F</em>-test (i.e., ANOVA) yields a significant <em>p</em>-value, it indicates that there is a statistically significant difference among the condition/group means, but it does not reveal which specific conditions/groups differ from one other. When the null hypothesis is rejected in an <em>F</em>-test, researchers typically perform planned or post hoc pairwise comparisons based on <em>t</em>-tests to identify the specific measurements/groups differences. If the researchers have specific hypotheses about certain group differences, these comparisons should be planned in advance. For instance, a researcher may predict that intervention A is superior to B and C. In such cases, the a priori power analysis should be based on those planned comparisons, rather than the overall ANOVA result. In contrast, when researchers do not have a specific hypotheses, they may just perform post hoc comparisons to explore potential differences after finding a significant overall effect. These are more exploratory in nature and typically require correction for multiple comparisons.</p>
+<p>To perform power analysis for research designs with more than two levels, we will (when possible) rely on two approaches. First, we will use the <code>faux</code> package to simulate factorial data and analyze it with base R’s <code><a href="https://rdrr.io/r/stats/aov.html">aov()</a></code> and <code><a href="https://rvlenth.github.io/emmeans/reference/emmeans.html">emmeans()</a></code> for planned comparisons. For the second approach, we will be using <code>Superpower</code> to both simulate data and perform the analysis. <code>Superpower</code> relies on <code>emmeans</code> for planned comparisons.</p>
+</section><section id="one-factor-repeated-measures-design" class="level2" data-number="6.2"><h2 data-number="6.2" class="anchored" data-anchor-id="one-factor-repeated-measures-design">
+<span class="header-section-number">6.2</span> One-factor repeated-measures design</h2>
+<p>In a repeated-measure factorial designs researchers collect data from the same participants at more than two different time points or conditions. Typically researchers will use a one-way within-subject ANOVA to analyse this study design.</p>
+<p>Suppose a researcher hypothesizes that intervention A is more effective than interventions B and C in reducing heart rate. To test this hypothesis, the researcher plans to use a within-subjects (repeated measures) design with three levels, collecting heart rate data from the same participants under each intervention condition.</p>
+<div class="callout-message">
+<p>This hypothesis specifies a directional expectation—that intervention A will lead to lower heart rates compared to interventions B and C—rather than merely predicting that differences exist between conditions. Therefore, the researcher should use planned contrasts or directional (one-tailed) tests that align with the hypothesis, rather than relying solely on the omnibus <em>F</em>-test, which only assesses whether any difference exists among the conditions.</p>
+</div>
+<p>Let’s define the parameters for the simulation:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">nsims</span> <span class="op">&lt;-</span> <span class="fl">1000</span>                         <span class="co"># number of simulations</span></span>
+<span><span class="va">sample_size</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">50</span>, <span class="fl">75</span>, <span class="fl">100</span><span class="op">)</span>     <span class="co"># total sample size</span></span>
+<span><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">62</span>, <span class="fl">65</span><span class="op">)</span>                   <span class="co"># expected group means per for A, B, C</span></span>
+<span><span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">10</span>                              <span class="co"># common SD</span></span>
+<span><span class="va">rho</span> <span class="op">&lt;-</span> <span class="fl">0.6</span>                            <span class="co"># correlation between measurements</span></span>
+<span><span class="va">alpha_level</span> <span class="op">&lt;-</span> <span class="fl">0.05</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="simulation-using-aov" class="level3" data-number="6.2.1"><h3 data-number="6.2.1" class="anchored" data-anchor-id="simulation-using-aov">
+<span class="header-section-number">6.2.1</span> Simulation using <code>aov()</code>
+</h3>
+<p>Before running the simulation, always make sure that the pattern of means matches the expected pattern of means:</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/faux/man/sim_design.html">sim_design</a></span><span class="op">(</span></span>
+<span>      within <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>condition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>      n <span class="op">=</span> <span class="fl">25</span>,</span>
+<span>      mu <span class="op">=</span> <span class="va">mu</span>,</span>
+<span>      sd <span class="op">=</span> <span class="va">sd</span>,</span>
+<span>      r <span class="op">=</span> <span class="va">rho</span>,</span>
+<span>      plot <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>    <span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="06_chapter_files/figure-html/chunk_37-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Let’s perform the simulations:</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># For reproducibility</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">050990</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Perform simulations</span></span>
+<span><span class="va">simulate_power</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">p_values</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span><span class="op">(</span><span class="va">nsims</span>, <span class="op">{</span></span>
+<span>    <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/faux/man/sim_design.html">sim_design</a></span><span class="op">(</span></span>
+<span>      within <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>condition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>      n <span class="op">=</span> <span class="va">n</span>,</span>
+<span>      mu <span class="op">=</span> <span class="va">mu</span>,</span>
+<span>      sd <span class="op">=</span> <span class="va">sd</span>,</span>
+<span>      r <span class="op">=</span> <span class="va">rho</span>,</span>
+<span>      long <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>      plot <span class="op">=</span> <span class="cn">FALSE</span>, </span>
+<span>    <span class="op">)</span> </span>
+<span>      </span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">condition</span> <span class="op">+</span> <span class="fu">Error</span><span class="op">(</span><span class="va">id</span><span class="op">)</span>, <span class="va">df</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>      <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">term</span> <span class="op">==</span> <span class="st">"condition"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">p.value</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">p_values</span> <span class="op">&lt;</span> <span class="va">alpha_level</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Run for all sample sizes</span></span>
+<span><span class="va">power_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  N <span class="op">=</span> <span class="va">sample_size</span>,</span>
+<span>  power <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_dbl</a></span><span class="op">(</span><span class="va">sample_size</span>, <span class="va">simulate_power</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Return proportion of significant </span></span>
+<span><span class="va">power_results</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">N</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">power</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">0.67</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">0.96</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">75</td>
+<td style="text-align: right;">0.99</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The above simulation provides power estimates only for the overall <em>F</em>-test, which tests the null hypothesis that the three conditions are equal. However, in our example the researcher had a specific expected pattern of means (A &lt; B and A &lt; C). Since the hypothesis of interest concerns a specific set of pairwise comparisons, the researcher should ensure that both comparisons are adequately powered. Pairwise comparisons can be tested using <code>Superpower.</code></p>
+</section><section id="simulation-using-superpower" class="level3" data-number="6.2.2"><h3 data-number="6.2.2" class="anchored" data-anchor-id="simulation-using-superpower">
+<span class="header-section-number">6.2.2</span> Simulation using <code>Superpower</code>
+</h3>
+<p>Let’s define the study design:</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Superpower/man/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span></span>
+<span>  design <span class="op">=</span> <span class="st">"3w"</span>,  <span class="co"># study design (i.e., three within-subject measurements)</span></span>
+<span>  n <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  mu <span class="op">=</span> <span class="va">mu</span>,</span>
+<span>  sd <span class="op">=</span> <span class="va">sd</span>,</span>
+<span>  r <span class="op">=</span> <span class="va">rho</span>,</span>
+<span>  labelnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"group"</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span>,</span>
+<span>  plot <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: `aes_string()` was deprecated in ggplot2 3.0.0.
+ℹ Please use tidy evaluation idioms with `aes()`.
+ℹ See also `vignette("ggplot2-in-packages")` for more information.
+ℹ The deprecated feature was likely used in the Superpower package.
+  Please report the issue at
+  &lt;https://github.com/arcaldwell49/Superpower/issues&gt;.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+ℹ Please use `linewidth` instead.
+ℹ The deprecated feature was likely used in the Superpower package.
+  Please report the issue at
+  &lt;https://github.com/arcaldwell49/Superpower/issues&gt;.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="06_chapter_files/figure-html/chunk_39-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Setting <code>ANOVA_design(plot = TRUE)</code> returns a plot of the condition means, which is useful for verifying that the intended pattern of means has been specified correctly.</p>
+<p>Now let’s run the simulations:</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Run simulation</span></span>
+<span><span class="va">simulation_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Superpower/man/ANOVA_power.html">ANOVA_power</a></span><span class="op">(</span></span>
+<span>  <span class="va">design_result</span>, </span>
+<span>  alpha_level <span class="op">=</span> <span class="va">alpha_level</span>, </span>
+<span>  nsims <span class="op">=</span> <span class="va">nsims</span>, </span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">050990</span><span class="op">)</span> <span class="co"># for reproducibility</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The power calculation of the omnibus <em>F</em>-test:</p>
+<div class="cell">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">simulation_result</span><span class="op">$</span><span class="va">main_results</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">power</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">effect_size</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td style="text-align: left;">anova_group</td>
+<td style="text-align: right;">95.3</td>
+<td style="text-align: right;">0.15</td>
+</tr></tbody>
+</table>
+</div>
+</div>
+<p>Note that the achieved power is almost identical to the power achieved using <code><a href="https://rdrr.io/r/stats/aov.html">aov()</a></code>.</p>
+<p>The power calculation of the pairwise comparisons:</p>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">simulation_result</span><span class="op">$</span><span class="va">pc_results</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">power</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">effect_size</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">p_group_A_group_B</td>
+<td style="text-align: right;">35.9</td>
+<td style="text-align: right;">0.23</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">p_group_A_group_C</td>
+<td style="text-align: right;">97.7</td>
+<td style="text-align: right;">0.57</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">p_group_B_group_C</td>
+<td style="text-align: right;">64.2</td>
+<td style="text-align: right;">0.34</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Although the <em>F</em>-test has adequate power to reject the null hypothesis of no difference across conditions (i.e., power = ), only the pairwise comparison between interventions A and C has adequate power (i.e., power = 97.7. Because the difference in heart rate between A and C is larger than that between A and B, the pairwise comparison test for A vs C achieves higher power for any given sample size. Therefore, a larger sample size would be needed to attain comparable power for the A vs B comparison.</p>
+</section></section><section id="one-factor-between-subject-design" class="level2" data-number="6.3"><h2 data-number="6.3" class="anchored" data-anchor-id="one-factor-between-subject-design">
+<span class="header-section-number">6.3</span> One-factor between-subject design</h2>
+<p>In a between-subject factorial design researchers collect data from participants that were assigned to more than two different groups. Typically researchers will analyse this study design with a one-way between-subject subject ANOVA.</p>
+<p>Suppose a researcher aims to compare the effectiveness of two doses against a placebo by randomly assigning participants to one of three intervention groups. The intervention will be considered effective if <strong>any</strong> of the two doses result in a significantly reduced heart rate compared to the placebo. Because this involves two multiple comparisons, appropriate adjustments for multiple testing are required in the analysis (i.e., 0.05/2), and these adjustments must be incorporated into the power analysis.</p>
+<p>Let’s define the parameters of the simulation:</p>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Set parameters </span></span>
+<span><span class="va">nsims</span> <span class="op">&lt;-</span> <span class="fl">1000</span>                    <span class="co"># number of simulations</span></span>
+<span><span class="va">sample_size</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">150</span><span class="op">)</span>   <span class="co"># sample size per group</span></span>
+<span><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">62</span>, <span class="fl">64</span><span class="op">)</span>              <span class="co"># expected group means </span></span>
+<span><span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">10</span>                         <span class="co"># common SD</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="simulation-using-lm" class="level3" data-number="6.3.1"><h3 data-number="6.3.1" class="anchored" data-anchor-id="simulation-using-lm">
+<span class="header-section-number">6.3.1</span> Simulation using <code>lm()</code>
+</h3>
+<p>Let’s define the study design:</p>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/faux/man/sim_design.html">sim_design</a></span><span class="op">(</span></span>
+<span>    between <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>dose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"high"</span>, </span>
+<span>                            <span class="st">"medium"</span>, </span>
+<span>                            <span class="st">"placebo"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    n <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>    mu <span class="op">=</span> <span class="va">mu</span>,</span>
+<span>    sd <span class="op">=</span> <span class="va">sd</span>,</span>
+<span>    plot <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="06_chapter_files/figure-html/chunk_44-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Let’s perform the simulations with this expected pattern of means:</p>
+<div class="cell">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Perform simulations</span></span>
+<span><span class="va">simulate_power</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">p_values</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span><span class="op">(</span><span class="va">nsims</span>, <span class="op">{</span></span>
+<span>    <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/faux/man/sim_design.html">sim_design</a></span><span class="op">(</span></span>
+<span>      between <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>dose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"high"</span>, <span class="st">"medium"</span>, <span class="st">"placebo"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>      n <span class="op">=</span> <span class="va">n</span>,</span>
+<span>      mu <span class="op">=</span> <span class="va">mu</span>,</span>
+<span>      sd <span class="op">=</span> <span class="va">sd</span>,</span>
+<span>      plot <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>    <span class="op">)</span></span>
+<span>     </span>
+<span>    <span class="co"># Fit the between-subject ANOVA with lm()</span></span>
+<span>    <span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">dose</span>, <span class="va">df</span><span class="op">)</span></span>
+<span>    </span>
+<span>    <span class="co"># P-value from overall model</span></span>
+<span>    <span class="va">overall_p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span><span class="op">$</span><span class="va">`Pr(&gt;F)`</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span>    </span>
+<span>    <span class="co"># Pairwise comparisons using emmeans</span></span>
+<span>    <span class="va">emm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rvlenth.github.io/emmeans/reference/emmeans.html">emmeans</a></span><span class="op">(</span><span class="va">model</span>, <span class="op">~</span> <span class="va">dose</span><span class="op">)</span></span>
+<span>    <span class="va">contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rvlenth.github.io/emmeans/reference/contrast.html">contrast</a></span><span class="op">(</span><span class="va">emm</span>, method <span class="op">=</span> <span class="st">"pairwise"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    </span>
+<span>    <span class="co"># Extract p-values for planned comparisons</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>      overall <span class="op">=</span> <span class="va">overall_p</span>,</span>
+<span>      <span class="st">"high - placebo"</span> <span class="op">=</span> <span class="va">contrasts</span><span class="op">$</span><span class="va">p.value</span><span class="op">[</span><span class="va">contrasts</span><span class="op">$</span><span class="va">contrast</span> <span class="op">==</span> <span class="st">"high - placebo"</span><span class="op">]</span>,</span>
+<span>      <span class="st">"medium - placebo"</span> <span class="op">=</span> <span class="va">contrasts</span><span class="op">$</span><span class="va">p.value</span><span class="op">[</span><span class="va">contrasts</span><span class="op">$</span><span class="va">contrast</span> <span class="op">==</span> <span class="st">"medium - placebo"</span><span class="op">]</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># p_values is 3 x nsims matrix, calculate proportion significant</span></span>
+<span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>    comparison <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"overall F-test"</span>, <span class="st">"high - placebo"</span>, <span class="st">"medium - placebo"</span><span class="op">)</span>,</span>
+<span>    power <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">p_values</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">p_values</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">p_values</span><span class="op">[</span><span class="fl">3</span>, <span class="op">]</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    N <span class="op">=</span> <span class="va">n</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">power_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map_dfr.html">map_dfr</a></span><span class="op">(</span><span class="va">sample_size</span>, <span class="va">simulate_power</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">power_results</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">comparison</span> <span class="op">==</span> <span class="st">"overall F-test"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">N</span>, <span class="va">power</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span>, caption <span class="op">=</span> <span class="st">"Power for F-test {#tab:power_ftest}"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Power for F-test {#tab:power_ftest}</caption>
+<thead><tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">N</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">power</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">0.41</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.73</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">150</td>
+<td style="text-align: right;">0.87</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">power_results</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">comparison</span> <span class="op">==</span> <span class="st">"high - placebo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">N</span>, <span class="va">power</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span>, </span>
+<span>        caption <span class="op">=</span> <span class="st">"Power for high dose vs. placebo {#tab:power_highvsplacebo}"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Power for high dose vs. placebo {#tab:power_highvsplacebo}</caption>
+<thead><tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">N</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">power</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">0.28</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.60</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">150</td>
+<td style="text-align: right;">0.80</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Table for A vs C</span></span>
+<span><span class="va">power_results</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">comparison</span> <span class="op">==</span> <span class="st">"medium - placebo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">N</span>, <span class="va">power</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span>, caption <span class="op">=</span> <span class="st">"Power for medium dose vs. placebo {#tab:power_mediumvsplacebo}"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Power for medium dose vs. placebo {#tab:power_mediumvsplacebo}</caption>
+<thead><tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">N</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">power</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">0.05</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">150</td>
+<td style="text-align: right;">0.20</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section><section id="simulation-using-superpower-1" class="level3" data-number="6.3.2"><h3 data-number="6.3.2" class="anchored" data-anchor-id="simulation-using-superpower-1">
+<span class="header-section-number">6.3.2</span> Simulation using <code>Superpower</code>
+</h3>
+<p>Let’s define the study design:</p>
+<div class="cell">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Superpower/man/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span></span>
+<span>  design <span class="op">=</span> <span class="st">"3b"</span>,         <span class="co"># study design (i.e., three between-subject measurements</span></span>
+<span>  n <span class="op">=</span> <span class="fl">50</span>,                <span class="co"># sample size per group</span></span>
+<span>  mu <span class="op">=</span> <span class="va">mu</span>,</span>
+<span>  sd <span class="op">=</span> <span class="va">sd</span>,</span>
+<span>  labelnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dose"</span>, <span class="st">"high"</span>, <span class="st">"medium"</span>, <span class="st">"placebo"</span><span class="op">)</span>,</span>
+<span>  plot <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="06_chapter_files/figure-html/chunk_49-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now let’s perform the simulations:</p>
+<div class="cell">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">simulation_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Superpower/man/ANOVA_power.html">ANOVA_power</a></span><span class="op">(</span></span>
+<span>  <span class="va">design_result</span>, </span>
+<span>  alpha_level <span class="op">=</span> <span class="fl">0.05</span>, </span>
+<span>  nsims <span class="op">=</span> <span class="va">nsims</span>, </span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  contrast_type <span class="op">=</span> <span class="st">"pairwise"</span>,</span>
+<span>  emm_p_adjust <span class="op">=</span> <span class="fl">0.05</span><span class="op">/</span><span class="fl">2</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">050990</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The power calculation of the omnibus <em>F</em>-test:</p>
+<div class="cell">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">simulation_result</span><span class="op">$</span><span class="va">main_results</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">power</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">effect_size</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td style="text-align: left;">anova_dose</td>
+<td style="text-align: right;">42.3</td>
+<td style="text-align: right;">0.04</td>
+</tr></tbody>
+</table>
+</div>
+</div>
+<p>Note that the achieved power is almost identical to the power achieved using <code><a href="https://rdrr.io/r/stats/aov.html">aov()</a></code>.</p>
+<p>The power calculation of the pairwise comparisons:</p>
+<div class="cell">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">simulation_result</span><span class="op">$</span><span class="va">pc_results</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">power</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">effect_size</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">p_dose_high_dose_medium</td>
+<td style="text-align: right;">16.4</td>
+<td style="text-align: right;">0.21</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">p_dose_high_dose_placebo</td>
+<td style="text-align: right;">52.3</td>
+<td style="text-align: right;">0.41</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">p_dose_medium_dose_placebo</td>
+<td style="text-align: right;">16.6</td>
+<td style="text-align: right;">0.21</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Now suppose a researcher hypothesizes that intervention A is more effective than Intervention B, and intervention B is more effective than intervention C in reducing heart rate. This directional hypothesis can be tested by specifying a set of custom contrasts—that is, testing linear combinations of group means that reflect the predicted order (A &gt; B &gt; C).</p>
+<p>To evaluate this hypothesis, the researcher plans to use a between-subjects design, randomly assigning participants to three independent groups, each receiving one of the three interventions. Planned contrasts will then be used to test the specific pattern of differences.</p>
+<p>Let’s define the parameters of the simulation and plot the expected pattern of means:</p>
+<div class="cell">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Set parameters</span></span>
+<span><span class="va">nsims</span> <span class="op">&lt;-</span> <span class="fl">1000</span>                       <span class="co"># number of simulations</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span>  <span class="fl">50</span>                            <span class="co"># sample size per group</span></span>
+<span><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">66</span>, <span class="fl">68</span>, <span class="fl">70</span><span class="op">)</span>                 <span class="co"># expected group means </span></span>
+<span><span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">10</span>                            <span class="co"># common SD</span></span>
+<span><span class="va">alpha_level</span> <span class="op">&lt;-</span> <span class="fl">0.05</span></span>
+<span></span>
+<span><span class="co"># Show pattern of means</span></span>
+<span>  <span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/faux/man/sim_design.html">sim_design</a></span><span class="op">(</span></span>
+<span>    between <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>intervention <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    n <span class="op">=</span> <span class="va">n</span>,</span>
+<span>    mu <span class="op">=</span> <span class="va">mu</span>,</span>
+<span>    sd <span class="op">=</span> <span class="va">sd</span>,</span>
+<span>    plot <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="06_chapter_files/figure-html/chunk_53-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>To reflect the directional hypothesis that intervention A &lt; Intervention B &lt; Intervention C in terms of effectiveness (e.g., reducing heart rate), the contrast weights can be specified as –1, 0, and +1, respectively. This linear contrast tests whether there is a monotonic increase in the outcome across the three groups in the hypothesized order.</p>
+<p>Result of power calculation for the linear contrast:</p>
+<div class="cell">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># For reproducibility</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">050990</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co"># Perform simulations</span></span>
+<span><span class="va">simulate_power</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># Run nsims simulations</span></span>
+<span>  <span class="va">p_values</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span><span class="op">(</span><span class="va">nsims</span>, <span class="op">{</span></span>
+<span>    </span>
+<span>    <span class="co"># Simulate between-subjects data</span></span>
+<span>    <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/faux/man/sim_design.html">sim_design</a></span><span class="op">(</span></span>
+<span>      between <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>intervention <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>      n <span class="op">=</span> <span class="va">n</span>,</span>
+<span>      mu <span class="op">=</span> <span class="va">mu</span>,</span>
+<span>      sd <span class="op">=</span> <span class="va">sd</span>,</span>
+<span>      plot <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>      long <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>    <span class="op">)</span></span>
+<span>    </span>
+<span>    <span class="co"># Fit linear model</span></span>
+<span>    <span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">intervention</span>, data <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
+<span>    </span>
+<span>    <span class="co"># Estimate marginal means</span></span>
+<span>    <span class="va">emms</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rvlenth.github.io/emmeans/reference/emmeans.html">emmeans</a></span><span class="op">(</span><span class="va">model</span>, <span class="op">~</span> <span class="va">intervention</span><span class="op">)</span></span>
+<span>    </span>
+<span>    <span class="co"># Define linear contrast: A = -1, B = 0, C = +1</span></span>
+<span>    <span class="va">contrast_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>linear_trend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span>    </span>
+<span>    <span class="co"># Perform contrast test and return p-value</span></span>
+<span>    <span class="va">contrast_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rvlenth.github.io/emmeans/reference/contrast.html">contrast</a></span><span class="op">(</span><span class="va">emms</span>, <span class="va">contrast_list</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">contrast_res</span><span class="op">)</span><span class="op">$</span><span class="va">p.value</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># Return proportion of significant p-values</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">p_values</span> <span class="op">&lt;</span> <span class="va">alpha_level</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Run for all sample sizes</span></span>
+<span><span class="va">power_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  N <span class="op">=</span> <span class="va">sample_size</span>,</span>
+<span>  power <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_dbl</a></span><span class="op">(</span><span class="va">sample_size</span>, <span class="va">simulate_power</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Print formatted table</span></span>
+<span><span class="va">power_results</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span>, caption <span class="op">=</span> <span class="st">"Power for Linear Contrast (A &lt; B &lt; C) {#tab:power_linear}"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Power for Linear Contrast (A</caption>
+<thead><tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">N</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">power</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">0.48</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.81</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">150</td>
+<td style="text-align: right;">0.93</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section></section><section id="two-factor-repeated-measures-design" class="level2" data-number="6.4"><h2 data-number="6.4" class="anchored" data-anchor-id="two-factor-repeated-measures-design">
+<span class="header-section-number">6.4</span> Two-factor repeated-measures design</h2>
+<p>In a two-way repeated-measures factorial design, researchers collect data from the same participants under all combinations of two within-subject factors. This means each participant is exposed to every level of both factors, allowing researchers to examine main effects and interactions.</p>
+<p>Suppose a researcher hypothesizes that intervention A is more effective than intervention B in reducing heart rate, but that the effectiveness of intervention A will be increased in the morning compared to the evening. The researchers is specifically interested in:</p>
+<ul>
+<li><p>Comparing whether intervention A is superior to be B both in the morning and evening; and</p></li>
+<li><p>Comparing whether the effect of the intervention A is superior in the morning vs.&nbsp;evening</p></li>
+</ul>
+<p>Let’s define the parameters of the simulation and plot the expected pattern of means:</p>
+<div class="cell">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Set parameters</span></span>
+<span><span class="va">nsims</span> <span class="op">&lt;-</span> <span class="fl">1000</span>               <span class="co"># number of simulations</span></span>
+<span><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">61</span>, <span class="fl">63</span>, <span class="fl">68</span>, <span class="fl">68</span><span class="op">)</span>     <span class="co"># means</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">105</span>                    <span class="co"># sample size</span></span>
+<span><span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">10</span>                    <span class="co"># SD</span></span>
+<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fl">0.5</span>                    <span class="co"># correlation between measurements</span></span>
+<span><span class="va">string</span> <span class="op">=</span> <span class="st">"2w*2w"</span>            <span class="co"># study design (i.e., two within-subject factors)</span></span>
+<span><span class="va">alpha_level</span> <span class="op">&lt;-</span> <span class="fl">0.05</span> </span>
+<span></span>
+<span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Superpower/man/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span> </span>
+<span>  design <span class="op">=</span> <span class="va">string</span>, </span>
+<span>  n <span class="op">=</span> <span class="va">n</span>, </span>
+<span>  mu <span class="op">=</span> <span class="va">mu</span>, </span>
+<span>  sd <span class="op">=</span> <span class="va">sd</span>, </span>
+<span>  r <span class="op">=</span> <span class="va">r</span>,</span>
+<span>  plot <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  labelnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"intervention"</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"time"</span>, <span class="st">"morning"</span>, <span class="st">"evening"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="06_chapter_files/figure-html/chunk_55-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Let’s perform the simulations with this expected pattern of means:</p>
+<div class="cell">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">simulation_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Superpower/man/ANOVA_power.html">ANOVA_power</a></span><span class="op">(</span></span>
+<span>  <span class="va">design_result</span>, </span>
+<span>  alpha_level <span class="op">=</span> <span class="va">alpha_level</span>, </span>
+<span>  nsims <span class="op">=</span> <span class="va">nsims</span>, </span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">050990</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Result of power calculation for the interaction effect:</p>
+<div class="cell">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">simulation_result</span><span class="op">$</span><span class="va">main_results</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">power</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">effect_size</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">anova_intervention</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">0.4206939</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">anova_time</td>
+<td style="text-align: right;">28.7</td>
+<td style="text-align: right;">0.0279819</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">anova_intervention:time</td>
+<td style="text-align: right;">28.3</td>
+<td style="text-align: right;">0.0277210</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The current design provides adequate statistical power <strong>(</strong>&gt; 80%) to detect the main effect of the intervention.</p>
+<p>Result of power calculation for the planned pairwise comparisons:</p>
+<div class="cell">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span> <span class="va">pwc</span> <span class="op">&lt;-</span> <span class="va">simulation_result</span><span class="op">$</span><span class="va">pc_results</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span> , <span class="fl">5</span><span class="op">)</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span>
+<span> <span class="va">pwc</span> <span class="op">|&gt;</span> </span>
+<span>   <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>   <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">power</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">effect_size</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">p_intervention_A_time_morning_intervention_A_time_evening</td>
+<td style="text-align: right;">51.9</td>
+<td style="text-align: right;">0.1974114</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">p_intervention_A_time_morning_intervention_B_time_morning</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">0.7022056</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">p_intervention_A_time_evening_intervention_B_time_evening</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">0.5023257</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The study design would achieve a power of 0.1974114 to test the comparison of intervention A between morning and evening, a power of 0.7022056 to test for the comparison between interventions A and B in the morning and a power of 0.5023257 to test for the comparison between interventions A and B in the evening. To ensure adequate power (80%) for the second pairwise comparison, the researcher should consider increasing the sample size.</p>
+</section><section id="two-factor-mixed-design" class="level2" data-number="6.5"><h2 data-number="6.5" class="anchored" data-anchor-id="two-factor-mixed-design">
+<span class="header-section-number">6.5</span> Two-factor mixed design</h2>
+<p>In a two-factor mixed design (i.e., one between- and one-within-subject design), researchers collect data from participants who were assigned to independent groups (a between-subject factor) and also measured on multiple occasions or conditions (a within-subject factor). This design combines both within- and between-subject factors. When the within-subject factor involves measurements before and after an intervention, the design is specifically referred to as a split-plot design.</p>
+<p>In interventions following a split-plot design, it is crucial to account for baseline differences between groups. The most effective way to do this is by including baseline covariates, such as pre-intervention scores, in the analysis model. This approach adjusts the post-intervention outcome for initial differences, thereby yielding a more accurate estimate of the intervention effect and increasing power. While several models have been proposed for analyzing split-plot designs—such as comparing difference scores between groups or testing interaction effects—there is broad consensus that including the the pre-intervention scores as a covariate is the most appropriate method. Including baseline scores as a covariate improves the precision of group comparisons by reducing the error variance associated with the covariate and thus increasing power.</p>
+<p>Suppose a researcher hypothesizes that intervention A is more effective than intervention B in reducing heart rate. To test this hypothesis, participants are assigned to either intervention A or intervention B (between-subjects factor: intervention type). Heart rate is measured both before and after the intervention (within-subjects factor: time), allowing the researcher to assess intervention effects over time. The primary test of interest is the interaction effect between intervention type and time, which indicates whether the change in heart rate differs between the two interventions.</p>
+<p>Let’s define the parameters:</p>
+<div class="cell">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">nsims</span> <span class="op">&lt;-</span> <span class="fl">1000</span>                            <span class="co"># number of simulations</span></span>
+<span><span class="va">sample_size</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">150</span><span class="op">)</span>       <span class="co"># sample size per group</span></span>
+<span><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">64</span>, <span class="fl">60</span>, <span class="fl">64</span>, <span class="fl">64</span><span class="op">)</span>                  <span class="co"># means for A_pre, A_post, B_pre, B_post</span></span>
+<span><span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">10</span>                                 <span class="co"># common SD</span></span>
+<span><span class="va">rho</span> <span class="op">&lt;-</span> <span class="fl">0.7</span>                               <span class="co"># correlation between measurements</span></span>
+<span><span class="va">alpha_level</span> <span class="op">&lt;-</span> <span class="fl">0.05</span>                      <span class="co"># alpha level</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s visualize the pattern of means:</p>
+<div class="cell">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/faux/man/sim_design.html">sim_design</a></span><span class="op">(</span></span>
+<span>      within <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"pre"</span>, <span class="st">"post"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>      between <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>intervention <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>      n <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>      mu <span class="op">=</span> <span class="va">mu</span>,</span>
+<span>      sd <span class="op">=</span> <span class="va">sd</span>,</span>
+<span>      r <span class="op">=</span> <span class="va">rho</span>,</span>
+<span>      plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="06_chapter_files/figure-html/chunk_60-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="simulation-using-lm-including-time-as-a-covariate" class="level3" data-number="6.5.1"><h3 data-number="6.5.1" class="anchored" data-anchor-id="simulation-using-lm-including-time-as-a-covariate">
+<span class="header-section-number">6.5.1</span> Simulation using <code>lm()</code> including time as a covariate</h3>
+<div class="cell">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Ensure reproducibility</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">050990</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co"># Power simulation function</span></span>
+<span><span class="va">simulate_power</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">p_values</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span><span class="op">(</span><span class="va">nsims</span>, <span class="op">{</span></span>
+<span>    <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/faux/man/sim_design.html">sim_design</a></span><span class="op">(</span></span>
+<span>      within <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"pre"</span>, <span class="st">"post"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>      between <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>intervention <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>      n <span class="op">=</span> <span class="va">n</span>,</span>
+<span>      mu <span class="op">=</span> <span class="va">mu</span>,</span>
+<span>      sd <span class="op">=</span> <span class="va">sd</span>,</span>
+<span>      r <span class="op">=</span> <span class="va">rho</span>,</span>
+<span>      plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>intervention <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">intervention</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"B"</span>, <span class="st">"A"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    </span>
+<span>   <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">post</span> <span class="op">~</span> <span class="va">intervention</span> <span class="op">+</span> <span class="va">pre</span>, data <span class="op">=</span> <span class="va">df</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>      <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">term</span> <span class="op">==</span> <span class="st">"interventionA"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">p.value</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">p_values</span> <span class="op">&lt;</span> <span class="va">alpha_level</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Run function for all sample sizes</span></span>
+<span><span class="va">power_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  n <span class="op">=</span> <span class="va">sample_size</span>,</span>
+<span>  power <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_dbl</a></span><span class="op">(</span><span class="va">sample_size</span>, <span class="va">simulate_power</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Return proportion of significant p-values</span></span>
+<span><span class="va">power_results</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">power</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">0.51</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">0.80</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.98</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">150</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section></section><section id="one-factor-between-subject-design-with-a-continuous-predictor" class="level2" data-number="6.6"><h2 data-number="6.6" class="anchored" data-anchor-id="one-factor-between-subject-design-with-a-continuous-predictor">
+<span class="header-section-number">6.6</span> One-factor between-subject design with a continuous predictor</h2>
+<p>This design is similar to the one-way ANOVA but it incorporate a covariate, what is known as an analysis of covariance (ANCOVA). It is used to compare the means of an outcome across two or more groups while controlling for the influence of other variables, called covariates. In other words, ANCOVA allows researchers to compare adjusted group means, accounting for the variability associated with the covariate. Including a covariate improves the precision of group comparisons by reducing the error variance associated with the covariate and thus increasing power.</p>
+<p>Suppose a researcher hypothesizes that heart rate differs between individuals who did and did not consume alcohol the previous night. To control for the potential influence of physical fitness, the researcher includes “physical fitness” as a covariate. In this case: 1) heart rate is the primary outcome, 2) alcohol intake (yes or no) is the independent grouping variable, and 3) physical fitness (hours of physical activity per week) is the covariate. By including physical fitness as a covariate, the researcher can control for its influence and better isolate the effect of alcohol consumption on heart rate.</p>
+<p>Let’s define the parameters of the simulation and plot the pattern of means:</p>
+<div class="cell">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Set parameters</span></span>
+<span><span class="va">nsims</span> <span class="op">&lt;-</span> <span class="fl">1000</span>                              <span class="co"># number of simulations</span></span>
+<span><span class="va">sample_size</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">150</span>, <span class="fl">200</span>, <span class="fl">250</span><span class="op">)</span>   <span class="co"># sample size</span></span>
+<span><span class="va">mu1</span> <span class="op">&lt;-</span> <span class="fl">64</span>                                  <span class="co"># mean heart rate for alcohol group</span></span>
+<span><span class="va">mu2</span> <span class="op">&lt;-</span> <span class="fl">60</span>                                  <span class="co"># mean heart rate for non-alcohol group</span></span>
+<span><span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">10</span>                                   <span class="co"># SD for both groups</span></span>
+<span><span class="va">mu3</span> <span class="op">&lt;-</span> <span class="fl">5</span>                                   <span class="co"># means hours of exercise (covariate)</span></span>
+<span><span class="va">sd3</span> <span class="op">&lt;-</span> <span class="fl">3</span>                                   <span class="co"># SD of the covariate</span></span>
+<span><span class="va">rho</span> <span class="op">&lt;-</span> <span class="fl">0.8</span>                                 <span class="co"># correlation between heart rate and exercise</span></span>
+<span><span class="va">alpha_level</span> <span class="op">&lt;-</span> <span class="fl">0.05</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/faux/man/sim_design.html">sim_design</a></span><span class="op">(</span></span>
+<span>      between <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"alcohol"</span>, <span class="st">"noalcohol"</span><span class="op">)</span><span class="op">)</span>, </span>
+<span>      mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>alcohol <span class="op">=</span> <span class="va">mu1</span>, noalcohol <span class="op">=</span> <span class="va">mu2</span><span class="op">)</span>, </span>
+<span>      sd <span class="op">=</span> <span class="va">sd</span>, </span>
+<span>      n <span class="op">=</span> <span class="va">n</span>,</span>
+<span>      plot <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>exercise <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/faux/man/rnorm_pre.html">rnorm_pre</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">mu3</span>, <span class="va">sd3</span>, <span class="va">rho</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="06_chapter_files/figure-html/chunk_62-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Let’s run the simulations:</p>
+<div class="cell">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Ensure reproducibility</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">050990</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co"># Power simulation function</span></span>
+<span><span class="va">simulate_power</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">p_values</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span><span class="op">(</span><span class="va">nsims</span>, <span class="op">{</span></span>
+<span>    <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/faux/man/sim_design.html">sim_design</a></span><span class="op">(</span></span>
+<span>      between <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"alcohol"</span>, <span class="st">"noalcohol"</span><span class="op">)</span><span class="op">)</span>, </span>
+<span>      mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>alcohol <span class="op">=</span> <span class="va">mu1</span>, noalcohol <span class="op">=</span> <span class="va">mu2</span><span class="op">)</span>, </span>
+<span>      sd <span class="op">=</span> <span class="va">sd</span>, </span>
+<span>      n <span class="op">=</span> <span class="va">n</span>,</span>
+<span>      plot <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>exercise <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/faux/man/rnorm_pre.html">rnorm_pre</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">mu3</span>, <span class="va">sd3</span>, <span class="va">rho</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="co"># Ensure group is treated as a factor</span></span>
+<span>    <span class="va">df</span><span class="op">$</span><span class="va">group</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">group</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"noalcohol"</span>, <span class="st">"alcohol"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    </span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">group</span> <span class="op">+</span> <span class="va">exercise</span>, data <span class="op">=</span> <span class="va">df</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>      <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">term</span> <span class="op">==</span> <span class="st">"groupalcohol"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">p.value</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">p_values</span> <span class="op">&lt;</span> <span class="va">alpha_level</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Run function for all sample sizes</span></span>
+<span><span class="va">power_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  n <span class="op">=</span> <span class="va">sample_size</span>,</span>
+<span>  power <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_dbl</a></span><span class="op">(</span><span class="va">sample_size</span>, <span class="va">simulate_power</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Return proportion of significant p-values</span></span>
+<span><span class="va">power_results</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">power</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">0.23</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.41</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">150</td>
+<td style="text-align: right;">0.53</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">0.68</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">250</td>
+<td style="text-align: right;">0.76</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./05_chapter.html" class="pagination-link" aria-label="Simple study-desgins">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Simple study-desgins</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./07_chapter.html" class="pagination-link" aria-label="Equivalence tests and minimum-effect tests">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Equivalence tests and minimum-effect tests</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
