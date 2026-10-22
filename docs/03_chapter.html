@@ -2,10 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.42">
+<meta name="generator" content="quarto-1.9.38">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>3&nbsp; Effect size justification – Doing a power analysis</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -18,8 +21,9 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 /* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -30,7 +34,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -55,7 +59,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -82,15 +85,16 @@ div.csl-indent {
 <meta name="quarto:offset" content="./">
 <link href="./04_chapter.html" rel="next">
 <link href="./02_chapter.html" rel="prev">
-<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-626149efe8f5d16e1d391ba177679bf0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap-5ccb035bea26c1e21f80f44cf7c27909.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -116,7 +120,7 @@ div.csl-indent {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+}</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
 const typesetMath = (el) => {
   if (window.MathJax) {
     // MathJax Typeset
@@ -127,7 +131,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -143,14 +147,14 @@ window.Quarto = {
 };
 </script>
 </head>
-<body class="nav-sidebar floating">
+<body class="nav-sidebar floating quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03_chapter.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Effect size justification</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./part_1.html">Part I</a></li><li class="breadcrumb-item"><a href="./03_chapter.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Effect size justification</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -177,53 +181,75 @@ window.Quarto = {
  <span class="menu-text">Preface</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./part_1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Part I</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01_chapter.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">First things first</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02_chapter.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Things to consider to increase power</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Some things to consider that affect power</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03_chapter.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Effect size justification</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04_chapter.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Things to take into account when conducting an a priori power analysis</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./part_2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Part II</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./05_chapter.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Simple study-desgins</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Simple study designs</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./06_chapter.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Factorial designs</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07_chapter.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Equivalence tests and minimum-effect tests</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./06_chapter.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Factorial designs</span></span></a>
+  <a href="./08_chapter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">General Linear Mixed Models</span></span></a>
   </div>
+</li>
+      </ul>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
@@ -264,7 +290,7 @@ window.Quarto = {
   </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./part_1.html">Part I</a></li><li class="breadcrumb-item"><a href="./03_chapter.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Effect size justification</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title"><span id="sec-es-justification" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Effect size justification</span></span></h1>
 </div>
 
@@ -279,16 +305,16 @@ window.Quarto = {
   
 
 
-</header><div class="cell" data-fig-label="false">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.metafor-project.org">metafor</a></span><span class="op">)</span>                 <span class="co"># calculate effect sizes</span></span>
+</header><div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.metafor-project.org">metafor</a></span><span class="op">)</span>                 <span class="co"># calculate effect sizes</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>                 <span class="co"># figures</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>                   <span class="co"># data wrangling</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www3.nd.edu/~kkelley/site/MBESS.html">MBESS</a></span><span class="op">)</span>                   <span class="co"># calculate effect sizes</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://psicostat.github.io/criticalESvalue/">criticalESvalue</a></span><span class="op">)</span>         <span class="co"># calculate critical effect sizes</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www3.nd.edu/~kkelley/">MBESS</a></span><span class="op">)</span>                   <span class="co"># calculate effect sizes</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://psicostat.github.io/criticalESvalue/">criticalESvalue</a></span><span class="op">)</span>         <span class="co"># calculate critical effect sizes</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>An a priori power analysis is a method researchers can use to ensure their studies are designed with high power to reliably detect an effect size of interest. But what exactly is <em>the effect size of interest</em>? The effect size refers to the magnitude of a phenomenon or intervention—essentially, how big the effect is. The effect size of interest, then, is the specific quantity that researchers aim to detect and it central to the research question and purpose of the study. The effect size of interest might represent, for example, a correlation between two variables (e.g., stress and exercise), a difference between two groups, or an interaction effect. To design an informative study is essential that researchers carefully consider which effect sizes are interesting. It can be informative to compute the critical effect size for a study design <span class="citation" data-cites="perugini">(<a href="references.html#ref-perugini" role="doc-biblioref">Perugini et al. 2025</a>)</span>. The critical effect size (<em>d<sub>crit</sub></em>) is the minimal effect size that can reach statistical significance given a sample size, test and <span class="math inline">\(\alpha\)</span>. For an unpaired <em>t</em>-test, <em>d<sub>crit</sub></em> can be calculated as follows:</p>
+<p>An a priori power analysis is a method researchers can use to ensure their studies are designed with high power to reliably detect an effect size of interest. But what exactly is <em>the effect size of interest</em>? The effect size refers to the magnitude of a phenomenon or intervention—essentially, how big the effect is. The effect size of interest, then, is the specific quantity that researchers aim to detect and it is central to the research question and purpose of the study. The effect size of interest might represent, for example, a correlation between two variables (e.g., stress and exercise), a difference between two groups, or an interaction effect. To design an informative study, it is essential that researchers carefully consider which effect sizes are interesting. It can be informative to compute the critical effect size for a study design <span class="citation" data-cites="perugini">(<a href="references.html#ref-perugini" role="doc-biblioref">Perugini et al. 2025</a>)</span>. The critical effect size (<em>d<sub>crit</sub></em>) is the minimal effect size that can reach statistical significance given a sample size, test and <span class="math inline">\(\alpha\)</span>. For an unpaired <em>t</em>-test, <em>d<sub>crit</sub></em> can be calculated as follows:</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Set parameters</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Set parameters</span></span>
 <span><span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">50</span>              <span class="co"># total sample size</span></span>
 <span><span class="va">type</span> <span class="op">&lt;-</span> <span class="st">"two.sided"</span>  <span class="co"># type of test</span></span>
 <span><span class="va">ci</span> <span class="op">&lt;-</span> <span class="fl">0.95</span>           <span class="co"># confidence interval</span></span>
@@ -299,24 +325,16 @@ window.Quarto = {
 <span>  n2 <span class="op">=</span> <span class="va">N</span><span class="op">/</span><span class="fl">2</span>, </span>
 <span>  var.equal <span class="op">=</span> <span class="cn">TRUE</span>,  </span>
 <span>  hypothesis <span class="op">=</span> <span class="va">type</span>, </span>
-<span>  conf.level <span class="op">=</span> <span class="va">ci</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in crit_from_t_t2s(t = t, n1 = n1, n2 = n2, se = se, conf.level =
-conf.level, : When t is NULL, d cannot be computed, returning NA</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in crit_from_t_t2s(t = t, n1 = n1, n2 = n2, se = se, conf.level =
-conf.level, : When se = NULL bc cannot be computed, returning NA!</code></pre>
-</div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ci</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  conf.level <span class="op">=</span> <span class="va">ci</span><span class="op">)</span> </span>
+<span><span class="va">dc</span><span class="op">$</span><span class="va">dc</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.95</code></pre>
+<pre><code>[1] 0.5686934</code></pre>
 </div>
 </div>
-<p>This means that a study employing a two-group design with an N of 50 (25 per group) can only yield a significant result if the observed effect size is equal to or larger than <em>d<sub>crit</sub></em> = 0.57. It can therefore be informative to ask yourself whether <em>d<sub>crit</sub></em> for a study desing falls within the range of effect sizes that can be realistically expected. Below we briefly discuss common approaches for justifying effect sizes of interest and highlight their limitations. For a more comprehensive overview, readers are encouraged to consult Lakens <span class="citation" data-cites="lakenssamplejustification">(<a href="references.html#ref-lakenssamplejustification" role="doc-biblioref">2022</a>)</span> , which provides detailed guidance on best practices for effect size justification in a priori power analyses.</p>
+<p>This means that a study employing a two-group design with an N of 50 (25 per group) can only yield a significant result if the observed effect size is equal to or larger than <em>d<sub>crit</sub></em> = 0.57. It can therefore be informative to ask yourself whether <em>d<sub>crit</sub></em> for a study design falls within the range of effect sizes that can be realistically expected. Below we briefly discuss common approaches for justifying effect sizes of interest and highlight their limitations. For a more comprehensive overview, readers are encouraged to consult Lakens <span class="citation" data-cites="lakenssamplejustification">(<a href="references.html#ref-lakenssamplejustification" role="doc-biblioref">2022</a>)</span> , which provides detailed guidance on best practices for effect size justification in a priori power analyses.</p>
 <section id="smallest-effect-size-of-interest-sesoi" class="level2" data-number="3.1"><h2 data-number="3.1" class="anchored" data-anchor-id="smallest-effect-size-of-interest-sesoi">
 <span class="header-section-number">3.1</span> Smallest effect size of interest (SESOI)</h2>
-<p>The SESOI represents the smallest effect size that researchers consider practically or theoretically relevant. In clinical contexts, this concept is often referred to as the Minimal Clinical Importance Difference (MCID) <span class="citation" data-cites="cookmcid2008">(<a href="references.html#ref-cookmcid2008" role="doc-biblioref">Cook 2008</a>)</span>, which represents the smallest change in a treatment outcome that a patient or clinician would regard as meaningful enough to warrant a change in clinical management or treatments. In essence, the SESOI sets a lower bound on what effects are considered relevant. Effects smaller than the SESOI are viewed as too small to be meaningful, either practically or theoretically, and are therefore considered unimportant. Readers are referred to Anvari and Lakens <span class="citation" data-cites="anvari_sesoi">(<a href="references.html#ref-anvari_sesoi" role="doc-biblioref">2021</a>)</span> for a comprehensive overview of different approaches to set the SESOI. Basing an a priori power analysis on the SESOI is considered best practice <span class="citation" data-cites="lakenssamplejustification">(<a href="references.html#ref-lakenssamplejustification" role="doc-biblioref">Lakens 2022</a>)</span>, as it allows researchers to design more informative studies <span class="citation" data-cites="lakens_equivalence_2017 riesthuis2024 murphy1999">(<a href="references.html#ref-lakens_equivalence_2017" role="doc-biblioref">Lakens 2017</a>; <a href="references.html#ref-riesthuis2024" role="doc-biblioref">Riesthuis 2024</a>; <a href="references.html#ref-murphy1999" role="doc-biblioref">Murphy and Myors 1999</a>)</span>. That is, setting the SESOI enables researchers to design studies that can (a) test whether an effect size is statistically smaller that the SESOI, and therefore practically equivalent to 0 (using an equivalence test; <span class="citation" data-cites="lakens_equivalence_2017">Lakens (<a href="references.html#ref-lakens_equivalence_2017" role="doc-biblioref">2017</a>)</span>); and (b) test whether an effect size is statistically larger than the SESOI and thus meaningful (using a minimum-effect test; <span class="citation" data-cites="murphy1999">Murphy and Myors (<a href="references.html#ref-murphy1999" role="doc-biblioref">1999</a>)</span>). Although basing a priori power analyses on the SESOI is methodologically considered best practice, defining the SESOI is a complex task that requires domain knowledge and dedicated research. As a result, this approach is not always a feasible approach. Consequently, researchers often rely on alternative approaches that come with important limitations.</p>
+<p>The SESOI represents the smallest effect size that researchers consider practically or theoretically relevant. In clinical contexts, this concept is often referred to as the Minimal Clinical Importance Difference (MCID) <span class="citation" data-cites="cookmcid2008">(<a href="references.html#ref-cookmcid2008" role="doc-biblioref">Cook 2008</a>)</span>, which represents the smallest change in a treatment outcome that a patient or clinician would regard as meaningful enough to warrant a change in clinical management or treatments. In essence, the SESOI sets a lower bound on what effects are considered relevant. Effects smaller than the SESOI are viewed as too small to be meaningful, either practically or theoretically, and are therefore considered unimportant. Readers are referred to Anvari and Lakens <span class="citation" data-cites="anvari_sesoi">(<a href="references.html#ref-anvari_sesoi" role="doc-biblioref">2021</a>)</span> for a comprehensive overview of different approaches to set the SESOI. Basing an a priori power analysis on the SESOI is considered best practice <span class="citation" data-cites="lakenssamplejustification">(<a href="references.html#ref-lakenssamplejustification" role="doc-biblioref">Lakens 2022</a>)</span>, as it allows researchers to design more informative studies <span class="citation" data-cites="lakens_equivalence_2017 riesthuis2024 murphy1999">(<a href="references.html#ref-lakens_equivalence_2017" role="doc-biblioref">Lakens 2017</a>; <a href="references.html#ref-riesthuis2024" role="doc-biblioref">Riesthuis 2024</a>; <a href="references.html#ref-murphy1999" role="doc-biblioref">Murphy and Myors 1999</a>)</span>. That is, setting the SESOI enables researchers to design studies that can (a) test whether an effect size is statistically smaller than the SESOI, and therefore practically equivalent to 0 (using an equivalence test; <span class="citation" data-cites="lakens_equivalence_2017">Lakens (<a href="references.html#ref-lakens_equivalence_2017" role="doc-biblioref">2017</a>)</span>); and (b) test whether an effect size is statistically larger than the SESOI and thus meaningful (using a minimum-effect test; <span class="citation" data-cites="murphy1999">Murphy and Myors (<a href="references.html#ref-murphy1999" role="doc-biblioref">1999</a>)</span>). Although basing a priori power analyses on the SESOI is methodologically considered best practice, defining the SESOI is a complex task that requires domain knowledge and dedicated research. As a result, this approach is not always feasible. Consequently, researchers often rely on alternative approaches that come with important limitations.</p>
 </section><section id="expected-effect-sizes" class="level2" data-number="3.2"><h2 data-number="3.2" class="anchored" data-anchor-id="expected-effect-sizes">
 <span class="header-section-number">3.2</span> Expected effect sizes</h2>
 <p>When setting the SESOI is not possible, researchers often base their a priori power analysis on an expected effect size. Because the true effect size is generally unknown, researchers need to make educated guesses about the true effect. For that, they typically use:</p>
@@ -324,7 +342,7 @@ conf.level, : When se = NULL bc cannot be computed, returning NA!</code></pre>
 <span class="header-section-number">3.2.1</span> An estimate from a previous study</h3>
 <p>Researchers often base their a priori power analysis on an effect size reported in a previous study. It is worth highlighting that in most empirical studies, researchers collect data from a sample of a broader population—such as university students in a country, patients with Alzheimer’s disease or pregnant women— because it is rarely feasible to collect data from the entire population. As a result, effect sizes calculated from samples are merely estimates of the true population effect and are subject to random variation. For example, if the true effect size is <em>d</em> = 0.2, a researcher might observe a larger or smaller effect in their study just by purely chance. This sampling variability can lead to over or underestimation of the true effect size.</p>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Ensure reproducibility</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Ensure reproducibility</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">050990</span><span class="op">)</span> </span>
 <span></span>
 <span><span class="co"># Set parameters</span></span>
@@ -332,20 +350,20 @@ conf.level, : When se = NULL bc cannot be computed, returning NA!</code></pre>
 <span><span class="va">smd</span> <span class="op">&lt;-</span> <span class="fl">0.3</span>    <span class="co"># standardized mean difference</span></span>
 <span></span>
 <span><span class="co"># Simulate data for a two-group study design</span></span>
-<span><span class="va">control</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">N</span><span class="op">/</span><span class="fl">2</span>, mean <span class="op">=</span> <span class="va">smd</span>, sd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">control</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">N</span><span class="op">/</span><span class="fl">2</span>, mean <span class="op">=</span> <span class="fl">0</span>, sd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">intervention</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">N</span><span class="op">/</span><span class="fl">2</span>, mean <span class="op">=</span> <span class="va">smd</span>, sd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># calculate effect size</span></span>
 <span><span class="va">observed_smd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/escalc.html">escalc</a></span><span class="op">(</span></span>
-<span>  m1i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">control</span><span class="op">)</span>, sd1i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">control</span><span class="op">)</span>, n1i <span class="op">=</span> <span class="va">N</span><span class="op">/</span><span class="fl">2</span>,</span>
-<span>  m2i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">intervention</span><span class="op">)</span>, sd2i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">intervention</span><span class="op">)</span>, n2i <span class="op">=</span> <span class="va">N</span><span class="op">/</span><span class="fl">2</span>,</span>
-<span>  measure <span class="op">=</span> <span class="st">"SMD"</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  m1i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">intervention</span><span class="op">)</span>, sd1i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">intervention</span><span class="op">)</span>, n1i <span class="op">=</span> <span class="va">N</span><span class="op">/</span><span class="fl">2</span>,</span>
+<span>  m2i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">control</span><span class="op">)</span>, sd2i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">control</span><span class="op">)</span>, n2i <span class="op">=</span> <span class="va">N</span><span class="op">/</span><span class="fl">2</span>,</span>
+<span>  measure <span class="op">=</span> <span class="st">"SMD"</span><span class="op">)</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>In this simulated study, the observed effect size = 0.31 which overestimates the true effect size <em>d</em> = 0.3. This illustrates how random variation might result in an overestimated or underestimated estimate of the true effect size.<br><br>
-Another reason researchers should be careful when using an effect size from a previous study is the presence of selection bias in the published literature. Two sources of selection bias are (a) the preference of editors, reviewers and researchers to prefer studies yielding significant <em>p</em>-values in support of the tested hypothesis <span class="citation" data-cites="scheel_2022">(e.g., <a href="references.html#ref-scheel_2022" role="doc-biblioref">Scheel, Schijen, and Lakens 2021</a>)</span> and (b) questionable research practices that exploit flexibility in data analysis to render non-significant p-values significant <span class="citation" data-cites="bakker_rules_game stefan_2023">(<a href="references.html#ref-bakker_rules_game" role="doc-biblioref">Bakker, Dijk, and Wicherts 2012</a>; <a href="references.html#ref-stefan_2023" role="doc-biblioref">Stefan and Schönbrodt 2023</a>)</span>. Selection bias leads to inflated effect sizes, especially in the presence of studies with underpowered designs. This phenomenon can be intuitively illustrated using the concept of critical effect size (<em>d<sub>crit</sub></em>).</p>
-<p>Assuming a study employing a two-group design with an N of 50 (25 per group), <em>d<sub>crit</sub></em> is equal to 0.5686934. Assuming that the true effect size is smaller than this critical value, and publication bias is present, studies that happen to overestimate the true effect size are more likely to be published. As a result, published effect sizes are more likely to be inflated estimates of the true effect. This bias is illustrated in Figure 7: although the true effect size is 0.3, effect sizes larger than 0.5686934 are more likely to be published, leading to a biased literature <span class="citation" data-cites="hagger2016 ciria_umbrella_review">(<a href="references.html#ref-hagger2016" role="doc-biblioref">Hagger et al. 2016</a>; <a href="references.html#ref-ciria_umbrella_review" role="doc-biblioref">Ciria et al. 2023</a>)</span>. If researchers use such inflated effect sizes in a priori power analysis, the resulting analysis will underestimate the required sample size, increasing the risk that the new study will also be under-powered <span class="citation" data-cites="anderson_sample_planning">(<a href="references.html#ref-anderson_sample_planning" role="doc-biblioref">Anderson, Kelley, and Maxwell 2017</a>)</span>. Unless the study is a Registered Report, researchers should be cautious when relying on reported effect sizes from previous studies and are encouraged to use conservative or adjusted-bias effect size estimates (see next section).</p>
-<div class="cell" data-fig-label="fig-figure7">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Ensure reproducibility</span></span>
+<p>In this simulated study, the observed effect size = 0 which underestimates the true effect size <em>d</em> = 0.3. This illustrates how random variation might result in an overestimated or underestimated estimate of the true effect size.<br><br>
+Another reason researchers should be careful when using an effect size from a previous study is the presence of selection bias in the published literature. Two sources of selection bias are (a) the preference of editors, reviewers and researchers to prefer studies yielding significant <em>p</em>-values in support of the tested hypothesis <span class="citation" data-cites="scheel_2022">(e.g., <a href="references.html#ref-scheel_2022" role="doc-biblioref">Scheel et al. 2021</a>)</span> and (b) questionable research practices that exploit flexibility in data analysis to render non-significant p-values significant <span class="citation" data-cites="bakker_rules_game stefan_2023">(<a href="references.html#ref-bakker_rules_game" role="doc-biblioref">Bakker et al. 2012</a>; <a href="references.html#ref-stefan_2023" role="doc-biblioref">Stefan and Schönbrodt 2023</a>)</span>. Selection bias leads to inflated effect sizes, especially in the presence of studies with underpowered designs. This phenomenon can be intuitively illustrated using the concept of critical effect size (<em>d<sub>crit</sub></em>).</p>
+<p>Assuming a study employing a two-group design with an N of 50 (25 per group), <em>d<sub>crit</sub></em> is equal to 0.57. Assuming that the true effect size is smaller than this critical value, and publication bias is present, studies that happen to overestimate the true effect size are more likely to be published. As a result, published effect sizes are more likely to be inflated estimates of the true effect. This bias is illustrated in <a href="#fig-figure7" class="quarto-xref">Figure&nbsp;<span>3.1</span></a>: although the true effect size is 0.3, effect sizes larger than 0.57 are more likely to be published, leading to a biased literature <span class="citation" data-cites="hagger2016 ciria_umbrella_review">(<a href="references.html#ref-hagger2016" role="doc-biblioref"><span class="nocase">Hagger et al.</span> 2016</a>; <a href="references.html#ref-ciria_umbrella_review" role="doc-biblioref">Ciria et al. 2023</a>)</span>. If researchers use such inflated effect sizes in a priori power analysis, the resulting analysis will underestimate the required sample size, increasing the risk that the new study will also be under-powered <span class="citation" data-cites="anderson_sample_planning">(<a href="references.html#ref-anderson_sample_planning" role="doc-biblioref">Anderson et al. 2017</a>)</span>. Unless the study is a Registered Report, researchers should be cautious when relying on reported effect sizes from previous studies and are encouraged to use conservative or adjusted-bias effect size estimates (see next section).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Ensure reproducibility</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">050990</span><span class="op">)</span> </span>
 <span></span>
 <span><span class="co"># Set parameters</span></span>
@@ -353,7 +371,9 @@ Another reason researchers should be careful when using an effect size from a pr
 <span><span class="va">n_sim</span> <span class="op">&lt;-</span> <span class="fl">10000</span></span>
 <span></span>
 <span><span class="co"># Simulate a distribution of effect sizes</span></span>
-<span><span class="va">effect_sizes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">n_sim</span>, mean <span class="op">=</span> <span class="va">smd</span>, sd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co"># Approximate standard error of d for a two-group design</span></span>
+<span><span class="va">se_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">N</span> <span class="op">/</span> <span class="op">(</span><span class="va">N</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">smd</span><span class="op">^</span><span class="fl">2</span> <span class="op">/</span> <span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="va">N</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">effect_sizes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">n_sim</span>, mean <span class="op">=</span> <span class="va">smd</span>, sd <span class="op">=</span> <span class="va">se_d</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create a density object</span></span>
 <span><span class="va">density_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/density.html">density</a></span><span class="op">(</span><span class="va">effect_sizes</span><span class="op">)</span></span>
@@ -362,7 +382,7 @@ Another reason researchers should be careful when using an effect size from a pr
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">density_obj</span><span class="op">$</span><span class="va">x</span>, y <span class="op">=</span> <span class="va">density_obj</span><span class="op">$</span><span class="va">y</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create a new column to color the area</span></span>
-<span><span class="va">df</span><span class="op">$</span><span class="va">color</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">x</span> <span class="op">&gt;</span> <span class="va">dc</span><span class="op">$</span><span class="va">dc</span>, <span class="st">"blue"</span>, <span class="st">"red"</span><span class="op">)</span></span>
+<span><span class="va">df</span><span class="op">$</span><span class="va">color</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">x</span> <span class="op">&gt;</span> <span class="va">dc</span><span class="op">$</span><span class="va">dc</span>, <span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Plot the density with shaded areas</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">df</span>, </span>
@@ -376,37 +396,37 @@ Another reason researchers should be careful when using an effect size from a pr
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">dc</span><span class="op">$</span><span class="va">dc</span>, </span>
 <span>             linetype <span class="op">=</span> <span class="st">"dashed"</span>, </span>
-<span>             color <span class="op">=</span> <span class="st">"black"</span>, </span>
-<span>             size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>             color <span class="op">=</span> <span class="st">"black"</span>,</span>
+<span>             linewidth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="va">Effect</span><span class="op">~</span><span class="va">size</span><span class="op">~</span><span class="fu">italic</span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Density"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_identity.html">scale_fill_identity</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-ℹ Please use `linewidth` instead.</code></pre>
-</div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="03_chapter_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Distribution of effect sizes d when true effect is 0.2. The red area represents effect sizes that exceed the critical value and are more likely to be published, while the blue area represents smaller, non-significant effect sizes that are less likely to be published. The dashed vertical line indicates the critical effect size.</figcaption></figure>
+<div id="fig-figure7" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-figure7-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03_chapter_files/figure-html/fig-figure7-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-figure7-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.1: Distribution of effect sizes d when true effect is 0.3. The red area represents effect sizes that exceed the critical value and are more likely to be published, while the blue area represents smaller, non-significant effect sizes that are less likely to be published. The dashed vertical line indicates the critical effect size.
+</figcaption></figure>
 </div>
 </div>
 </div>
 </section><section id="an-estimate-from-a-pilot-study" class="level3" data-number="3.2.2"><h3 data-number="3.2.2" class="anchored" data-anchor-id="an-estimate-from-a-pilot-study">
 <span class="header-section-number">3.2.2</span> An estimate from a pilot study</h3>
-<p>It is not uncommon that researchers conduct a pilot study to obtain an estimate of the true effect size which is then used to conduct an a priori power analysis. However, as shown by Lakens <span class="citation" data-cites="lakens_followup_bias">(<a href="references.html#ref-lakens_followup_bias" role="doc-biblioref">2018</a>)</span>, this practice leads to substantially under-powered studies in most realistic situations. Researchers who base their a priori power analyses on effect size estimates observed in pilot studies will unknowingly design on average underpowered studies, as long as they do not take bias in the estimated effect sizes and follow-up bias into account. The diference between the desired and achieved power can be especially worrying when the sample size of the pilot study and/or the population effect size is small.</p>
+<p>It is not uncommon that researchers conduct a pilot study to obtain an estimate of the true effect size which is then used to conduct an a priori power analysis. However, as shown by Lakens <span class="citation" data-cites="lakens_followup_bias">(<a href="references.html#ref-lakens_followup_bias" role="doc-biblioref">2018</a>)</span>, this practice leads to substantially under-powered studies in most realistic situations. Researchers who base their a priori power analyses on effect size estimates observed in pilot studies will unknowingly design on average underpowered studies, as long as they do not take bias in the estimated effect sizes and follow-up bias into account. The difference between the desired and achieved power can be especially worrying when the sample size of the pilot study and/or the population effect size is small.</p>
 </section><section id="an-estimate-from-a-meta-analysis" class="level3" data-number="3.2.3"><h3 data-number="3.2.3" class="anchored" data-anchor-id="an-estimate-from-a-meta-analysis">
 <span class="header-section-number">3.2.3</span> An estimate from a meta-analysis</h3>
-<p>Another source for informing a priori power analyses are meta-analyses. However, they may suffer from the same limitations as individual studies. If the published literature suffers from studies with under-powered designs and selection bias, published effect sizes may end up in meta-analyses leading to inflated meta-analytic effect sizes <span class="citation" data-cites="hagger2016 ciria_umbrella_review">(e.g., <a href="references.html#ref-hagger2016" role="doc-biblioref">Hagger et al. 2016</a>; <a href="references.html#ref-ciria_umbrella_review" role="doc-biblioref">Ciria et al. 2023</a>)</span>. In this case, researchers should select bias-adjusted meta-analytic effect sizes to obtain a more conservative effect size estimate for their a priori power analyses.</p>
+<p>Another source for informing a priori power analyses are meta-analyses. However, they may suffer from the same limitations as individual studies. If the published literature suffers from studies with under-powered designs and selection bias, published effect sizes may end up in meta-analyses leading to inflated meta-analytic effect sizes <span class="citation" data-cites="hagger2016 ciria_umbrella_review">(e.g., <a href="references.html#ref-hagger2016" role="doc-biblioref"><span class="nocase">Hagger et al.</span> 2016</a>; <a href="references.html#ref-ciria_umbrella_review" role="doc-biblioref">Ciria et al. 2023</a>)</span>. In this case, researchers should select bias-adjusted meta-analytic effect sizes to obtain a more conservative effect size estimate for their a priori power analyses.</p>
 </section></section><section id="effect-size-thresholds" class="level2" data-number="3.3"><h2 data-number="3.3" class="anchored" data-anchor-id="effect-size-thresholds">
 <span class="header-section-number">3.3</span> Effect size thresholds</h2>
 <section id="cohens-d-thresholds" class="level3" data-number="3.3.1"><h3 data-number="3.3.1" class="anchored" data-anchor-id="cohens-d-thresholds">
 <span class="header-section-number">3.3.1</span> Cohen’s <em>d</em> thresholds</h3>
-<p>Researchers sometimes base their a priori power analyses on Cohen’s <em>d</em> thresholds-typically interpreting <em>d</em> &lt; 0.2 as a small effect, 0.2 &lt; <em>d</em> &lt; 0.5 as medium, and <em>d</em> &gt; 0.5 as large. Even when you open G*Power, a ‘medium’ effect size is the default option. However, Cohen’s <em>d</em> thresholds should not be used in a priori power analyses. Cohen originally proposed them to describe typical effect sizes observed in social psychology. Applying these benchmarks to other scientific fields ignores the ‘research context’ including the populations from which participants were drawn, research designs, intervention or experimental manipulation. As a result, selecting am effect size based on Cohen’s <em>d</em> benchmarks may lead to a situation where the selected effect size does not reflect the true effect size. Using an inappropriate effect size can lead to under-powered study designs (when the true effect size is smaller) or over-powered study designs (if the true effect size is larger), both of which pose methodological and ethical concerns.</p>
+<p>Researchers sometimes base their a priori power analyses on Cohen’s <em>d</em> thresholds—typically interpreting <em>d</em> = 0.2 as a small effect, <em>d</em> = 0.5 as medium, and <em>d</em> = 0.8 as large. Even when you open G*Power, a ‘medium’ effect size is the default option. However, Cohen’s <em>d</em> thresholds should not be used in a priori power analyses. Cohen originally proposed them to describe typical effect sizes observed in social psychology. Applying these benchmarks to other scientific fields ignores the ‘research context’ including the populations from which participants were drawn, research designs, intervention or experimental manipulation. As a result, selecting an effect size based on Cohen’s <em>d</em> benchmarks may lead to a situation where the selected effect size does not reflect the true effect size. Using an inappropriate effect size can lead to under-powered study designs (when the true effect size is smaller) or over-powered study designs (if the true effect size is larger), both of which pose methodological and ethical concerns.</p>
 </section><section id="field-specific-thresholds" class="level3" data-number="3.3.2"><h3 data-number="3.3.2" class="anchored" data-anchor-id="field-specific-thresholds">
 <span class="header-section-number">3.3.2</span> Field-specific thresholds</h3>
-<p>In other occasions, researchers might use Cohen’s <em>d</em> thresholds derived from the distribution of effect sizes within a field. While this approach appears more tailored than using Cohen’s <em>d</em> thresholds, it should still be avoided. The studies used to calculate these field-specific distributions may differ substantially from the planned study&nbsp;in terms of design, population, or measurement tools. Additionally, published effect sizes might be inflated due to selection bias and studies with under-powered designs.</p>
+<p>On other occasions, researchers might use Cohen’s <em>d</em> thresholds derived from the distribution of effect sizes within a field. While this approach appears more tailored than using Cohen’s <em>d</em> thresholds, it should still be avoided. The studies used to calculate these field-specific distributions may differ substantially from the planned study&nbsp;in terms of design, population, or measurement tools. Additionally, published effect sizes might be inflated due to selection bias and studies with under-powered designs.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -422,7 +442,7 @@ Important
 </div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-lakens_followup_bias" class="csl-entry" role="listitem">
 Albers, Casper, and Daniël Lakens. 2018. <span>“When Power Analyses Based on Pilot Data Are Biased: Inaccurate Effect Size Estimators and Follow-up Bias.”</span> <em>Journal of Experimental Social Psychology</em> 74: 187–95. <a href="https://doi.org/10.1016/j.jesp.2017.09.004">https://doi.org/10.1016/j.jesp.2017.09.004</a>.
 </div>
@@ -436,273 +456,280 @@ Anvari, Farid, and Daniël Lakens. 2021. <span>“Using Anchor-Based Methods to 
 Bakker, Marjan, Annette van Dijk, and Jelte M. Wicherts. 2012. <span>“The Rules of the Game Called Psychological Science.”</span> <em>Perspectives on Psychological Science</em> 7 (6): 543–54. https://doi.org/<a href="https://doi.org/10.1177/1745691612459060">https://doi.org/10.1177/1745691612459060</a>.
 </div>
 <div id="ref-ciria_umbrella_review" class="csl-entry" role="listitem">
-Ciria, Luis F., Rafael Román-Caballero, Miguel A. Vadillo, Darias Holgado, Antonio Luque-Casado, Pandelis Perakakis, and Daniel Sanabria. 2023. <span>“An umbrella review of randomized control trials on the effects of physical exercise on cognition.”</span> <em>Nature Human Behaviour</em> 7 (6): 928–41. <a href="https://doi.org/10.1038/s41562-023-01554-4">https://doi.org/10.1038/s41562-023-01554-4</a>.
+Ciria, Luis F., Rafael Román-Caballero, Miguel A. Vadillo, et al. 2023. <span>“An umbrella review of randomized control trials on the effects of physical exercise on cognition.”</span> <em>Nature Human Behaviour</em> 7 (6): 928–41. <a href="https://doi.org/10.1038/s41562-023-01554-4">https://doi.org/10.1038/s41562-023-01554-4</a>.
 </div>
 <div id="ref-cookmcid2008" class="csl-entry" role="listitem">
 Cook, Chad E. 2008. <span>“Clinimetrics Corner: The Minimal Clinically Important Change Score (MCID): A Necessary Pretense.”</span> <em>The Journal of Manual &amp; Manipulative Therapy</em> 16 (4): E82–83. <a href="https://doi.org/10.1179/jmt.2008.16.4.82E">https://doi.org/10.1179/jmt.2008.16.4.82E</a>.
 </div>
 <div id="ref-hagger2016" class="csl-entry" role="listitem">
-Hagger, M. S., N. L. D. Chatzisarantis, H. Alberts, C. O. Anggono, C. Batailler, A. R. Birt, R. Brand, et al. 2016. <span>“A Multilab Preregistered Replication of the Ego-Depletion Effect.”</span> <em>Perspectives on Psychological Science</em> 11 (4): 546–73. <a href="https://doi.org/10.1177/1745691616652873">https://doi.org/10.1177/1745691616652873</a>.
+<span class="nocase">Hagger, M. S., N. L. D. Chatzisarantis, H. Alberts, et al.</span> 2016. <span>“A Multilab Preregistered Replication of the Ego-Depletion Effect.”</span> <em>Perspectives on Psychological Science</em> 11 (4): 546–73. <a href="https://doi.org/10.1177/1745691616652873">https://doi.org/10.1177/1745691616652873</a>.
 </div>
 <div id="ref-lakens_sequential_2014" class="csl-entry" role="listitem">
 Lakens, Daniël. 2014. <span>“Performing High-Powered Studies Efficiently with Sequential Analyses.”</span> <em>European Journal of Social Psychology</em> 44 (7): 701–10. <a href="https://doi.org/10.1002/ejsp.2023">https://doi.org/10.1002/ejsp.2023</a>.
 </div>
 <div id="ref-lakens_equivalence_2017" class="csl-entry" role="listitem">
-———. 2017. <span>“Equivalence Tests: A Practical Primer for t Tests, Correlations, and Meta-Analyses.”</span> <em>Social Psychological and Personality Science</em>, May. <a href="https://doi.org/10.1177/1948550617697177">https://doi.org/10.1177/1948550617697177</a>.
+Lakens, Daniël. 2017. <span>“Equivalence Tests: A Practical Primer for t Tests, Correlations, and Meta-Analyses.”</span> <em>Social Psychological and Personality Science</em>, ahead of print, May 1. <a href="https://doi.org/10.1177/1948550617697177">https://doi.org/10.1177/1948550617697177</a>.
 </div>
 <div id="ref-lakenssamplejustification" class="csl-entry" role="listitem">
-———. 2022. <span>“Sample Size Justification.”</span> <em>Collabra: Psychology</em> 8 (1): 33267. <a href="https://doi.org/10.1525/collabra.33267">https://doi.org/10.1525/collabra.33267</a>.
+Lakens, Daniël. 2022. <span>“Sample Size Justification.”</span> <em>Collabra: Psychology</em> 8 (1): 33267. <a href="https://doi.org/10.1525/collabra.33267">https://doi.org/10.1525/collabra.33267</a>.
 </div>
 <div id="ref-murphy1999" class="csl-entry" role="listitem">
 Murphy, Kevin R., and Brett Myors. 1999. <span>“Testing the Hypothesis That Treatments Have Negligible Effects: Minimum-Effect Tests in the General Linear Model.”</span> <em>Journal of Applied Psychology</em> 84 (2): 234–48. <a href="https://doi.org/10.1037/0021-9010.84.2.234">https://doi.org/10.1037/0021-9010.84.2.234</a>.
 </div>
 <div id="ref-perugini" class="csl-entry" role="listitem">
-Perugini, Ambra, Enrico Toffalini, Filippo Gambarota, Daniel Lakens, Massimiliano Pastore, Livio Finos, and Gianmarco Altoè. 2025. <span>“The Benefits of Reporting Critical Effect Size Values.”</span> <a href="https://doi.org/10.31234/osf.io/7qe92">https://doi.org/10.31234/osf.io/7qe92</a>.
+Perugini, Ambra, Enrico Toffalini, Filippo Gambarota, et al. 2025. <em>The Benefits of Reporting Critical Effect Size Values</em>. <a href="https://doi.org/10.31234/osf.io/7qe92">https://doi.org/10.31234/osf.io/7qe92</a>.
 </div>
 <div id="ref-riesthuis2024" class="csl-entry" role="listitem">
 Riesthuis, Paul. 2024. <span>“Simulation-Based Power Analyses for the Smallest Effect Size of Interest: A Confidence-Interval Approach for Minimum-Effect and Equivalence Testing.”</span> <em>Advances in Methods and Practices in Psychological Science</em> 7 (2): 25152459241240722. <a href="https://doi.org/10.1177/25152459241240722">https://doi.org/10.1177/25152459241240722</a>.
 </div>
 <div id="ref-scheel_2022" class="csl-entry" role="listitem">
-Scheel, Anne M., Mitchell R. M. J. Schijen, and Daniël Lakens. 2021. <span>“An Excess of Positive Results: Comparing the Standard Psychology Literature With Registered Reports.”</span> <em>Advances in Methods and Practices in Psychological Science</em> 4 (2): 1–12. https://doi.org/<a href="https://doi.org/10.1177/25152459211007467">https://doi.org/10.1177/25152459211007467</a>.
+Scheel, Anne M., Mitchell R. M. J. Schijen, and Daniël Lakens. 2021. <span>“An Excess of Positive Results: Comparing the Standard Psychology Literature with Registered Reports.”</span> <em>Advances in Methods and Practices in Psychological Science</em> 4 (2): 1–12. https://doi.org/<a href="https://doi.org/10.1177/25152459211007467">https://doi.org/10.1177/25152459211007467</a>.
 </div>
 <div id="ref-scheel_why_hypothesis" class="csl-entry" role="listitem">
-Scheel, Anne M., Leonid Tiokhin, Peder M. Isager, and Daniël Lakens. 2020. <span>“Why Hypothesis Testers Should Spend Less Time Testing Hypotheses.”</span> <em>Perspectives on Psychological Science: A Journal of the Association for Psychological Science</em>, December, 1745691620966795. <a href="https://doi.org/10.1177/1745691620966795">https://doi.org/10.1177/1745691620966795</a>.
+Scheel, Anne M., Leonid Tiokhin, Peder M. Isager, and Daniël Lakens. 2020. <span>“Why Hypothesis Testers Should Spend Less Time Testing Hypotheses.”</span> <em>Perspectives on Psychological Science: A Journal of the Association for Psychological Science</em>, December 16, 1745691620966795. <a href="https://doi.org/10.1177/1745691620966795">https://doi.org/10.1177/1745691620966795</a>.
 </div>
 <div id="ref-stefan_2023" class="csl-entry" role="listitem">
 Stefan, A. M., and Felix D. Schönbrodt. 2023. <span>“Big Little Lies: A Compendium and Simulation of p-Hacking Strategies.”</span> <em>Royal Society Open Science</em> 10 (2): 220346. <a href="https://doi.org/10.1098/rsos.220346">https://doi.org/10.1098/rsos.220346</a>.
 </div>
 </div>
 </section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
       }
+      return false;
     }
-    return false;
-  }
-  const onCopySuccess = function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
       }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
       for (const childEl of codeEl.children) {
         if (isCodeAnnotation(childEl)) {
           childEl.remove();
         }
       }
       return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
-  });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
     });
-    clipboardModal.on('success', onCopySuccess);
-  }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
     }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-    const config = {
-      allowHTML: true,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start',
-    };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
           }
         }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
         }
-        return container.innerHTML
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
       } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
         if (window.Quarto?.typesetMath) {
           window.Quarto.typesetMath(note);
         }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
       }
     }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
           }
         } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
           .then(res => res.text())
           .then(html => {
             const parser = new DOMParser();
             const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
+            const note = htmlDoc.querySelector('main.content');
             if (note !== null) {
-              const html = processXRef(id, note);
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
               instance.setContent(html);
             } 
           }).finally(() => {
@@ -710,187 +737,163 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             instance.show();
           });
         }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
-    });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            div.style.left = 0;
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
-        }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
-      }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+      }, function(instance) {
       });
     }
-  }
-});
-</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./02_chapter.html" class="pagination-link" aria-label="Things to consider to increase power">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Things to consider to increase power</span></span>
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./02_chapter.html" class="pagination-link" aria-label="Some things to consider that affect power">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Some things to consider that affect power</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

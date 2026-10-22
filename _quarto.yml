@@ -8,14 +8,18 @@ book:
   date: "2/3/2026"
   chapters:
     - index.qmd
-    - 01_chapter.qmd
-    - 02_chapter.qmd
-    - 03_chapter.qmd
-    - 04_chapter.qmd
-    - 05_chapter.qmd
-    - 06_chapter.qmd
-    - 07_chapter.qmd
-    - 06_chapter.qmd
+    - part: part_1.qmd
+      chapters:
+        - 01_chapter.qmd
+        - 02_chapter.qmd
+        - 03_chapter.qmd
+        - 04_chapter.qmd
+    - part: part_2.qmd
+      chapters:
+        - 05_chapter.qmd
+        - 06_chapter.qmd
+        - 07_chapter.qmd
+        - 08_chapter.qmd
     - 12_chapter.qmd
     - references.qmd
 
@@ -30,7 +34,6 @@ format:
     toc-location: right
     number-sections: true
     code-link: true
-    single-file: true
 execute:
   freeze: auto
 

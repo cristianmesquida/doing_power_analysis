@@ -1,4 +1,4 @@
-# Simple study-desgins {#sec-power-analysis}
+# Simple study designs {#sec-power-analysis}
 
 ```{r}
 #| warning: false
@@ -17,9 +17,9 @@ library(broom)                # tidy statistical results
 
 ## Paired-sample design
 
-In a paired-sample design or a pre-post design is used when researchers collect data from the same participants at two time points and aim to test whether there is a statistically significant difference between those time points. Paired-sample designs are typically analysed using a paired *t-*test.
+A paired-sample (or pre-post) design is used when researchers collect data from the same participants at two time points and aim to test whether there is a statistically significant difference between those time points. Paired-sample designs are typically analysed using a paired *t-*test.
 
-Suppose a researcher hypothesizes that the difference in reaction time between morning and evening will correspond to a Cohen’s *d~rm~* of 0.2. The researcher plans to collect data from the same participants at both time points.
+Suppose a researcher hypothesizes that the difference in reaction time between morning and evening will correspond to a Cohen’s *d~z~* of 0.2. The researcher plans to collect data from the same participants at both time points.
 
 ### Using `pwr.t.test()`
 
@@ -33,12 +33,12 @@ pwr_paired <- pwr.t.test(
   )
 ```
 
-For this study design, we would need a sample size of `r ceiling(pwr_paired$n)` to achieve `r pwr_paired$power`.
+For this study design, we would need `r ceiling(pwr_paired$n)` participants (i.e., pairs of observations) to achieve a power of `r pwr_paired$power`.
 
 ::: callout-important
-In the example, the researcher had a non-directional hypothesis, meaning they expected a difference between the interventions but did not specify the direction of the effect. For this reason, a two-sided paired *t*-test was appropriate.
+In the example, the researcher had a non-directional hypothesis, meaning they expected a difference between the two time points but did not specify the direction of the effect. For this reason, a two-sided paired *t*-test was appropriate.
 
-However, if researchers have a directional hypothesis—for example, that intervention A is better than Intervention B—then a one-sided test should be used. One-sided tests are more powerful when the direction is correctly specified, but they should only be used when the research question and hypothesis clearly support a directional claim. Ideally this decision should be preregistered before data collection to prevent bias or post hoc justifications.
+However, if researchers have a directional hypothesis—for example, that reaction time is faster in the evening than in the morning—then a one-sided test should be used. One-sided tests are more powerful when the direction is correctly specified, but they should only be used when the research question and hypothesis clearly support a directional claim. Ideally this decision should be preregistered before data collection to prevent bias or post hoc justifications.
 :::
 
 ### Simulation approach
@@ -87,7 +87,7 @@ with(
 Conducting a paired *t*-test using `t.test(paired = TRUE)` is statistically equivalent to fitting a linear model with `lm()`:
 
 ```{r chunk_25}
-lm(evening - morning ~ 1, data = df) |> 
+lm(morning - evening ~ 1, data = df) |> 
   tidy() |> 
   select(term, estimate, statistic, p.value) |> 
   kable(digits = 4) |> 
@@ -110,24 +110,24 @@ sd2 <- 1                                 # evening SD
 rho <- 0.5                               # correlation between measurements
 ```
 
+To keep the simulations fast, we draw the data directly with `MASS::mvrnorm()` instead of calling `sim_design()` in every iteration. `mvrnorm()` draws from a multivariate normal distribution with the specified means and covariance matrix, which here encodes the SDs and the correlation between the two measurements.
+
 Let's perform the simulations:
 
 ```{r chunk_27}
+# For reproducibility
+set.seed(050990)
+
+# Covariance matrix of the two measurements
+sigma <- matrix(c(sd1^2,          rho * sd1 * sd2,
+                  rho * sd1 * sd2, sd2^2), nrow = 2)
 
 # Simulation function
 simulate_power <- function(n) {
   p_values <- replicate(nsims, {
-    df <- sim_design(
-      within = list(time = c("morning", "evening")),
-      n = n,
-      mu = c(mu1, mu2),
-      sd = c(sd1, sd2),
-      r = rho,
-      plot = FALSE
-    ) 
+    x <- MASS::mvrnorm(n = n, mu = c(mu1, mu2), Sigma = sigma)
     
-   t.test(df$morning, df$evening, paired = TRUE, 
-           alternative = "two.sided")$p.value
+    t.test(x[, 1], x[, 2], paired = TRUE, alternative = "two.sided")$p.value
   })
   
   mean(p_values < 0.05)
@@ -147,25 +147,18 @@ power_results |>
 
 #### Simulation using `lm()`
 
-Let's perform simulations:
+Let's perform the simulations using the same covariance matrix:
 
 ```{r chunk_28}
+# For reproducibility
+set.seed(050990)
 
 # Simulation function
 simulate_power <- function(n) {
   p_values <- replicate(nsims, {
-    df <- sim_design(
-      within = list(time = c("morning", "evening")),
-      n = n,
-      mu = c(mu1, mu2),
-      sd = c(sd1, sd2),
-      r = rho,
-      plot = FALSE
-    ) 
+    x <- MASS::mvrnorm(n = n, mu = c(mu1, mu2), Sigma = sigma)
     
-    lm(df$morning - df$evening ~ 1) |> 
-      tidy() |> 
-      pull(p.value)
+    summary(lm(x[, 1] - x[, 2] ~ 1))$coefficients["(Intercept)", "Pr(>|t|)"]
   })
   
   mean(p_values < 0.05)
@@ -187,7 +180,7 @@ power_results |>
 
 In an unpaired-sample design or independent two-group design researchers collect data from two independent groups and aim to test whether there is a statistically significant difference between those two groups. This study design is typically analysed using an unpaired *t*-test.
 
-Suppose a researcher hypothesizes that that drinking coffee in the morning affects shooting accuracy. The researcher expects the difference to correspond to a Cohen’s *d~s~* of 0.2. To test this hypothesis, the researcher plans to randomly assign participants to two independent groups: one group that consumes coffee in the morning and one that does not.
+Suppose a researcher hypothesizes that drinking coffee in the morning affects shooting accuracy. The researcher expects the difference to correspond to a Cohen’s *d~s~* of 0.2. To test this hypothesis, the researcher plans to randomly assign participants to two independent groups: one group that consumes coffee in the morning and one that does not.
 
 ### Using `pwr.t.test()`
 
@@ -203,7 +196,7 @@ pwr_unpaired <- pwr.t.test(
 pwr_unpaired
 ```
 
-For this study design, we would need a sample size of `r ceiling(pwr_unpaired$n)` to achieve `r pwr_unpaired$power`.
+For this study design, we would need `r ceiling(pwr_unpaired$n)` participants per group (`r 2 * ceiling(pwr_unpaired$n)` in total) to achieve a power of `r pwr_unpaired$power`.
 
 ### Simulation approach
 
@@ -253,7 +246,7 @@ lm(y ~ group, data = df) |>
   kable_styling(full_width = FALSE)
 ```
 
-The group variable is a categorical factor with two levels (i.e., placebo and intervention). This linear model estimates an intercept, which is the mean of the reference group (i.e., placebo) and a coefficient for the intervention group, which represents the mean difference between the two groups. In practice, both approaches yield the same results including achieving the same power, since they are based on the same model. Based on this approach, we can also conduct an a priori power analysis using simulations.
+The group variable is a categorical factor with two levels (i.e., intervention and placebo). This linear model estimates an intercept, which is the mean of the reference group (i.e., intervention) and a coefficient for the placebo group, which represents the mean difference between the placebo and intervention groups. In practice, both approaches yield the same results including achieving the same power, since they are based on the same model. Based on this approach, we can also conduct an a priori power analysis using simulations.
 
 #### Simulation using `t.test()`
 
@@ -262,7 +255,7 @@ Let's define the parameters of the simulation:
 ```{r chunk_33}
 
 nsims <- 1000                         # number of simulations
-sample_size <- c(100, 150, 200, 250)  # total sample size
+sample_size <- c(100, 200, 300, 400, 500)  # sample size per group
 mu1 <- 0                              # intervention group mean
 mu2 <- 0.2                            # placebo group mean
 sd1 <- 1                              # intervention group SD
@@ -270,32 +263,24 @@ sd2 <- 1                              # placebo group SD
 alpha_level <- 0.05
 ```
 
+Because the two groups are independent, the data can be drawn directly with `rnorm()`, which is much faster than calling `sim_design()` in every iteration.
+
 Let's perform the simulations using `t.test()`:
 
 ```{r chunk_34}
+# For reproducibility
+set.seed(050990)
 
 # Simulation function
 simulate_power <- function(n) {
   p_values <- replicate(nsims, {
-    df <- sim_design(
-      between = list(group = c("intervention", "placebo")),
-      n = n,
-      mu = c(mu1, mu2),
-      sd = c(sd1, sd2),
-      plot = FALSE
-      ) |> 
-      mutate(
-        group = factor(group, levels = c("placebo", "intervention"))
-        )
-  
-     t.test(
-       df$y[df$group == "placebo"], 
-       df$y[df$group == "intervention"], 
-       alternative = "two.sided", 
-       paired = FALSE)$p.value
+    placebo      <- rnorm(n, mean = mu2, sd = sd2)
+    intervention <- rnorm(n, mean = mu1, sd = sd1)
+    
+    t.test(placebo, intervention, alternative = "two.sided", paired = FALSE)$p.value
   })
   
-  mean(p_values < 0.05)
+  mean(p_values < alpha_level)
 }
 
 # Run function for all sample sizes
@@ -315,22 +300,20 @@ power_results |>
 Let's perform the simulations using `lm()`:
 
 ```{r chunk_35}
+# For reproducibility
+set.seed(050990)
 
 # Simulation function
 simulate_power <- function(n) {
+  # Placebo is the reference level, as in the t.test() above
+  group <- factor(rep(c("placebo", "intervention"), each = n),
+                  levels = c("placebo", "intervention"))
+  
   p_values <- replicate(nsims, {
-    df <- sim_design(
-      between = list(group = c("intervention", "placebo")),
-      n = n,
-      mu = c(mu1, mu2),
-      sd = c(sd1, sd2),
-      plot = FALSE) |> 
-      mutate(group = factor(group, levels = c("placebo", "intervention")))
-      
-    lm(y ~ group, data = df) |> 
-      tidy() |> 
-      filter(term == "groupintervention") |> 
-      pull(p.value)
+    y <- c(rnorm(n, mean = mu2, sd = sd2),
+           rnorm(n, mean = mu1, sd = sd1))
+    
+    summary(lm(y ~ group))$coefficients["groupintervention", "Pr(>|t|)"]
   })
   
   mean(p_values < alpha_level)
@@ -342,7 +325,7 @@ power_results <- tibble(
   power = map_dbl(sample_size, simulate_power)
 )
 
-# Return proportion of significant 
+# Return proportion of significant p-values
 power_results |> 
   kable(digits = 2) |> 
   kable_styling(full_width = FALSE)

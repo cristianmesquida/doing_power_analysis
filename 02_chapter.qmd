@@ -1,4 +1,4 @@
-# Things to consider to increase power
+# Some things to consider that affect power
 
 ```{r}
 #| message: false
@@ -10,9 +10,7 @@ library(kableExtra)              # create tables
 library(pwr)                     # conduct power analyses
 library(MBESS)                   # calculate effect sizes
 library(purrr)                   # perform simulations
-library(faux)                    # simulate data
-library(broom)                   # create tidy tables
-library(tidytable)  
+library(tidyr)  
 library(forcats)
 ```
 
@@ -47,23 +45,28 @@ two_sided <- pwr.t.test(
   )
 ```
 
-The results show that the one-sided test achieves a power of `r round(one_sided$power, 1)` whereas the two-sided test achieves a power of `r round(two_sided$power, 1)`. This demonstrates the efficiency gain of one-sided tests when a directional hypothesis is justified. However, it is essential to ensure that the directionality of the hypothesis is appropriately aligned with the choice of the test. If there is no theoretical or empirical justification for expecting an effect in a specific direction, a two-sided test should be used. Furthermore, the directionality of the hypothesis should ideally be preregistered prior to data collection. Preregistration promotes transparency and can prevent practices such as switching from a two-sided to a one-sided test post hoc in order to achieve statistical significance. Such practices.
+The results show that the one-sided test achieves a power of `r round(one_sided$power, 2)` whereas the two-sided test achieves a power of `r round(two_sided$power, 2)`. This demonstrates the efficiency gain of one-sided tests when a directional hypothesis is justified. However, it is essential to ensure that the directionality of the hypothesis is appropriately aligned with the choice of the test. If there is no theoretical or empirical justification for expecting an effect in a specific direction, a two-sided test should be used. Furthermore, the directionality of the hypothesis should ideally be preregistered prior to data collection. Preregistration promotes transparency and can prevent practices such as switching from a two-sided to a one-sided test post hoc in order to achieve statistical significance. Such practices inflate the type I error rate.
 
 ## Decreasing variability of your effect
 
-Standardized mean differences, such as those in the Cohen's *d* family of effect sizes), are calculated by divinding the mean difference between two time points, conditions or groups by the standard deviation. For example, in a two-group design, this is typically expressed as Cohen's *d*~s~, which represents the mean difference between two groups (intervention (INT) vs. control (CON)) divided by the pooled standard deviation (SD). Cohen's *d~s~* can be calculated follows [@lakens_calculating_es]:
+Standardized mean differences, such as those in the Cohen's *d* family of effect sizes, are calculated by dividing the mean difference between two time points, conditions or groups by the standard deviation. For example, in a two-group design, this is typically expressed as Cohen's *d*~s~, which represents the mean difference between two groups (intervention (INT) vs. control (CON)) divided by the pooled standard deviation (SD). Cohen's *d~s~* can be calculated as follows [@lakens_calculating_es]:
 
 $$
 d_{s} = \frac{\text{Mean}_{\text{INT}} - \text{Mean}_{\text{CON}}}{\text{SD}_{\text{Pooled}}}
 $$ {#eq-cohen_ds}
 
-If the mean difference between two groups is 10 and the SD~pooled~ is 20, then *d~s~* = 0.2. However, if SD~pooled~ = 15, *d~s~* = 0.67. This illustrates that the standardized mean difference increases either when the mean difference increases or when the variability in the data (SD) decreases. Thus, researchers can increase power by (1) increasing the mean difference between groups or measurements, and/or (2) reducing SD.
+If the mean difference between two groups is 10 and the SD~pooled~ is 20, then *d~s~* = 0.5. However, if SD~pooled~ = 15, *d~s~* = 0.67. This illustrates that the standardized mean difference increases either when the mean difference increases or when the variability in the data (SD) decreases. Thus, researchers can increase power by (1) increasing the mean difference between groups or measurements, and/or (2) reducing SD.
 
 ## Using paired- or repeated-measures designs
 
 Study designs based on paired or repeated-measures data typically achieve higher power than unpaired or between-subject data. This advantage arises because the same participants contribute multiple data points, introducing correlation between measurements. The stronger this correlation, the greater the power. Paired designs increase power because the correlation reduces SD of differences and therefore the standard errors.
 
-```{r power_rm-designs}
+```{r}
+#| label: tbl-table1
+#| tbl-cap: "Achieved power for a paired t-test assuming different correlations"
+
+# Ensure reproducibility
+set.seed(050990)
 
 # Set parameters
 nsims <- 1000            # number of simulations
@@ -76,47 +79,41 @@ alpha_level <- 0.05
 
 # Simulation function
 simulate_power <- function(rho) {
+  # Covariance matrix of the pre and post measurements
+  sigma <- sd^2 * (rho + (1 - rho) * diag(2))
+  
   p_values <- replicate(nsims, {
-    df <- sim_design(
-      within = list(time = c("pre", "post")),
-      n = N,
-      mu = c(mu1, mu2),
-      sd = 1,
-      r = rho,
-      plot = FALSE
-    ) 
+    x <- MASS::mvrnorm(n = N, mu = c(mu1, mu2), Sigma = sigma)
     
-    lm(df$post - df$pre ~ 1) |> 
-      tidy() |> 
-      pull(p.value)
+    summary(lm(x[, 2] - x[, 1] ~ 1))$coefficients["(Intercept)", "Pr(>|t|)"]
   })
   mean(p_values < alpha_level)
 }
 
-# Run for all sample sizes
+# Run for all correlations
 power_results <- tibble(r = rho,
                         power = map_dbl(rho, simulate_power))
 
 # Return proportion of significant p-values
 power_results |> 
-  kable(caption = "Achieved power for an unpaired t-test assuming different correlations {#tab-table1}" ) |> 
+  kable() |> 
   kable_styling()
 ```
 
 ## Including baseline covariates in ANCOVA model
 
-This section is based on [Solom Kurz's blog post](https://solomonkurz.netlify.app/blog/2023-04-12-boost-your-power-with-baseline-covariates/).
+This section is based on [Solomon Kurz's blog post](https://solomonkurz.netlify.app/blog/2023-04-12-boost-your-power-with-baseline-covariates/).
 
-Adding baseline covariates to an ANOVA model-resulting in an ANCOVA model-will generally increase power in comparison to an ANOVA model. This is because ANCOVA adjusts for baseline differences between groups, reducing residual variance and thereby increasing the sensitivity to detect group differences. Borm [-@borm_2007] presented an approximate sample size adjustment for cases where the primary outcome is measured both pre- and post-intervention. The adjustment is based on the correlation ($\rho$) between the pre- and post-measurements:
+Adding baseline covariates to an ANOVA model—resulting in an ANCOVA model—will generally increase power in comparison to an ANOVA model. This is because ANCOVA adjusts for baseline differences between groups, reducing residual variance and thereby increasing the sensitivity to detect group differences. Borm [-@borm_2007] presented an approximate sample size adjustment for cases where the primary outcome is measured both pre- and post-intervention. The adjustment is based on the correlation ($\rho$) between the pre- and post-measurements:
 
 $$
 N_{\text{adjusted}} = N_{\text{ANOVA}} \times (1 - \rho^2)
-$$ {#eq-adjustement}
+$$ {#eq-adjustment}
 
-where *N*~ANOVA~ is the sample size required under the ANOVA model, $\rho$ is the correlation between the pre- and the post-measurements and *N*~adjusted~ is the effective sample size when using ANCOVA
+where *N*~ANOVA~ is the sample size required under the ANOVA model, $\rho$ is the correlation between the pre- and the post-measurements and *N*~adjusted~ is the effective sample size when using ANCOVA.
 
 ```{r}
-#| fig-label: fig-figure6
+#| label: fig-figure6
 #| fig-cap: "Relationship between sample size required by ANCOVA and ANOVA as a function of the correlation between pre- and post-measurements"
 
 crossing(n = c(50, 100, 150, 200),
@@ -144,11 +141,15 @@ crossing(n = c(50, 100, 150, 200),
 
 As illustrated in @fig-figure6, the higher the correlation, the smaller the sample size required by the ANCOVA model compared to the ANOVA model. For instance, assuming a correlation of $\rho$ = 0.7, the ANCOVA model will require approximately 102 participants to achieve the same power that would otherwise require 200 participants using a traditional ANOVA. The advantage of including baseline covariates is most pronounced when the correlation is high.
 
-## Adjust for multiple comparisons
+## Account for multiple comparisons
 
-If researchers plan to adjust for multiple comparisons, the alpha level used in the a priori power analysis should also be adjusted. For example, suppose a researcher aims to test whether Intervention A is superior to Intervention B in improving heart rate, blood pressure, and cholesterol levels, and is willing to claim support for the hypothesis if any one of these three outcomes shows improvement. In this case, because multiple tests are being conducted, the overall Type I error rate would be inflated if the nominal $\alpha$ (e.g., 0.05) were applied to each test individually. Adjusting the alpha level (e.g., using a Bonferroni correction or other multiple-comparison procedures) ensures that the family-wise error rate remains controlled and should be incorporated into both study planning and power calculations.
+Unlike the previous options, adjusting the alpha level does not increase power; it shows how much larger the sample size must be to preserve power once multiple tests are corrected for.
 
-```{r adjustement}
+If researchers plan to adjust for multiple comparisons, the alpha level used in the a priori power analysis should also be adjusted. For example, suppose a researcher aims to test whether Intervention A is superior to Intervention B in improving heart rate, blood pressure, and cholesterol levels, and is willing to claim support for the hypothesis if any one of these three outcomes shows improvement.
+
+In this case, because multiple tests are being conducted, the overall Type I error rate would be inflated if the nominal $\alpha$ (e.g., 0.05) were applied to each test individually. Adjusting the alpha level (e.g., using a Bonferroni correction or other multiple-comparison procedures) ensures that the family-wise error rate remains controlled and should be incorporated into both study planning and power calculations.
+
+```{r adjustment}
 
 adj <- pwr.t.test(
   d = 0.2, 
@@ -161,11 +162,11 @@ adj <- pwr.t.test(
 adj
 ```
 
-This study design would require a sample size of `r ceiling(adj$n)` to achieve a power of `r adj$power` with an alpha of **`r adj$sig.level`**.
+This study design would require a sample size of `r ceiling(adj$n)` per group to achieve a power of `r adj$power` with an alpha of **`r adj$sig.level`**.
 
 However, if the researcher did not adjust $\alpha$ in the a priori power analysis, the required sample size would be:
 
-```{r no_adjutement}
+```{r no_adjustment}
 
 no_adj <- pwr.t.test(
   d = 0.2, 
@@ -181,11 +182,11 @@ With `r ceiling(no_adj$n)` participants per group, *d* = `r no_adj$d`, and alpha
 
 But if we apply the adjusted $\alpha$ to this smaller sample size:
 
-```{r  effect_of_adjustement}
+```{r  effect_of_adjustment}
 
 pwr.t.test(
   d = 0.2, 
-  n = 310, 
+  n = ceiling(no_adj$n), 
   sig.level = 0.05/3, # assuming three multiple comparisons
   type = "two.sample", 
   alternative = "greater"

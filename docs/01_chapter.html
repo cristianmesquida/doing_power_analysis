@@ -2,10 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.42">
+<meta name="generator" content="quarto-1.9.38">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>1&nbsp; First things first – Doing a power analysis</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -18,8 +21,9 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 /* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -30,7 +34,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -55,7 +59,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -81,16 +84,17 @@ div.csl-indent {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./02_chapter.html" rel="next">
-<link href="./index.html" rel="prev">
-<script src="site_libs/quarto-html/quarto.js"></script>
+<link href="./part_1.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-626149efe8f5d16e1d391ba177679bf0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap-5ccb035bea26c1e21f80f44cf7c27909.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -116,7 +120,7 @@ div.csl-indent {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+}</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
 const typesetMath = (el) => {
   if (window.MathJax) {
     // MathJax Typeset
@@ -127,7 +131,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -143,14 +147,14 @@ window.Quarto = {
 };
 </script>
 </head>
-<body class="nav-sidebar floating">
+<body class="nav-sidebar floating quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01_chapter.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">First things first</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./part_1.html">Part I</a></li><li class="breadcrumb-item"><a href="./01_chapter.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">First things first</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -177,53 +181,75 @@ window.Quarto = {
  <span class="menu-text">Preface</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./part_1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Part I</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01_chapter.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">First things first</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02_chapter.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Things to consider to increase power</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Some things to consider that affect power</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03_chapter.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Effect size justification</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04_chapter.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Things to take into account when conducting an a priori power analysis</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./part_2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Part II</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./05_chapter.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Simple study-desgins</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Simple study designs</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./06_chapter.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Factorial designs</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07_chapter.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Equivalence tests and minimum-effect tests</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./06_chapter.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Factorial designs</span></span></a>
+  <a href="./08_chapter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">General Linear Mixed Models</span></span></a>
   </div>
+</li>
+      </ul>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
@@ -247,13 +273,13 @@ window.Quarto = {
   <ul>
 <li><a href="#null-hypothesis-significance-testing-as-inferential-framework" id="toc-null-hypothesis-significance-testing-as-inferential-framework" class="nav-link active" data-scroll-target="#null-hypothesis-significance-testing-as-inferential-framework"><span class="header-section-number">1.1</span> Null Hypothesis Significance Testing as inferential framework</a></li>
   <li><a href="#what-is-statistical-power" id="toc-what-is-statistical-power" class="nav-link" data-scroll-target="#what-is-statistical-power"><span class="header-section-number">1.2</span> What is statistical power?</a></li>
-  <li><a href="#why-high-power-is-a-desired-property-of-your-study-design" id="toc-why-high-power-is-a-desired-property-of-your-study-design" class="nav-link" data-scroll-target="#why-high-power-is-a-desired-property-of-your-study-design"><span class="header-section-number">1.3</span> Why high power is a desired property of your study design?</a></li>
+  <li><a href="#why-is-high-power-a-desired-property-of-your-study-design" id="toc-why-is-high-power-a-desired-property-of-your-study-design" class="nav-link" data-scroll-target="#why-is-high-power-a-desired-property-of-your-study-design"><span class="header-section-number">1.3</span> Why is high power a desired property of your study design?</a></li>
   <li><a href="#types-of-power-analyses" id="toc-types-of-power-analyses" class="nav-link" data-scroll-target="#types-of-power-analyses"><span class="header-section-number">1.4</span> Types of power analyses</a></li>
   <li><a href="#what-is-your-effect-size-of-interest" id="toc-what-is-your-effect-size-of-interest" class="nav-link" data-scroll-target="#what-is-your-effect-size-of-interest"><span class="header-section-number">1.5</span> What is your effect size of interest?</a></li>
   </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./part_1.html">Part I</a></li><li class="breadcrumb-item"><a href="./01_chapter.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">First things first</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
 <span class="chapter-number">1</span>&nbsp; <span class="chapter-title">First things first</span>
 </h1>
@@ -271,14 +297,14 @@ window.Quarto = {
 
 
 </header><div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span>               <span class="co"># combine gplots</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span>               <span class="co"># combine gplots</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.metafor-project.org">metafor</a></span><span class="op">)</span>                 <span class="co"># calculate effect sizes</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>                 <span class="co"># create figures</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>                   <span class="co"># data wrangling</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://haozhu233.github.io/kableExtra/">kableExtra</a></span><span class="op">)</span>              <span class="co"># create tables</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/heliosdrm/pwr">pwr</a></span><span class="op">)</span>                     <span class="co"># conduct power analyses</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www3.nd.edu/~kkelley/site/MBESS.html">MBESS</a></span><span class="op">)</span>                   <span class="co"># calculate effect sizes</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://purrr.tidyverse.org/">purrr</a></span><span class="op">)</span>                   <span class="co"># perform simulations</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www3.nd.edu/~kkelley/">MBESS</a></span><span class="op">)</span>                   <span class="co"># calculate effect sizes</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://purrr.tidyverse.org/">purrr</a></span><span class="op">)</span>                   <span class="co"># perform simulations</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="null-hypothesis-significance-testing-as-inferential-framework" class="level2" data-number="1.1"><h2 data-number="1.1" class="anchored" data-anchor-id="null-hypothesis-significance-testing-as-inferential-framework">
 <span class="header-section-number">1.1</span> Null Hypothesis Significance Testing as inferential framework</h2>
@@ -286,8 +312,8 @@ window.Quarto = {
 <ul>
 <li><p>True positive: the statistical test yields a significant <em>p</em>-value when there is a true effect or difference between the groups/conditions being compared. In this case the test correctly rejects the null hypothesis of no difference.</p></li>
 <li><p>True negative: the statistical test yields a non-significant <em>p</em>-value when there is no true effect or difference between the groups being compared. In this case the test correctly fails to reject the null hypothesis of no difference.</p></li>
-<li><p>False positive or type I error (usually set to alpha (<span class="math inline">\(\alpha\)</span>) = 0.05): A type I error occurs when a statistical test yields a significant <em>p</em>-value (<em>p</em> &lt; <span class="math inline">\(\alpha\)</span>) even though there is no true effect or difference between the groups being compared. In this case the test wrongly rejects the null hypothesis of no difference committing a type I error. Researchers can control the probability of making a type I error by setting a thresholds, commonly setting <span class="math inline">\(\alpha\)</span> to 0.05 (5%) before conducting a hypothesis test. That means that in the long run, no more than 5% of tests will yield false positives.</p></li>
-<li><p>False negative or type II error (denoted by <span class="math inline">\(\beta\)</span>): A type II error occurs when a statistical test fails to detect a true effect—that is, it yields a non-significant <em>p</em>-value when there is a true effect or difference between the groups being compared. In this case the test fails to reject the hypothesis of no difference committing a type II error. Researchers can reduce the risk of type II error by designing studies with high statistical power (hereafter referred to as power). Power is defined as 1-<span class="math inline">\(\beta\)</span>, where <span class="math inline">\(\beta\)</span> is usually set to 0.2 (20%) and ensures than in the long run, no more than 20% of tests will yield a false negative.</p></li>
+<li><p>False positive or type I error (usually set to alpha (<span class="math inline">\(\alpha\)</span>) = 0.05): A type I error occurs when a statistical test yields a significant <em>p</em>-value (<em>p</em> &lt; <span class="math inline">\(\alpha\)</span>) even though there is no true effect or difference between the groups being compared. In this case the test wrongly rejects the null hypothesis of no difference committing a type I error. Researchers can control the probability of making a type I error by setting a threshold, commonly setting <span class="math inline">\(\alpha\)</span> to 0.05 (5%) before conducting a hypothesis test. That means that in the long run, no more than 5% of tests will yield false positives.</p></li>
+<li><p>False negative or type II error (denoted by <span class="math inline">\(\beta\)</span>): A type II error occurs when a statistical test fails to detect a true effect—that is, it yields a non-significant <em>p</em>-value when there is a true effect or difference between the groups being compared. In this case the test fails to reject the hypothesis of no difference committing a type II error. Researchers can reduce the risk of type II error by designing studies with high statistical power (hereafter referred to as power). Power is defined as 1-<span class="math inline">\(\beta\)</span>, where <span class="math inline">\(\beta\)</span> is usually set to 0.2 (20%) and ensures that in the long run, no more than 20% of tests will yield a false negative.</p></li>
 </ul>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -299,7 +325,7 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>In NHST, the goal of a test is to evaluate whether the data provide sufficient evidence to reject the null hypothesis (H<sub>0</sub>). Typically, H<sub>0</sub> specifies that there is no effect or difference (i.e., H<sub>0</sub> = 0). However, H<sub>0</sub> can also be set to non-zero value or even defined as a range, depending on the research question. researchers specify a range of non-zero values that constitute H<sub>0</sub> (see <span class="citation" data-cites="lakens_value_preregistration">Daniel Lakens (<a href="references.html#ref-lakens_value_preregistration" role="doc-biblioref">2019</a>)</span> for a detailed explanation on different types of H<sub>0</sub> and <span class="citation" data-cites="lakens_equivalence_2017">Daniël Lakens (<a href="references.html#ref-lakens_equivalence_2017" role="doc-biblioref">2017</a>)</span> for equivalence tests). When the test leads to the rejection of H0, researchers conclude that the alternative hypothesis (H<sub>1</sub>) is supported by data, which includes all values not covered by H<sub>0</sub>.</p>
+<p>In NHST, the goal of a test is to evaluate whether the data provide sufficient evidence to reject the null hypothesis (H<sub>0</sub>). Typically, H<sub>0</sub> specifies that there is no effect or difference (i.e., H<sub>0</sub> = 0). However, H<sub>0</sub> can also be set to a non-zero value or even defined as a range of non-zero values, depending on the research question (see <span class="citation" data-cites="lakens_value_preregistration">Lakens (<a href="references.html#ref-lakens_value_preregistration" role="doc-biblioref">2019</a>)</span> for a detailed explanation on different types of H<sub>0</sub> and <span class="citation" data-cites="lakens_equivalence_2017">Lakens (<a href="references.html#ref-lakens_equivalence_2017" role="doc-biblioref">2017</a>)</span> for equivalence tests). When the test leads to the rejection of H<sub>0</sub>, researchers conclude that the alternative hypothesis (H<sub>1</sub>) is supported by data, which includes all values not covered by H<sub>0</sub>.</p>
 </div>
 </div>
 <p>In essence, if researchers aim to make claims while controlling how often they will be wrong in the long run, they should use NHST to test hypotheses and ensure that both type I and type II errors are appropriately controlled.</p>
@@ -309,11 +335,13 @@ Important
 <blockquote class="blockquote">
 <p>“If I repeated my experiment 1000 times, what sample size would allow me to reject the null hypothesis 80% of the time?”</p>
 </blockquote>
-<p>Let’s illustrate the concept of power using an unpaired <em>t</em>-test with an effect size <em>d</em> = 0.4. Unless otherwise specified, we assume <span class="math inline">\(\alpha\)</span> = 0.05 throughout the article.</p>
+<p>Let’s illustrate the concept of power using an unpaired <em>t</em>-test with an effect size <em>d</em> = 0.4. Unless otherwise specified, we assume <span class="math inline">\(\alpha\)</span> = 0.05 throughout the book.</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Set parameters</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Ensure reproducibility</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">050990</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Set parameters</span></span>
 <span><span class="va">nsims</span> <span class="op">&lt;-</span> <span class="fl">1000</span>                    <span class="co"># number of simulations</span></span>
-<span><span class="va">p_values</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">nsims</span><span class="op">)</span>       <span class="co"># create an empty vector</span></span>
 <span><span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">200</span>                         <span class="co"># total sample size</span></span>
 <span><span class="va">smd</span> <span class="op">&lt;-</span> <span class="fl">0.4</span>                       <span class="co"># standardized mean difference</span></span>
 <span><span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">1</span>                          <span class="co"># standard deviation (SD)</span></span>
@@ -337,8 +365,7 @@ Important
 <span><span class="va">test_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span></span>
 <span>  <span class="va">intervention</span>, </span>
 <span>  <span class="va">control</span>, </span>
-<span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span>,</span>
-<span>  conf.int  <span class="op">=</span> <span class="fl">0.95</span></span>
+<span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">p_values</span> <span class="op">&lt;-</span> <span class="va">test_result</span><span class="op">$</span><span class="va">p.value</span></span>
@@ -346,24 +373,30 @@ Important
 <span><span class="op">)</span></span>
 <span>    </span>
 <span><span class="co"># Return proportion of significant p-values</span></span>
-<span><span class="va">power</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">p_values</span> <span class="op">&lt;</span> <span class="va">alpha_level</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">power</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">p_values</span> <span class="op">&lt;</span> <span class="va">alpha_level</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Assuming a true effect size of <em>d =</em> 0.4, a standard deviation (SD) of 1, and an N of 200 (100 per group), such study design would achieve a power of 80.2. In other words, repeating the same experiment many times under the same conditions, approximately 80.2% of the resulting <em>p</em>-values would fall below 0.05. This is illustrated in the histogram shown in <span class="quarto-unresolved-ref">?fig-figure1</span>, where roughly 80% of the <em>p</em>-values are smaller than 0.05, reflecting the power of the test. Under the alternative hypothesis, the greater the power of a test, the larger the proportion of <em>p</em>-values that fall below 0.05, resulting in a more left-skewed distribution of <em>p</em>-values.</p>
-<div class="cell" data-fig-label="fig-figure1">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">p_values</span>, breaks <span class="op">=</span> <span class="fl">50</span>, main <span class="op">=</span> <span class="cn">NULL</span>, xlab <span class="op">=</span> <span class="st">"p-value"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>v <span class="op">=</span> <span class="fl">0.05</span>, col <span class="op">=</span> <span class="st">"red"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Assuming a true effect size of <em>d =</em> 0.4, a standard deviation (SD) of 1, and an N of 200 (100 per group), such study design would achieve a power of 80.4%. In other words, repeating the same experiment many times under the same conditions, approximately 80.4% of the resulting <em>p</em>-values would fall below 0.05. This is illustrated in the histogram shown in <a href="#fig-figure1" class="quarto-xref">Figure&nbsp;<span>1.1</span></a>, where roughly 80% of the <em>p</em>-values are smaller than 0.05, reflecting the power of the test. Under the alternative hypothesis, the greater the power of a test, the larger the proportion of <em>p</em>-values that fall below 0.05, resulting in a more right-skewed distribution of <em>p</em>-values.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">p_values</span>, breaks <span class="op">=</span> <span class="fl">50</span>, main <span class="op">=</span> <span class="cn">NULL</span>, xlab <span class="op">=</span> <span class="st">"p-value"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>v <span class="op">=</span> <span class="fl">0.05</span>, col <span class="op">=</span> <span class="st">"red"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="01_chapter_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Distribution of p-values when there is a true effect and power is 80%.</figcaption></figure>
+<div id="fig-figure1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-figure1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="01_chapter_files/figure-html/fig-figure1-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-figure1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.1: Distribution of p-values when there is a true effect and power is 80%.
+</figcaption></figure>
 </div>
 </div>
 </div>
-<p>When there is no true effect, the power of a test is equivalent to <span class="math inline">\(\alpha\)</span> or the Type I error rate. In other words, if a researcher conducts a study under the null hypothesis (i.e., assuming no difference between two groups), the probability of obtaining a significant <em>p</em>-value is 5% (<span class="math inline">\(\alpha\)</span> is set to 0.05). This is because, by definition, 5% of <em>p</em>-values will fall below 0.05 just by chance alone, even when there is no true effect. Under the null hypothesis, <em>p</em>-values follow a uniform distribution over the range 0 to 1, meaning all values are equally likely in the lung run. the range 0-1 have the same probability of being observed in the long run. To illustrate this, let’s run a simulation and observe how often type I errors occur under the null hypothesis.</p>
-<div class="cell" data-fig-label="type_1_h0">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Set parameters</span></span>
-<span><span class="va">nsims</span> <span class="op">&lt;-</span> <span class="fl">1000</span>                <span class="co"># number of simulations  </span></span>
-<span><span class="va">p_values</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">nsims</span><span class="op">)</span>   <span class="co"># create an empty vector</span></span>
+<p>When there is no true effect, the power of a test is equivalent to <span class="math inline">\(\alpha\)</span> or the Type I error rate. In other words, if a researcher conducts a study under the null hypothesis (i.e., assuming no difference between two groups), the probability of obtaining a significant <em>p</em>-value is 5% (<span class="math inline">\(\alpha\)</span> is set to 0.05). This is because, by definition, 5% of <em>p</em>-values will fall below 0.05 just by chance alone, even when there is no true effect. Under the null hypothesis, <em>p</em>-values follow a uniform distribution over the range 0 to 1, meaning all values are equally likely in the long run. To illustrate this, let’s run a simulation and observe how often type I errors occur under the null hypothesis.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Ensure reproducibility</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">050990</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Set parameters</span></span>
+<span><span class="va">nsims</span> <span class="op">&lt;-</span> <span class="fl">1000</span>                <span class="co"># number of simulations</span></span>
 <span><span class="va">smd</span> <span class="op">&lt;-</span> <span class="fl">0</span>                     <span class="co"># standardized effect size of 0</span></span>
 <span><span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">200</span>                     <span class="co"># total sample size</span></span>
 <span></span>
@@ -384,8 +417,7 @@ Important
 <span></span>
 <span><span class="va">test_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">intervention</span>, </span>
 <span>                      <span class="va">control</span>, </span>
-<span>                      alternative <span class="op">=</span> <span class="st">"two.sided"</span>,</span>
-<span>                      sig.level <span class="op">=</span> <span class="fl">0.05</span></span>
+<span>                      alternative <span class="op">=</span> <span class="st">"two.sided"</span></span>
 <span>                     <span class="op">)</span></span>
 <span></span>
 <span><span class="va">p_values</span> <span class="op">&lt;-</span> <span class="va">test_result</span><span class="op">$</span><span class="va">p.value</span> </span>
@@ -393,34 +425,38 @@ Important
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Return proportion of significant p-values</span></span>
-<span><span class="va">power</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">p_values</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">power</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">p_values</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Assuming a true effect size of 0 and an N of 200 (100 per group), such study design would achieve a power of 3.6, which is approximately equal to <span class="math inline">\(\beta\)</span> or type I error rate. This is illustrated in the histogram shown in <span class="quarto-unresolved-ref">?fig-figure2</span>, where roughly 5% of the <em>p</em>-values are smaller than 0.05, reflecting the type I error rate of the test.</p>
-<div class="cell" data-fig-label="fig-figure2">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">p_values</span>, breaks <span class="op">=</span> <span class="fl">50</span>, main <span class="op">=</span> <span class="cn">NULL</span>, xlab <span class="op">=</span> <span class="st">"p-value"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>v <span class="op">=</span> <span class="fl">0.05</span>, col <span class="op">=</span> <span class="st">"red"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>  <span class="co"># vertical line at 0.05</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Assuming a true effect size of 0 and an N of 200 (100 per group), such study design would achieve a power of 4.5%, which is approximately equal to <span class="math inline">\(\alpha\)</span>, the type I error rate. This is illustrated in the histogram shown in <a href="#fig-figure2" class="quarto-xref">Figure&nbsp;<span>1.2</span></a>, where roughly 5% of the <em>p</em>-values are smaller than 0.05, reflecting the type I error rate of the test.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">p_values</span>, breaks <span class="op">=</span> <span class="fl">50</span>, main <span class="op">=</span> <span class="cn">NULL</span>, xlab <span class="op">=</span> <span class="st">"p-value"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>v <span class="op">=</span> <span class="fl">0.05</span>, col <span class="op">=</span> <span class="st">"red"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="01_chapter_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Distirbution of p-values under the null hypothesis where power is approximately 5%.</figcaption></figure>
+<div id="fig-figure2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-figure2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="01_chapter_files/figure-html/fig-figure2-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-figure2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.2: Distribution of p-values under the null hypothesis where power is approximately 5%.
+</figcaption></figure>
 </div>
 </div>
 </div>
-</section><section id="why-high-power-is-a-desired-property-of-your-study-design" class="level2" data-number="1.3"><h2 data-number="1.3" class="anchored" data-anchor-id="why-high-power-is-a-desired-property-of-your-study-design">
-<span class="header-section-number">1.3</span> Why high power is a desired property of your study design?</h2>
+</section><section id="why-is-high-power-a-desired-property-of-your-study-design" class="level2" data-number="1.3"><h2 data-number="1.3" class="anchored" data-anchor-id="why-is-high-power-a-desired-property-of-your-study-design">
+<span class="header-section-number">1.3</span> Why is high power a desired property of your study design?</h2>
 <p>Designing studies with high power to detect the effect size of interest increases the informational value of studies for three main reasons:</p>
 <ul>
-<li>When a study design is under-powered to detect the effect size of interest, a non-significant <em>p</em>-value provides little information since it may simply reflect insufficient sensitivity (i.e., power) rather than the absence of an effect. For example, suppose two researchers compare the difference between the two same interventions with an unpaired <em>t</em>-test, where the true effect size is <em>d<sub>s</sub></em> = 0.2. Researcher A recruits N = 40 (20 per each group), while researcher B recruits N = 800 (400 per each group).</li>
+<li>When a study design is under-powered to detect the effect size of interest, a non-significant <em>p</em>-value provides little information since it may simply reflect insufficient sensitivity (i.e., power) rather than the absence of an effect. For example, suppose two researchers compare the difference between the same two interventions with an unpaired <em>t</em>-test, where the true effect size is <em>d<sub>s</sub></em> = 0.2. Researcher A recruits N = 40 (20 per group), while researcher B recruits N = 800 (400 per group).</li>
 </ul>
 <div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span>    <span class="va">pwr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html">pwr.t.test</a></span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span>    <span class="va">pwr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html">pwr.t.test</a></span><span class="op">(</span></span>
 <span>      n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">400</span><span class="op">)</span>,</span>
 <span>      d <span class="op">=</span> <span class="fl">0.2</span>,</span>
 <span>      sig.level <span class="op">=</span> <span class="fl">0.05</span>,</span>
 <span>      alternative <span class="op">=</span> <span class="st">"two.sided"</span></span>
-<span>      <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>      <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Researcher A’s study design would achieve approximately 0% power, meaning that only 1 out of 10 replications is expected to yield a significant result even though a real difference between two interventions exists. In contrast, researcher B’s study design achieves 100% power. Thus if researcher B’s test yields a non-significant <em>p</em>-value, she can be more confident that the effect is <em>likely</em> absent or smaller than the expected effect size.</p>
+<p>Researcher A’s study design would achieve approximately 9% power, meaning that only 1 out of 10 replications is expected to yield a significant result even though a real difference between two interventions exists. In contrast, researcher B’s study design achieves 81% power. Thus if researcher B’s test yields a non-significant <em>p</em>-value, she can be more confident that the effect is <em>likely</em> absent or smaller than the expected effect size.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -435,60 +471,69 @@ Important
 </div>
 </div>
 <ul>
-<li>Studies designed with high statistical power yield narrower 95% confidence intervals (CI). This improves precision and reduces the uncertainty around effect sizes estimates. <span class="quarto-unresolved-ref">?fig-figure3</span> depicts the confidence intervals from five replicated studies conducted with two different sample sizes (N of 40 and N of 200), to detect a true effect size of 0.3.</li>
+<li>Studies designed with high statistical power yield narrower 95% confidence intervals (CI). This improves precision and reduces the uncertainty around effect sizes estimates. <a href="#fig-figure3" class="quarto-xref">Figure&nbsp;<span>1.3</span></a> depicts the confidence intervals from five replicated studies conducted with two different sample sizes (N of 40 and N of 200), to detect a true effect size of 0.3.</li>
 </ul>
-<div class="cell" data-fig-label="fig-figure3">
+<div class="cell">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="01_chapter_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Width of 95% confidence intervals for studies with a total sample sizes of N = 40 and N = 200. Dashed black lines represents a true effect size d = 0.3</figcaption></figure>
+<div id="fig-figure3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-figure3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="01_chapter_files/figure-html/fig-figure3-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-figure3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.3: Width of 95% confidence intervals for studies with a total sample sizes of N = 40 and N = 200. Five simulated studies per sample size. The dashed line represents the true effect size d = 0.3
+</figcaption></figure>
 </div>
 </div>
 </div>
 <p>Although we simulated the data with a true (population) effect size of <em>d =</em> 0.3, the wide confidence intervals indicate that observed effect sizes have considerable uncertainty, particularly for smaller sample sizes. All values within a confidence interval are plausible values of the true (population) effect size. For instance, a study that yields a 95% CI ranging from -0.75 to 0.5 (i.e., study 2 in N = 40) is largely uninformative because the interval includes both positive and negative effects, as well as the possibility of no effect at all.</p>
-<p>To sum up, designing studies with adequate power to detect the effect size of interest increases the informational value of studies in three ways: a) high-powered study designs because studies have a higher probability of detecting a true effect or difference when it exists, b) non-significant results become informative and c) confidence intervals tend to be narrower, providing more precise effect size estimates.</p>
+<p>To sum up, designing studies with adequate power to detect the effect size of interest increases the informational value of studies in three ways: a) studies have a higher probability of detecting a true effect or difference when it exists, b) non-significant results become informative and c) confidence intervals tend to be narrower, providing more precise effect size estimates.</p>
 </section><section id="types-of-power-analyses" class="level2" data-number="1.4"><h2 data-number="1.4" class="anchored" data-anchor-id="types-of-power-analyses">
 <span class="header-section-number">1.4</span> Types of power analyses</h2>
 <p>We briefly discuss three types of power analyses below, but readers are referred to Lakens <span class="citation" data-cites="lakenssamplejustification">(<a href="references.html#ref-lakenssamplejustification" role="doc-biblioref">2022</a>)</span> for a comprehensive overview of the topic.</p>
 <ul>
-<li><p><strong>A priori power analysis</strong>: it is performed before data collection to estimate the required sample size to achieve a desired level of power given the expected effect size, the planned test and the chosen alpha level. The goal of an a priori power analysis is to control type II error rates, or in other words, to limit the probability of observing a non-significant effect, assuming there is an effect of an specific size.</p></li>
-<li><p><strong>Sensitivity power analysis</strong>: it is used to assess which effect sizes could be reliably detected given a sample size, the statistical test and α. This type of power analysis is particularly useful when researchers are uncertain about the expected effect size, are working with pre-existing data, are constrained by a limited number of participants or are doing exploratory research. Sensitivity analyses are often presented as power curves, which illustrates the relationship between effect sizes and the achieved power of the test for a given sample size and <span class="math inline">\(\beta\)</span> (<span class="quarto-unresolved-ref">?fig-figure4</span>). For example, suppose resource constraints only allow us to recruit an N of 50 participants in a study comparing two independent groups. <span class="quarto-unresolved-ref">?fig-figure4</span> reveals that with this sample size, only effect sizes larger than <em>d</em> = 0.8 can be reliably detected with adequate power (i.e., <span class="math inline">\(\geq\)</span> 80%).</p></li>
+<li><p><strong>A priori power analysis</strong>: it is performed before data collection to estimate the required sample size to achieve a desired level of power given the expected effect size, the planned test and the chosen alpha level. The goal of an a priori power analysis is to control type II error rates, or in other words, to limit the probability of observing a non-significant effect, assuming there is an effect of a specific size.</p></li>
+<li><p><strong>Sensitivity power analysis</strong>: it is used to assess which effect sizes could be reliably detected given a sample size, the statistical test and α. This type of power analysis is particularly useful when researchers are uncertain about the expected effect size, are working with pre-existing data, are constrained by a limited number of participants or are doing exploratory research. Sensitivity analyses are often presented as power curves, which illustrates the relationship between effect sizes and the achieved power of the test for a given sample size and <span class="math inline">\(\beta\)</span> (<a href="#fig-figure4" class="quarto-xref">Figure&nbsp;<span>1.4</span></a>). For example, suppose resource constraints only allow us to recruit an N of 50 participants in a study comparing two independent groups. <a href="#fig-figure4" class="quarto-xref">Figure&nbsp;<span>1.4</span></a> reveals that with this sample size, only effect sizes larger than <em>d</em> = 0.8 can be reliably detected with adequate power (i.e., <span class="math inline">\(\geq\)</span> 80%).</p></li>
 </ul>
-<div class="cell" data-fig-label="fig-figure4">
+<div class="cell">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="01_chapter_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Sensitivity power analysis for effect sizes randing from d = 0.4 to 1 with N = 50 using an unpaired t-test</figcaption></figure>
+<div id="fig-figure4" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-figure4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="01_chapter_files/figure-html/fig-figure4-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-figure4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.4: Sensitivity power analysis for effect sizes ranging from d = 0.4 to 1 with N = 50 using an unpaired t-test
+</figcaption></figure>
 </div>
 </div>
 </div>
 <ul>
-<li>P<strong>ost hoc power analysis</strong>: it is performed after data collection to estimate the power of the study as a means to justify a non-significant effect, typically using the observed effect size, sample size and alpha level from the study. However, this type of power analysis is considered bad practice and researchers should not report such analysis. This is because the information provided by the post hoc power analysis is redundant. To compute post hoc power, all is needed is the observed <em>p</em>-value and alpha level. For this reason, calculating post hoc power does not provide new information that it is not already provided by the <em>p</em>-value and <span class="math inline">\(\alpha\)</span> <span class="citation" data-cites="lenth_posthocpower_2007 christogiannis_post-hoc yuan_posthoc">(<a href="references.html#ref-lenth_posthocpower_2007" role="doc-biblioref">Lenth 2007</a>; <a href="references.html#ref-christogiannis_post-hoc" role="doc-biblioref">Christogiannis et al. 2022</a>; <a href="references.html#ref-yuan_posthoc" role="doc-biblioref">Yuan and Maxwell 2005</a>)</span>. Lenth <span class="citation" data-cites="lenth_posthocpower_2007">(<a href="references.html#ref-lenth_posthocpower_2007" role="doc-biblioref">2007</a>)</span> provides an R function to compute post hoc power for an unpaired <em>t</em>-test, which is as follows:</li>
+<li>
+<strong>Post hoc power analysis</strong>: it is performed after data collection to estimate the power of the study as a means to justify a non-significant effect, typically using the observed effect size, sample size and alpha level from the study. However, this type of power analysis is considered bad practice and researchers should not report such analysis. This is because the information provided by the post hoc power analysis is redundant. To compute post hoc power, all that is needed is the observed <em>p</em>-value and alpha level. For this reason, calculating post hoc power does not provide new information that is not already provided by the <em>p</em>-value and <span class="math inline">\(\alpha\)</span> <span class="citation" data-cites="lenth_posthocpower_2007 christogiannis_post-hoc yuan_posthoc">(<a href="references.html#ref-lenth_posthocpower_2007" role="doc-biblioref">Lenth 2007</a>; <a href="references.html#ref-christogiannis_post-hoc" role="doc-biblioref">Christogiannis et al. 2022</a>; <a href="references.html#ref-yuan_posthoc" role="doc-biblioref">Yuan and Maxwell 2005</a>)</span>. Lenth <span class="citation" data-cites="lenth_posthocpower_2007">(<a href="references.html#ref-lenth_posthocpower_2007" role="doc-biblioref">2007</a>)</span> provides an R function to compute post hoc power for an unpaired <em>t</em>-test, which is as follows:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">posthoc_power</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">p_value</span>, <span class="va">df</span>, <span class="va">alpha_level</span><span class="op">)</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">posthoc_power</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">p_value</span>, <span class="va">df</span>, <span class="va">alpha_level</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  </span>
 <span>  <span class="va">delta</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">p_value</span> <span class="op">/</span> <span class="fl">2</span>, df <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
 <span>  <span class="va">crit_val</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">alpha_level</span> <span class="op">/</span> <span class="fl">2</span>, df <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
 <span>  <span class="va">power</span> <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">pt</a></span><span class="op">(</span>q <span class="op">=</span> <span class="va">crit_val</span>, df <span class="op">=</span> <span class="va">df</span>, ncp <span class="op">=</span> <span class="va">delta</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">pt</a></span><span class="op">(</span><span class="op">-</span><span class="va">crit_val</span>, <span class="va">df</span>, <span class="va">delta</span><span class="op">)</span></span>
 <span>  </span>
 <span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">power</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>If we assume a <em>p</em>-value = 0.07, degrees of freedom = 38 (N = 50; df = 50-2) and <span class="math inline">\(\alpha\)</span> = 0.05, <code>posthoc_power()</code> returns a post hoc power of:</p>
+<p>If we assume a <em>p</em>-value = 0.07, degrees of freedom = 48 (N = 50; df = 50-2) and <span class="math inline">\(\alpha\)</span> = 0.05, <code>posthoc_power()</code> returns a post hoc power of:</p>
 <div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">posthoc_power</span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">posthoc_power</span><span class="op">(</span></span>
 <span>  p_value <span class="op">=</span> <span class="fl">0.07</span>, </span>
-<span>  df <span class="op">=</span> <span class="fl">38</span>, </span>
-<span>  alpha_level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  df <span class="op">=</span> <span class="fl">48</span>, </span>
+<span>  alpha_level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4433432</code></pre>
+<pre><code>[1] 0.4428971</code></pre>
 </div>
 </div>
-<p>Studies that yield non-significant <em>p</em>-values typically have less than 50% power, whereas a a study that yields a <em>p</em>-value of 0.05 will have approximately 50% power. This relationship can be visualized by plotting post hoc power as a function of <em>p</em>-values ranging from 0 to 1.</p>
-<div class="cell" data-fig-label="fig-figure5">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">p_value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, by <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fl">38</span></span>
+<p>Studies that yield non-significant <em>p</em>-values typically have less than 50% power, whereas a study that yields a <em>p</em>-value of 0.05 will have approximately 50% power. This relationship can be visualized by plotting post hoc power as a function of <em>p</em>-values ranging from 0 to 1.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">p_value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">1</span>, by <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fl">48</span></span>
 <span><span class="va">alpha_level</span> <span class="op">&lt;-</span> <span class="fl">0.05</span></span>
 <span></span>
 <span><span class="va">df_power</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
@@ -502,297 +547,311 @@ Important
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">0.05</span>, colour <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu">italic</span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">-</span><span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"Post hoc power"</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"Post hoc power"</span><span class="op">)</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="01_chapter_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Achieved power as a function of p-values for a two-group design with N = 50 and alpha level = 0.05.</figcaption></figure>
+<div id="fig-figure5" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-figure5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="01_chapter_files/figure-html/fig-figure5-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-figure5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.5: Achieved power as a function of p-values for a two-group design with N = 50 and alpha level = 0.05.
+</figcaption></figure>
 </div>
 </div>
 </div>
-<p>As illustrated in <span class="quarto-unresolved-ref">?fig-figure5</span>, whenever a <em>p</em>-value is non-significant (greater than the conventional alpha level, indicated by the red line), the corresponding post hoc power is typically less than 50%. Therefore, conducting a post hoc power analysis to justify a non-significant result is uninformative since tests that yield a non-significant <em>p</em>-value will typically be under-powered when evaluated post hoc.</p>
+<p>As illustrated in <a href="#fig-figure5" class="quarto-xref">Figure&nbsp;<span>1.5</span></a>, whenever a <em>p</em>-value is non-significant (greater than the conventional alpha level, indicated by the red line), the corresponding post hoc power is typically less than 50%. Therefore, conducting a post hoc power analysis to justify a non-significant result is uninformative since tests that yield a non-significant <em>p</em>-value will typically be under-powered when evaluated post hoc.</p>
 </section><section id="what-is-your-effect-size-of-interest" class="level2" data-number="1.5"><h2 data-number="1.5" class="anchored" data-anchor-id="what-is-your-effect-size-of-interest">
 <span class="header-section-number">1.5</span> What is your effect size of interest?</h2>
-<p>When researchers conduct an a priori power analysis the aim is to design a study that has adequate power to detect the effect size of interest. But what do we really mean by <em>effect size of interest</em>? The effect size of interest corresponds to the difference between treatments, interventions or conditions that researchers consider practically, theoretically, or clinically relevant and, hence, of interest. As Senn <span class="citation" data-cites="senn_2021">(<a href="references.html#ref-senn_2021" role="doc-biblioref">2021</a>)</span> argued, “the difference one would not like to miss”. The most challenging aspect of an a priori power analysis is the selection of the effect size, which is inherently subjective and therefore requires explicit justification. Best approach would be to set the smallest effect size of interest (SESOI) <span class="citation" data-cites="lakenssamplejustification">(<a href="references.html#ref-lakenssamplejustification" role="doc-biblioref">Daniël Lakens 2022</a>)</span>. In practice, however, it is often based on an expected effect size. To do so, researchers may use an effect size reported in a previous study or meta-analysis to inform their decision on what effect size to expect.</p>
-<p>Depending on the study goal or hypothesis, the intervention effect might correspond to a mean difference between two groups or conditions at a specific time point, or an interaction effect where the effect of a factor is moderated by the effect of a second factor. This difference can be expressed in absolute (e.g., mean difference) or relative terms (e.g., hazard ratio, risk ratio). Absolute ES can be presented in unstandardised (raw units) or standardised form (e.g., Cohen’s <em>d</em> ). Among standardized effect sizes, one of the most commonly used in psychology and social sciences is Cohen’s <em>d</em>, which refers to a family of related effect size measures, differentiated by subscripts such as <em>d<sub>s</sub></em>or <em>d<sub>rm</sub></em> depending on the study design (between- or within-subject design, split-plot design) and type of standardizer used. Readers are referred to Jané et al.&nbsp;[<span class="citation" data-cites="jane2024">(<a href="references.html#ref-jane2024" role="doc-biblioref">2023</a>)</span>) for a gentile introduction to how to calculate different types of effect sizes.</p>
+<p>When researchers conduct an a priori power analysis the aim is to design a study that has adequate power to detect the effect size of interest. But what do we really mean by <em>effect size of interest</em>? The effect size of interest corresponds to the difference between treatments, interventions or conditions that researchers consider practically, theoretically, or clinically relevant and, hence, of interest. As Senn <span class="citation" data-cites="senn_2021">(<a href="references.html#ref-senn_2021" role="doc-biblioref">2021</a>)</span> argued, “the difference one would not like to miss”. The most challenging aspect of an a priori power analysis is the selection of the effect size, which is inherently subjective and therefore requires explicit justification. The best approach would be to set the smallest effect size of interest (SESOI) <span class="citation" data-cites="lakenssamplejustification">(<a href="references.html#ref-lakenssamplejustification" role="doc-biblioref">Lakens 2022</a>)</span>. In practice, however, it is often based on an expected effect size. To do so, researchers may use an effect size reported in a previous study or meta-analysis to inform their decision on what effect size to expect.</p>
+<p>Depending on the study goal or hypothesis, the intervention effect might correspond to a mean difference between two groups or conditions at a specific time point, or an interaction effect where the effect of a factor is moderated by the effect of a second factor. This difference can be expressed in absolute (e.g., mean difference) or relative terms (e.g., hazard ratio, risk ratio). Absolute ES can be presented in unstandardised (raw units) or standardised form (e.g., Cohen’s <em>d</em> ). Among standardized effect sizes, one of the most commonly used in psychology and social sciences is Cohen’s <em>d</em>, which refers to a family of related effect size measures, differentiated by subscripts such as <em>d<sub>s</sub></em> or <em>d<sub>rm</sub></em> depending on the study design (between- or within-subject design, split-plot design) and type of standardizer used. Readers are referred to Jané et al. <span class="citation" data-cites="jane2024">(<a href="references.html#ref-jane2024" role="doc-biblioref">2023</a>)</span> for a gentle introduction to how to calculate different types of effect sizes.</p>
 <p>In a between-subject design with two independent groups, the standardized effect size is usually calculated as a Cohen’s <em>d<sub>s</sub></em>:</p>
 <p><span class="math display">\[
 d_s = \frac{M_A - M_B}{SD_p}
 \]</span></p>
 <p>where <span class="math inline">\(M_A\)</span> and <span class="math inline">\(M_B\)</span> are the means corresponding to group A and B and <span class="math inline">\(SD_P\)</span> is the pooled standard deviation which can be calculated as:</p>
 <p><span class="math display">\[
-SD_P = \sqrt{\frac{(n_A)SD^2_A + (n_B)SD^2_B}{n_A + n_B - 2}}
+SD_P = \sqrt{\frac{(n_A - 1)SD^2_A + (n_B - 1)SD^2_B}{n_A + n_B - 2}}
 \]</span></p>
 <p>where <span class="math inline">\(SD_A\)</span> and <span class="math inline">\(SD_B\)</span> are the standard deviations of each group and <span class="math inline">\(n_A\)</span> and <span class="math inline">\(n_B\)</span> are their corresponding sample sizes.</p>
-<p>In a repeated-measures design, the same participants are measured under two different conditions. The standardized effect size is usually calculated as a Cohen’s <em>d<sub>rm</sub></em>:</p>
+<p>In a repeated-measures design, the same participants are measured under two different conditions. The standardized effect size is usually calculated as a Cohen’s <em>d<sub>z</sub></em>:</p>
 <p><span class="math display">\[
-d_{rm} = \frac{M_1 - M_2}{SD_{diff}}
+d_{z} = \frac{M_1 - M_2}{SD_{diff}}
 \]</span></p>
 <p>where <span class="math inline">\(M_1\)</span> and <span class="math inline">\(M_2\)</span> correspond to the observed scores in each condition and <span class="math inline">\(SD_{diff}\)</span> is the standard deviation of the difference which is calculated as follows:</p>
 <p><span class="math display">\[
-SD_P = \sqrt{SD^2_1 + SD^2_2 - 2rSD_1SD_2}
+SD_{diff} = \sqrt{SD^2_1 + SD^2_2 - 2rSD_1SD_2}
 \]</span></p>
-<p>where <span class="math inline">\(r\)</span> is the correlation between scores and <span class="math inline">\(SD_1\)</span> and <span class="math inline">\(SD_1\)</span> corresponds to their standard deviations.</p>
-<p>Unless otherwise specified, throughout this article and in the accompanying code snippets, we use <code>smd</code> as an equivalent of a Cohen’s <em>d</em> and represents the standardized mean difference between two interventions or conditions divided by an assumed SD. For example, if <code>smd</code> = 0.4 and <code>sd</code> = 1, this corresponds to a Cohen’s <em>d</em> of 0.4 (0.4/1). As we will see in Chapter 5, depending on the software or tool used to conduct the a priori power analyses, the effect size may be specified either as a&nbsp;standardized effect size (e.g., Cohen’s <em>d</em>, <code>smd</code>) or as a raw effect size&nbsp;(i.e., mean difference).</p>
+<p>where <span class="math inline">\(r\)</span> is the correlation between scores and <span class="math inline">\(SD_1\)</span> and <span class="math inline">\(SD_2\)</span> correspond to their standard deviations. Cohen’s <em>d<sub>z</sub></em> is the effect size required by paired-samples power analyses such as <code>pwr.t.test(type = "paired")</code>. A related measure, <em>d<sub>rm</sub></em>, adjusts <em>d<sub>z</sub></em> for the correlation between measurements, <em>d<sub>rm</sub></em> = <em>d<sub>z</sub></em> × <span class="math inline">\(\sqrt{2(1 - r)}\)</span>, which makes it comparable to <em>d<sub>s</sub></em> <span class="citation" data-cites="lakens_calculating_es">(<a href="references.html#ref-lakens_calculating_es" role="doc-biblioref">Lakens 2013</a>)</span>.</p>
+<p>Unless otherwise specified, throughout this book and in the accompanying code snippets, we use <code>smd</code> as an equivalent of a Cohen’s <em>d</em> and represents the standardized mean difference between two interventions or conditions divided by an assumed SD. For example, if <code>smd</code> = 0.4 and <code>sd</code> = 1, this corresponds to a Cohen’s <em>d</em> of 0.4 (0.4/1). As we will see in Chapter 5, depending on the software or tool used to conduct the a priori power analyses, the effect size may be specified either as a&nbsp;standardized effect size (e.g., Cohen’s <em>d</em>, <code>smd</code>) or as a raw effect size&nbsp;(i.e., mean difference).</p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-christogiannis_post-hoc" class="csl-entry" role="listitem">
 Christogiannis, Christos, Stavros Nikolakopoulos, Nikolaos Pandis, and Dimitris Mavridis. 2022. <span>“The self-fulfilling prophecy of post-hoc power calculations.”</span> <em>American Journal of Orthodontics and Dentofacial Orthopedics</em> 161 (2): 315–17. <a href="https://doi.org/10.1016/j.ajodo.2021.10.008">https://doi.org/10.1016/j.ajodo.2021.10.008</a>.
 </div>
 <div id="ref-jane2024" class="csl-entry" role="listitem">
-Jané, Matthew B, Qinyu Xiao, Siu Kit Yeung, Flavio Azevedo, Mattan S Ben-Shachar, Aaron R Caldwell, Denis Cousineau, et al. 2023. <span>“Guide to Effect Sizes and Confidence Intervals.”</span> <a href="https://doi.org/10.17605/OSF.IO/D8C4G">https://doi.org/10.17605/OSF.IO/D8C4G</a>.
+Jané, Matthew B, Qinyu Xiao, Siu Kit Yeung, et al. 2023. <em>Guide to Effect Sizes and Confidence Intervals</em>. <a href="https://doi.org/10.17605/OSF.IO/D8C4G">https://doi.org/10.17605/OSF.IO/D8C4G</a>.
 </div>
 <div id="ref-lakens_value_preregistration" class="csl-entry" role="listitem">
 Lakens, Daniel. 2019. <span>“The Value of Preregistration for Psychological Science: A Conceptual Analysis.”</span> <em>心理学評論</em> 62 (3): 221230.
 </div>
+<div id="ref-lakens_calculating_es" class="csl-entry" role="listitem">
+Lakens, Daniël. 2013. <span>“Calculating and Reporting Effect Sizes to Facilitate Cumulative Science: A Practical Primer for t-Tests and ANOVAs.”</span> <em>Frontiers in Psychology</em> 4: 863. <a href="https://doi.org/10.3389/fpsyg.2013.00863">https://doi.org/10.3389/fpsyg.2013.00863</a>.
+</div>
 <div id="ref-lakens_equivalence_2017" class="csl-entry" role="listitem">
-Lakens, Daniël. 2017. <span>“Equivalence Tests: A Practical Primer for t Tests, Correlations, and Meta-Analyses.”</span> <em>Social Psychological and Personality Science</em>, May. <a href="https://doi.org/10.1177/1948550617697177">https://doi.org/10.1177/1948550617697177</a>.
+Lakens, Daniël. 2017. <span>“Equivalence Tests: A Practical Primer for t Tests, Correlations, and Meta-Analyses.”</span> <em>Social Psychological and Personality Science</em>, ahead of print, May 1. <a href="https://doi.org/10.1177/1948550617697177">https://doi.org/10.1177/1948550617697177</a>.
 </div>
 <div id="ref-lakenssamplejustification" class="csl-entry" role="listitem">
-———. 2022. <span>“Sample Size Justification.”</span> <em>Collabra: Psychology</em> 8 (1): 33267. <a href="https://doi.org/10.1525/collabra.33267">https://doi.org/10.1525/collabra.33267</a>.
+Lakens, Daniël. 2022. <span>“Sample Size Justification.”</span> <em>Collabra: Psychology</em> 8 (1): 33267. <a href="https://doi.org/10.1525/collabra.33267">https://doi.org/10.1525/collabra.33267</a>.
 </div>
 <div id="ref-lenth_posthocpower_2007" class="csl-entry" role="listitem">
 Lenth, R. 2007. <span>“Statistical Power Calculations.”</span> <em>Journal of Animal Science</em> 85 (April): E24–9. <a href="https://doi.org/10.2527/jas.2006-449">https://doi.org/10.2527/jas.2006-449</a>.
 </div>
 <div id="ref-senn_2021" class="csl-entry" role="listitem">
-Senn, Stephen J. 2021. <span>“Determining the Sample Size.”</span> In, 241–64. John Wiley &amp; Sons, Ltd. <a href="https://doi.org/10.1002/9781119238614.ch13">https://doi.org/10.1002/9781119238614.ch13</a>.
+Senn, Stephen J. 2021. <em>Determining the Sample Size</em>. John Wiley &amp; Sons, Ltd. <a href="https://doi.org/10.1002/9781119238614.ch13">https://doi.org/10.1002/9781119238614.ch13</a>.
 </div>
 <div id="ref-yuan_posthoc" class="csl-entry" role="listitem">
 Yuan, Ke-Hai, and Scott Maxwell. 2005. <span>“On the Post Hoc Power in Testing Mean Differences.”</span> <em>Journal of Educational and Behavioral Statistics Summer</em> 30: 141–67. <a href="https://doi.org/10.3102/10769986030002141">https://doi.org/10.3102/10769986030002141</a>.
 </div>
 </div>
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
       }
+      return false;
     }
-    return false;
-  }
-  const onCopySuccess = function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
       }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
       for (const childEl of codeEl.children) {
         if (isCodeAnnotation(childEl)) {
           childEl.remove();
         }
       }
       return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
-  });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
     });
-    clipboardModal.on('success', onCopySuccess);
-  }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
     }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-    const config = {
-      allowHTML: true,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start',
-    };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
           }
         }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
         }
-        return container.innerHTML
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
       } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
         if (window.Quarto?.typesetMath) {
           window.Quarto.typesetMath(note);
         }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
       }
     }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
           }
         } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
           .then(res => res.text())
           .then(html => {
             const parser = new DOMParser();
             const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
+            const note = htmlDoc.querySelector('main.content');
             if (note !== null) {
-              const html = processXRef(id, note);
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
               instance.setContent(html);
             } 
           }).finally(() => {
@@ -800,192 +859,168 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             instance.show();
           });
         }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
-    });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            div.style.left = 0;
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
-        }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
-      }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+      }, function(instance) {
       });
     }
-  }
-});
-</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./index.html" class="pagination-link" aria-label="Preface">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./part_1.html" class="pagination-link" aria-label="Part I">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Part I</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./02_chapter.html" class="pagination-link" aria-label="Things to consider to increase power">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Things to consider to increase power</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./02_chapter.html" class="pagination-link" aria-label="Some things to consider that affect power">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Some things to consider that affect power</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
